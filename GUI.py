@@ -16,26 +16,22 @@ ribbon = Frame(root,bg="yellow",relief=GROOVE,borderwidth = 6,width = 1080,heigh
 ribbon.pack(fill="x",anchor ="nw")
 
 #ComboBox (MAIN) -- Create a combobox that updates it's contents based on state. 
-
-class ComboB:
-    def update_list(self):
-        global STATE
-        STATE = self.box.get()
-        value_list = form_list(STATE)
-        self.box['values'] = value_list
     
-    box = Combobox(ribbon,values = form_list(STATE), postcommand = update_list())
-    box.pack()  
-
-        
+class ComboB:
+    def __init___(self):
+        self.box = Combobox(ribbon,values=form_list("NONE"),postcommand = self.update_list())
+        self.box.pack()
+    def update_list(self):
+        self.box['values'] = form_list(self.box.get())
+ 
 mainbox = ComboB()
 
-        
-    
+# Toolbar 
+toolbar = Frame(root,bg="grey",relief=GROOVE,borderwidth = 6,width = 250, height = 335)
+toolbar.pack(anchor = "sw",side="bottom")
 
+#scenemanager 
 
-     
-
-
-
+scenemanager = Frame(root,relief = GROOVE, borderwidth = 6, width = 250, height = 335)
+scenemanager.pack(anchor = "nw",side="top")
 root.mainloop()  
