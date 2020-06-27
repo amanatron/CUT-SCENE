@@ -1,7 +1,5 @@
 from tkinter import *
 from tkinter.ttk import Combobox
-from time import strftime
-from PIL import ImageTk,Image
 from logic import form_list, STATE 
 
 
@@ -17,7 +15,7 @@ root.geometry("1080x720")
 ribbon = Frame(root,bg="yellow",relief=GROOVE,borderwidth = 6,width = 1080,height=50)
 ribbon.pack(fill="x",anchor ="nw")
 
-#ComboBox (MAIN)
+#ComboBox (MAIN) -- Create a combobox that updates it's contents based on state. 
 
 class ComboB:
     def update_list(self):

@@ -1,4 +1,4 @@
-STATE = "NONE"
+STATE = "NONE" #use for defining state 
 
 def form_list(STATE):
     if STATE == "LEVEL":
