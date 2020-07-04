@@ -75,17 +75,20 @@ scenemanager.pack(anchor = "nw",side="top")
 def create_toplevel(STATE):
     top_level = Toplevel(height=300,width=600)
     top_level.title("create {}".format(STATE).title())
-    create_button = Button(top_level,text="Create")
-    create_button.pack()
+    top_level.resizable(False,False)
+    top_level.grab_set()
     cancel_button = Button(top_level,text="Cancel")
-    cancel_button.pack()
+    cancel_button.pack(side=BOTTOM)
+    create_button = Button(top_level,text="Create")
+    create_button.pack(side=BOTTOM)
     if STATE == "LEVEL":
         level_entry = Entry(top_level)
         level_entry.insert(0,"Enter Name")
         level_entry.pack()
-        level_description = Entry(top_level)
-        level_description.insert(0,"Enter Description")
+        level_description = Text(top_level,width=50,height=10,highlightbackground="black")
         level_description.pack()
+        level_map = Checkbutton(top_level,text="Add A Map")
+        level_map.pack()
         
         
     
