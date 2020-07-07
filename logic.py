@@ -20,13 +20,6 @@ def form_list(STATE):
         set_list = ["LEVEL","SUB-LEVEL","SCENE","OBJECT","OBJECTIVE","EVENT","ANIMATION"]
     return set_list
     
-class LEVEL():
-    def __init__(self,name,description):
-        self.name = name 
-        self.description = description
-        
-
-        
 
 level_list = []
 
