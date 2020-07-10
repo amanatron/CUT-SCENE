@@ -1,74 +1,34 @@
-from Mechanics import Action
-from typing import Optional, Tuple
+from cutscene.sceneElements.action import Action
+from cutscene.utils import NameDescription, OrderedInstanceHolder
+from typing import Optional
 
-class Animation(SceneElement):
+class Animation(NameDescription, OrderedInstanceHolder):
     """Animation Class"""
     def __init__(self, 
                  name: str,
                  description: str):
-        super().__init__(name, description)
-        self.__animation = []
-
-    @property
-    def animation(self) -> list:
-        return self.__animation
+        NameDescription.__init__(self, name, description)
+        OrderedInstanceHolder.__init__(self)
 
     def addAction(self, *args):
         action = Action(*args)
-        self.animation.append(action)
+        self.addNew(action)
 
     def addTransition(self, *args):
         transition = Transition(*args)
-        self.animation.append(transition)
+        self.addNew(transition)
 
     def addHeading(self, *args):
         heading = Heading(*args)
-        self.animation.append(heading)
+        self.addNew(heading)
 
     def addDialogue(self, *args):
         dialogue = Dialogue(*args)
-        self.animation.append(dialogue)
+        self.addNew(dialogue)
 
-    def remove(self,
-               index: int)
-        assert type(index) is int
-        del self.animation[index]
-
-    def __elementSwap(self,
-                      index1,
-                      index2):
-        """Elementwise swap of two items at specified indexes"""
-        self.animation[index1], self.animation[index2] = self.animation[index2], self.animation[index1]
-
-    def moveUp(self,
-               index: int):
-        assert type(index) is int
-        if index == 0:
-            raise ValueError("Can't move first element of list up")
-        elif 0 > index > len(self.animation):
-            raise ValueError("Index out of range: {}".format(Index))
-        self.__elementSwap(index, index-1)
-
-    def moveDown(self,
-                 index: int):
-        assert type(index) is int
-        if index == len(self.animation):
-            raise ValueError("Can't move last element of list down")
-        elif 0 > index > len(self.animation):
-            raise ValueError("Index out of range: {}".format(Index))
-        self.__elementSwap(index, index+1)
-
-    def move(self,
-             index: int,
-             newIndex: int)
-        assert type(index) is int
-        assert type(newIndex) is int
-        if 0 > index > len(self.animation):
-            raise ValueError("Index out of range: {}".format(Index))
-        if 0 > newIndex > len(self.animation)-1:
-            raise ValueError("newIndex out of range: {}".format(newIndex))
-        item = self.animation.pop(index)
-        self.animation.insert(newIndex, item)
+    def addAct(self, *args):
+        act = Act(*args)
+        self.addNew(act)
 
 class AnimationText(Animation):
     """A piece of text in an animation, wrapper class for Transition and Heading"""
@@ -91,6 +51,13 @@ class Transition(AnimationText):
                  text: str):
         super().__init__(text)
 
+class Act(AnimationText):
+    """Describe a transition in an animation"""
+    def __init__(self,
+                 text: str):
+        super().__init__(text)
+
+
 class Heading(AnimationText):
     """Add a heading in an animation"""
     def __init__(self,
@@ -102,7 +69,10 @@ class Dialogue(Animation):
     def __init__(self,
                  character_name: str, # character = getCharacter(character_name)
                  dialogue: str,
-                 paranthetical: Optional[str] = None)
+                 paranthetical: Optional[str] = None):
+        self.character_name = character_name
+        self.dialogue = dialogue
+        self.paranthetical = paranthetical
 
     @property
     def character_name(self) -> str:
@@ -111,6 +81,7 @@ class Dialogue(Animation):
     @character_name.setter
     def character_name(self, character_name: str):
         assert type(character_name) is str
+        
         self.__character_name = character_name
 
     @property

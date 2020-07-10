@@ -1,10 +1,9 @@
-from cutscene.utils import OrderedInstanceHolder, NameDescription
-from cutscene.sceneElements.animation import Animation
 from cutscene.sceneElements.event import Event
-from cutscene.sceneElements.objective import Objective
+from cutscene.sceneElements.animation import Animation
+from cutscene.utils import NameDescription
 
-class Scene(OrderedInstanceHolder, NameDescription):
-    """docstring for SceneElement"""
+class Objective(NameDescription):
+    """Objective class"""
     def __init__(self, 
                  name: str,
                  description: str):

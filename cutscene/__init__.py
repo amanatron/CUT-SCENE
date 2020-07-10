@@ -1,31 +1,31 @@
-# CUTSCENE # 
+from cutscene.utils import OrderedInstanceHolder, NameDescription
+from cutscene.level import Level, SubLevel
+from cutscene.scene import Scene
+from cutscene.entities import Characters, Objects
 
-class LevelWrapper(object):
-    """Thin wrapper around level and sublevel classes.
-    These share many similar methods so a wrapper is used here."""
-    def __init__(self, 
+class CutSceneProject(OrderedInstanceHolder, NameDescription):
+    def __init__(self,
                  name: str,
-                 description: str):
-        self.name = name
-        self.description = description
+                 description: str,
+                 genre: str,
+                 author: str):
 
-    @property
-    def description(self) -> str:
-        return self.__description
+        OrderedInstanceHolder.__init__(self)
+        NameDescription.__init__(self, name, description)
 
-    @property
-    def name(self) -> str:
-        return self.__name
+        assert type(genre) is str
+        assert type(author) is str
 
-    @description.setter
-    def description(self, description: str):
-        assert type(description) is str
-        self.__description = description
+        self.genre = genre
+        self.author = author
 
-    @name.setter
-    def name(self, name: str):
-        assert type(name) is str
-        self.__name = name
+        self.characters = Characters()
+        self.objects = Objects()
+        
+    def addLevel(self, *args):
+        level = Level(*args)
+        self.addNew(level)
 
-    def addScene(self):
-        pass
+    def addScene(self, *args):
+        scene = Scene(*args)
+        self.addNew(scene)

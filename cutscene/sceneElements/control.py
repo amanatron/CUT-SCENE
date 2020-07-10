@@ -1,6 +1,6 @@
 from typing import Tuple
 
-class Control(Mechanics):
+class Control(object):
     """This basically describes the controls a user assigns to the player object – upon choosing to 
     add controls, the user will be prompted to either “add a new control or edit an existing one”.
     They can choose any key on their keyboard and describe in one line what that control does"""
