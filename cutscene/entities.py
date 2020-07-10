@@ -36,6 +36,7 @@ class Characters(EntitiesWrapper):
     def addCharacter(self, *args):
         character = Character(*args)
         self.addNew(character)
+        return character
 
 class Objects(EntitiesWrapper):
     """ Manager for all the objects, allowing you to add, get, and remove objects
@@ -58,6 +59,7 @@ class Objects(EntitiesWrapper):
     def addObject(self, *args):
         misc = Misc(*args)
         self.addNew(misc)
+        return misc
 
 class EntityWrapper(NameDescription):
     """Thin wrapper around character and misc entity classes.
@@ -77,27 +79,26 @@ class EntityWrapper(NameDescription):
     @entityType.setter
     def entityType(self, entityType: str):
         assert type(entityType) is str
-        assert entityType.upper() in entityTypes
+        assert entityType.upper() in self.entityTypes
         self.__entityType = entityType
 
 class Character(EntityWrapper):
     """Character object/entity"""
-    entityTypes = ["PLAYER", "ENEMY", "OTHER"]
-
     def __init__(self, 
                  name: str,
                  description: str,
                  entityType: str):
+        self.entityTypes = ["PLAYER", "ENEMY", "OTHER"]
         super().__init__(name, description, entityType)
 
         ## TODO add image of character, character.face
 
 class Misc(EntityWrapper):
     """Misc object/entity"""
-    entityTypes = ["RESPONSIVE", "NON-RESPONSIVE"]
 
     def __init__(self, 
                  name: str,
                  description: str,
                  entityType: str):
+        self.entityTypes = ["RESPONSIVE", "NON-RESPONSIVE"]
         super().__init__(name, description, entityType)

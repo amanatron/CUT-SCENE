@@ -41,14 +41,17 @@ class Objective(NameDescription):
         OrderedInstanceHolder.__init__(self)
         NameDescription.__init__(self, name, description)
 
-    def addAnimation(self):
+    def addAnimation(self, *args):
         animation = Animation(*args)
         self.addNew(animation)
+        return animation
 
-    def addEvent(self):
+    def addEvent(self, *args):
         event = Event(*args)
         self.addNew(event)
+        return event
 
-    def addObjective(self):
+    def addObjective(self, *args):
         objective = Objective(*args)
         self.addNew(objective)
+        return objective

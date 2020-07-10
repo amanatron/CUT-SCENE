@@ -14,6 +14,7 @@ class LevelWrapper(OrderedInstanceHolder, NameDescription):
     def addScene(self, *args):
         scene = Scene(*args)
         self.addNew(scene)
+        return scene
 
 class Level(LevelWrapper):
     """Level object
@@ -49,6 +50,7 @@ class Level(LevelWrapper):
     def addSubLevel(self, *args):
         subLevel = SubLevel(*args)
         self.addNew(subLevel)
+        return subLevel
 
 class SubLevel(LevelWrapper):
     """Sublevel object

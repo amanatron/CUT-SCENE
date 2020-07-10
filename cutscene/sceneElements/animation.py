@@ -42,22 +42,27 @@ class Animation(NameDescription, OrderedInstanceHolder):
     def addAction(self, *args):
         action = Action(*args)
         self.addNew(action)
+        return action
 
     def addTransition(self, *args):
         transition = Transition(*args)
         self.addNew(transition)
+        return transition
 
     def addHeading(self, *args):
         heading = Heading(*args)
         self.addNew(heading)
+        return heading
 
     def addDialogue(self, *args):
         dialogue = Dialogue(*args)
         self.addNew(dialogue)
+        return dialogue
 
     def addAct(self, *args):
         act = Act(*args)
         self.addNew(act)
+        return act
 
 class Transition(Description):
     """Describe a transition in an animation"""

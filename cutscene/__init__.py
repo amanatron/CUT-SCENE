@@ -51,8 +51,10 @@ class CutSceneProject(OrderedInstanceHolder, NameDescription):
         """ Add a new level to the project """
         level = Level(*args)
         self.addNew(level)
+        return level
 
     def addScene(self, *args):
         """ Add a new scene to the project """
         scene = Scene(*args)
         self.addNew(scene)
+        return scene
