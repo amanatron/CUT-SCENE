@@ -2,7 +2,13 @@ from cutscene.utils import Name
 
 class Pseudocode(Name):
     """This feature allows the user to simply write the required pseudocode for any given action, scene, objective or event they deem fit.
-    They will be asked to name the code and it's purpose in one line, after which the code will appear next to that which it is a child of. """
+    They will be asked to name the code and it's purpose in one line, after which the code will appear next to that which it is a child of.
+
+    init:
+        name: str
+        purpose: str
+        pscode: str
+    """
     def __init__(self,
                  name: str,
                  purpose: str, 

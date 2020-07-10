@@ -1,6 +1,25 @@
 class OrderedInstanceHolder(object):
-    """Base class for classes that need to store instances in a specific order.
-    classes that use this (not limited to): LevelWrapper, Animation, Scene"""
+    """ Base class for classes that need to store instances in a specific order.
+    classes that use this (not limited to): LevelWrapper, Animation, Scene
+
+    init:
+        None
+
+    methods:
+        get: get a list of the instances
+        addNew: add a new instance to the end of the list
+            item: instance to add to the list
+        remove: remove instance from list at a given index
+            index: int
+        moveUp: move instance at index one place up the list
+            index: int
+        moveDown: move instance at index one place down the list
+            index: int
+        move: move instance from one index to another
+            index: int, which item you want
+            newIndex: int, where you want the item to go
+    """
+
     def __init__(self):
         self.__ordered_holder = []
 
@@ -80,7 +99,7 @@ class Description(object):
     def description(self, description: str):
         assert type(description) is str
         self.__description = description
-        
+
 class NameDescription(Description):
     """Base class providing name and description functionality to other classes"""
     def __init__(self, 

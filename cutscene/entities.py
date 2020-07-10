@@ -16,9 +16,20 @@ class EntitiesWrapper(object):
         del self.__entities[index]
 
 class Characters(EntitiesWrapper):
-    """ This is the class you want to import for Characters.
-    eg. from entities import Characters, Objects
-    it is a manager for all the characters, allowing you to add, get, and remove characters"""
+    """ Manager for all the characters, allowing you to add, get, and remove characters
+
+    init: 
+        None
+
+    methods:
+        addCharacter: Add a new character to the project 
+            name: str,
+            description: str,
+            entityType: str in ["PLAYER", "ENEMY", "OTHER"]
+        get: Get a list of characters in the project 
+        remove: Delete a character from the project
+            index: int; index of character in character list 
+    """
     def __init__(self):
         super().__init__()
 
@@ -27,16 +38,26 @@ class Characters(EntitiesWrapper):
         self.addNew(character)
 
 class Objects(EntitiesWrapper):
-    """ This is the class you want to import for Objects.
-    it is a manager for all the objects, allowing you to add, get, and remove characters"""
+    """ Manager for all the objects, allowing you to add, get, and remove objects
+
+    init: 
+        None
+
+    methods:
+        addObject: Add a new object to the project 
+            name: str,
+            description: str,
+            entityType: str in ["RESPONSIVE", "NON-RESPONSIVE"]
+        get: Get a list of objects in the project 
+        remove: Delete a object from the project
+            index: int; index of object in object list 
+    """
     def __init__(self):
         super().__init__()
 
     def addObject(self, *args):
         misc = Misc(*args)
         self.addNew(misc)
-
-
 
 class EntityWrapper(NameDescription):
     """Thin wrapper around character and misc entity classes.

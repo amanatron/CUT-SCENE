@@ -1,9 +1,38 @@
 from cutscene.sceneElements.action import Action
-from cutscene.utils import NameDescription, OrderedInstanceHolder
+from cutscene.utils import Description, NameDescription, OrderedInstanceHolder
 from typing import Optional
 
 class Animation(NameDescription, OrderedInstanceHolder):
-    """Animation Class"""
+    """Animation Class. Used to make a written screenplay with Characters, Actions, etc
+    init: 
+        name: str,
+        description: str
+
+    methods:
+        addAction:
+            description: str
+        addTransition:
+            description: str
+        addHeading:
+            description: str
+        addAct:
+            description: str
+        addDialogue: 
+            character_name: str, must be an existing character
+            dialogue: str
+            paranthetical: str
+
+        get: Get a list of all the elements of the animation (headers, dialogue, etc)
+        remove: Delete an element
+            index: int; index of element in animation elements list
+        moveUp: move element at index one place up in the list
+            index: int
+        moveDown: move element at index one place down the list
+            index: int
+        move: move element from one index to another
+            index: int, which element you want
+            newIndex: int, where you want the element to go
+    """
     def __init__(self, 
                  name: str,
                  description: str):
@@ -30,39 +59,24 @@ class Animation(NameDescription, OrderedInstanceHolder):
         act = Act(*args)
         self.addNew(act)
 
-class AnimationText(Animation):
-    """A piece of text in an animation, wrapper class for Transition and Heading"""
-    def __init__(self,
-                 text: str):
-        self.text = text
-
-    @property
-    def text(self) -> str:
-        return self.__text
-
-    @text.setter
-    def text(self, text: str):
-        assert type(text) is str
-        self.__text = text
-
-class Transition(AnimationText):
+class Transition(Description):
     """Describe a transition in an animation"""
     def __init__(self,
-                 text: str):
-        super().__init__(text)
+                 description: str):
+        super().__init__(description)
 
-class Act(AnimationText):
+class Act(Description):
     """Describe a transition in an animation"""
     def __init__(self,
-                 text: str):
-        super().__init__(text)
+                 description: str):
+        super().__init__(description)
 
 
-class Heading(AnimationText):
+class Heading(Description):
     """Add a heading in an animation"""
     def __init__(self,
-                 text: str):
-        super().__init__(text)
+                 description: str):
+        super().__init__(description)
 
 class Dialogue(Animation):
     """A single piece of dialogue from a character"""

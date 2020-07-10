@@ -3,7 +3,20 @@ from typing import Tuple
 class Control(object):
     """This basically describes the controls a user assigns to the player object – upon choosing to 
     add controls, the user will be prompted to either “add a new control or edit an existing one”.
-    They can choose any key on their keyboard and describe in one line what that control does"""
+    They can choose any key on their keyboard and describe in one line what that control does
+
+    init: 
+        None
+
+    methods:
+        addNew: Add a new keybind eg ("a", "move to the left")
+            keybind: Tuple[str, str]
+        edit: Edit a keybind eg "a", ("a", "jump to the left") or "a", ("leftarrow", "move to the left")
+            keycode: str
+            keybind: Tuple[str, str]
+        remove: Remove a keybind eg "a"
+            keycode: str
+    """
     def __init__(self):
         self.__controls = []
 
@@ -44,8 +57,8 @@ class Control(object):
         """Edit existing keybind"""
         self.__checkKeyCode(keycode)
         self.__checkKeyBind(keybind)
-        self.__remove__(keycode)
-        self.__addnew__(keybind)
+        self.remove(keycode)
+        self.addNew(keybind)
 
     def remove(self, keycode: str):
         """Delete existing keybind"""
