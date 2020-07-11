@@ -1,4 +1,5 @@
 import cutscene
+import pickle
 
 
 # DEMO
@@ -17,12 +18,16 @@ levels = project.get()
 print("levels: {}".format(levels))
 
 
+
+
 # SUBLEVELS
 # let's add a sublevel using the list of all our levels
 level_2 = levels[1]
 level_2_sub_1 = level_2.addSubLevel("a sublevel", "the plot thickens...")
 # and a scene to that sublevel
 scene = level_2_sub_1.addScene("A Scene", "a cold, misty morning...")
+
+
 
 
 # ANIMATION
@@ -63,3 +68,25 @@ for element in animation.get():
     else:
         print(element.description)
 print("\nanimation.get() now gives us: {}".format(animation.get()))
+
+
+
+
+# SAVE/LOAD FUNCTIONALITY
+print("\n\nNow going to demonstrate saving and loading the project")
+x = pickle.dumps(project)
+print("\nFirst, serialise the CutSceneProject instance, giving this string:\n")
+print(x)
+print("\nNow we delete the project instance")
+del project
+try:
+    print(project)
+except NameError as e:
+    print(e)
+print("it's gone!")
+print("\nNow we can recreate the entire project from the serialised string (above)")
+project = pickle.loads(x)
+print("\nAnd voila, our project is fully restored")
+print(project)
+print(project.characters.get()[0].name)
+print(project.characters.get()[0].description)
