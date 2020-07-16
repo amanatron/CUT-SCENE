@@ -39,28 +39,41 @@ class Animation(NameDescription, OrderedInstanceHolder):
         NameDescription.__init__(self, name, description)
         OrderedInstanceHolder.__init__(self)
 
-    def addAction(self, *args):
-        action = Action(*args)
+
+    def new(self, item, **kwargs):
+        if item == "ACTION":
+            return self.addAction(**kwargs)
+        elif item == "TRANSITION":
+            return self.addTransition(**kwargs)
+        elif item == "HEADING":
+            return self.addHeading(**kwargs)
+        elif item == "DIALOGUE":
+            return self.addDialogue(**kwargs)
+        elif item == "ACT":
+            return self.addAct(**kwargs)
+
+    def addAction(self, **kwargs):
+        action = Action(**kwargs)
         self.addNew(action)
         return action
 
-    def addTransition(self, *args):
-        transition = Transition(*args)
+    def addTransition(self, **kwargs):
+        transition = Transition(**kwargs)
         self.addNew(transition)
         return transition
 
-    def addHeading(self, *args):
-        heading = Heading(*args)
+    def addHeading(self, **kwargs):
+        heading = Heading(**kwargs)
         self.addNew(heading)
         return heading
 
-    def addDialogue(self, *args):
-        dialogue = Dialogue(*args)
+    def addDialogue(self, **kwargs):
+        dialogue = Dialogue(**kwargs)
         self.addNew(dialogue)
         return dialogue
 
-    def addAct(self, *args):
-        act = Act(*args)
+    def addAct(self, **kwargs):
+        act = Act(**kwargs)
         self.addNew(act)
         return act
 

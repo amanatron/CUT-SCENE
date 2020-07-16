@@ -33,8 +33,12 @@ class Characters(EntitiesWrapper):
     def __init__(self):
         super().__init__()
 
-    def addCharacter(self, *args):
-        character = Character(*args)
+    def new(self, item, **kwargs):
+        if item == "CHARACTER":
+            return self.addCharacter(**kwargs)
+
+    def addCharacter(self, *args, **kwargs):
+        character = Character(**kwargs)
         self.addNew(character)
         return character
 
@@ -56,21 +60,25 @@ class Objects(EntitiesWrapper):
     def __init__(self):
         super().__init__()
 
-    def addObject(self, *args):
-        misc = Misc(*args)
+    def new(self, item, **kwargs):
+        if item == "OBJECT":
+            return self.addObject(**kwargs)
+
+    def addObject(self, *args, **kwargs):
+        misc = Misc(**kwargs)
         self.addNew(misc)
         return misc
 
-class EntityWrapper(NameDescription):
-    """Thin wrapper around character and misc entity classes.
-    These share many similar methods so a wrapper is used here.
-    This base class is not to be imported, instead use Character and Misc."""
+
+class Character(NameDescription):
+    """Character object/entity"""
     def __init__(self, 
                  name: str,
                  description: str,
                  entityType: str):
         NameDescription.__init__(self, name, description)
         self.entityType = entityType
+        ## TODO add image of character, character.face
 
     @property
     def entityType(self) -> str:
@@ -79,26 +87,25 @@ class EntityWrapper(NameDescription):
     @entityType.setter
     def entityType(self, entityType: str):
         assert type(entityType) is str
-        assert entityType.upper() in self.entityTypes
+        assert entityType.upper() in ["PLAYER", "ENEMY", "OTHER"]
         self.__entityType = entityType
 
-class Character(EntityWrapper):
-    """Character object/entity"""
+class Misc(NameDescription):
+    """Misc object/entity"""
     def __init__(self, 
                  name: str,
                  description: str,
                  entityType: str):
-        self.entityTypes = ["PLAYER", "ENEMY", "OTHER"]
-        super().__init__(name, description, entityType)
-
+        NameDescription.__init__(self, name, description)
+        self.entityType = entityType
         ## TODO add image of character, character.face
 
-class Misc(EntityWrapper):
-    """Misc object/entity"""
+    @property
+    def entityType(self) -> str:
+        return self.__entityType
 
-    def __init__(self, 
-                 name: str,
-                 description: str,
-                 entityType: str):
-        self.entityTypes = ["RESPONSIVE", "NON-RESPONSIVE"]
-        super().__init__(name, description, entityType)
+    @entityType.setter
+    def entityType(self, entityType: str):
+        assert type(entityType) is str
+        assert entityType.upper() in ["RESPONSIVE", "NON-RESPONSIVE"]
+        self.__entityType = entityType

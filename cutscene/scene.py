@@ -38,17 +38,25 @@ class Scene(OrderedInstanceHolder, NameDescription):
         OrderedInstanceHolder.__init__(self)
         NameDescription.__init__(self, name, description)
 
-    def addAnimation(self, *args):
-        animation = Animation(*args)
+    def new(self, item, **kwargs):
+        if item == "ANIMATION":
+            return self.addAnimation(**kwargs)
+        elif item == "EVENT":
+            return self.addEvent(**kwargs)
+        elif item == "OBJECTIVE":
+            return self.addObjective(**kwargs)
+
+    def addAnimation(self, *args, **kwargs):
+        animation = Animation(*args, **kwargs)
         self.addNew(animation)
         return animation
 
-    def addEvent(self, *args):
-        event = Event(*args)
+    def addEvent(self, *args, **kwargs):
+        event = Event(*args, **kwargs)
         self.addNew(event)
         return event
 
-    def addObjective(self, *args):
-        objective = Objective(*args)
+    def addObjective(self, *args, **kwargs):
+        objective = Objective(*args, **kwargs)
         self.addNew(objective)
         return objective

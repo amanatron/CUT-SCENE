@@ -100,7 +100,7 @@ class Description(object):
         assert type(description) is str
         self.__description = description
 
-class NameDescription(Description):
+class NameDescription(Description, Name):
     """Base class providing name and description functionality to other classes"""
     def __init__(self, 
                  name: str,
