@@ -1,6 +1,7 @@
+from cutscene.utils import ID
 from typing import Tuple
 
-class Control(object):
+class Control(ID):
     """This basically describes the controls a user assigns to the player object – upon choosing to 
     add controls, the user will be prompted to either “add a new control or edit an existing one”.
     They can choose any key on their keyboard and describe in one line what that control does
@@ -18,6 +19,7 @@ class Control(object):
             keycode: str
     """
     def __init__(self):
+        ID.__init__(self)
         self.__controls = []
 
     @property

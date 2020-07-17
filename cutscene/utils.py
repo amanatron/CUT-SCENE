@@ -1,3 +1,5 @@
+import uuid
+
 class OrderedInstanceHolder(object):
     """ Base class for classes that need to store instances in a specific order.
     classes that use this (not limited to): LevelWrapper, Animation, Scene
@@ -108,3 +110,6 @@ class NameDescription(Description, Name):
         Description.__init__(self, description)
         Name.__init__(self, name)
 
+class ID(object):
+    def __init__(self):
+        self.id = uuid.uuid4().int

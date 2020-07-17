@@ -1,9 +1,9 @@
-from cutscene.utils import OrderedInstanceHolder, NameDescription
+from cutscene.utils import OrderedInstanceHolder, NameDescription, ID
 from cutscene.sceneElements.animation import Animation
 from cutscene.sceneElements.event import Event
 from cutscene.sceneElements.objective import Objective
 
-class Scene(OrderedInstanceHolder, NameDescription):
+class Scene(OrderedInstanceHolder, NameDescription, ID):
     """Scene object. Everything in cutscene happens in a Scene.
 
     init: 
@@ -37,6 +37,7 @@ class Scene(OrderedInstanceHolder, NameDescription):
                  description: str):
         OrderedInstanceHolder.__init__(self)
         NameDescription.__init__(self, name, description)
+        ID.__init__(self)
 
     def new(self, item, **kwargs):
         if item == "ANIMATION":

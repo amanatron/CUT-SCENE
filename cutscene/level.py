@@ -1,7 +1,8 @@
-from cutscene.utils import OrderedInstanceHolder, NameDescription
+from cutscene.utils import OrderedInstanceHolder, NameDescription, ID
 from cutscene.scene import Scene
+from uuid import uuid4
 
-class LevelWrapper(OrderedInstanceHolder, NameDescription):
+class LevelWrapper(OrderedInstanceHolder, NameDescription, ID):
     """Thin wrapper around level and sublevel classes.
     These share many similar methods so a wrapper is used here."""
 
@@ -10,6 +11,7 @@ class LevelWrapper(OrderedInstanceHolder, NameDescription):
                  description: str):
         OrderedInstanceHolder.__init__(self)
         NameDescription.__init__(self, name, description)
+        ID.__init__(self)
 
     def addScene(self, *args, **kwargs):
         scene = Scene(*args, **kwargs)

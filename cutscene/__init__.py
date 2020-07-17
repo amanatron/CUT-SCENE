@@ -1,11 +1,11 @@
-from cutscene.utils import OrderedInstanceHolder, NameDescription
+from cutscene.utils import OrderedInstanceHolder, NameDescription, ID
 from cutscene.level import Level, SubLevel
 from cutscene.scene import Scene
 from cutscene.entities import Characters, Objects
 import os
 import json
 
-class CutSceneProject(OrderedInstanceHolder, NameDescription):
+class CutSceneProject(OrderedInstanceHolder, NameDescription, ID):
     """ Highest level class for the entire cutscene project. 
     init: 
         name: str,
@@ -39,6 +39,7 @@ class CutSceneProject(OrderedInstanceHolder, NameDescription):
 
         OrderedInstanceHolder.__init__(self)
         NameDescription.__init__(self, name, description)
+        ID.__init__(self)
 
         assert type(genre) is str
         assert type(author) is str

@@ -1,6 +1,6 @@
-from cutscene.utils import Description
+from cutscene.utils import Description, ID
 
-class Action(Description):
+class Action(Description, ID):
     """This is simply a way for the user to describe that which this action is a child of.
     For example,if the player creates a scene and then chooses action, they can describe the scene or any additional narrative at any given instance.
     Similarly, they can choose to describe an event in any way they want using action.
@@ -8,4 +8,5 @@ class Action(Description):
         description: str
     """
     def __init__(self, description: str):
-        super().__init__(description)
+        Description.__init__(self, description)
+        ID.__init__(self)

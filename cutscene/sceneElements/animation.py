@@ -1,8 +1,8 @@
 from cutscene.sceneElements.action import Action
-from cutscene.utils import Description, NameDescription, OrderedInstanceHolder
+from cutscene.utils import Description, NameDescription, OrderedInstanceHolder, ID
 from typing import Optional
 
-class Animation(NameDescription, OrderedInstanceHolder):
+class Animation(NameDescription, OrderedInstanceHolder, ID):
     """Animation Class. Used to make a written screenplay with Characters, Actions, etc
     init: 
         name: str,
@@ -38,6 +38,7 @@ class Animation(NameDescription, OrderedInstanceHolder):
                  description: str):
         NameDescription.__init__(self, name, description)
         OrderedInstanceHolder.__init__(self)
+        ID.__init__(self)
 
 
     def new(self, item, **kwargs):
@@ -77,31 +78,35 @@ class Animation(NameDescription, OrderedInstanceHolder):
         self.addNew(act)
         return act
 
-class Transition(Description):
+class Transition(Description, ID):
     """Describe a transition in an animation"""
     def __init__(self,
                  description: str):
-        super().__init__(description)
+        Description.__init__(self, description)
+        ID.__init__(self)
 
-class Act(Description):
+class Act(Description, ID):
     """Describe a transition in an animation"""
     def __init__(self,
                  description: str):
-        super().__init__(description)
+        Description.__init__(self, description)
+        ID.__init__(self)
 
 
-class Heading(Description):
+class Heading(Description, ID):
     """Add a heading in an animation"""
     def __init__(self,
                  description: str):
-        super().__init__(description)
+        Description.__init__(self, description)
+        ID.__init__(self)
 
-class Dialogue(Animation):
+class Dialogue(Animation, ID):
     """A single piece of dialogue from a character"""
     def __init__(self,
                  character_name: str, # character = getCharacter(character_name)
                  dialogue: str,
                  paranthetical: Optional[str] = None):
+        ID.__init__(self)
         self.character_name = character_name
         self.dialogue = dialogue
         self.paranthetical = paranthetical

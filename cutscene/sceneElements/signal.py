@@ -1,4 +1,6 @@
-class Signal():
+from cutscene.utils import ID
+
+class Signal(ID):
     """docstring for Signal"""
     def __init__(self):
-        pass
+        ID.__init__(self)
