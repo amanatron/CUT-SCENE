@@ -1,8 +1,9 @@
 from cutscene.sceneElements.event import Event
 from cutscene.sceneElements.animation import Animation
-from cutscene.utils import NameDescription, ID
+from cutscene.utils import NameDescription, Instantiable
+from typing import Optional
 
-class Objective(NameDescription, ID):
+class Objective(NameDescription, Instantiable):
     """Objective class
 
     An Objective describes the instantaneous goal of their gameplay within the scene, for e.g;fetch the ball, fnd the key, kill the boss..etc.
@@ -37,10 +38,11 @@ class Objective(NameDescription, ID):
     """
     def __init__(self, 
                  name: str,
-                 description: str):
+                 description: str,
+                 itemID: Optional[int] = None):
         OrderedInstanceHolder.__init__(self)
         NameDescription.__init__(self, name, description)
-        ID.__init__(self)
+        Instantiable.__init__(self, itemID)
 
 
     def new(self, item, **kwargs):

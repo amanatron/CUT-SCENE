@@ -1,11 +1,12 @@
-from cutscene.utils import OrderedInstanceHolder, NameDescription, ID
+from cutscene.utils import OrderedInstanceHolder, NameDescription, Instantiable
 from cutscene.level import Level, SubLevel
 from cutscene.scene import Scene
 from cutscene.entities import Characters, Objects
+from typing import Optional
 import os
 import json
 
-class CutSceneProject(OrderedInstanceHolder, NameDescription, ID):
+class CutSceneProject(OrderedInstanceHolder, NameDescription, Instantiable):
     """ Highest level class for the entire cutscene project. 
     init: 
         name: str,
@@ -35,11 +36,12 @@ class CutSceneProject(OrderedInstanceHolder, NameDescription, ID):
                  name: str,
                  description: str,
                  genre: str,
-                 author: str):
+                 author: str,
+                 itemID: Optional[int] = None):
 
         OrderedInstanceHolder.__init__(self)
         NameDescription.__init__(self, name, description)
-        ID.__init__(self)
+        Instantiable.__init__(self, itemID)
 
         assert type(genre) is str
         assert type(author) is str
@@ -55,6 +57,13 @@ class CutSceneProject(OrderedInstanceHolder, NameDescription, ID):
             return self.addLevel(**kwargs)
         elif item == "SCENE":
             return self.addScene(**kwargs)
+
+    def edit(self, params):
+        for key, value in params.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+            else:
+                raise ValueError("{} has no attribute {}".format(self, key))
 
     def addLevel(self, **kwargs):
         """ Add a new level to the project """

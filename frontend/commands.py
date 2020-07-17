@@ -28,3 +28,19 @@ class CommandRemove(QUndoCommand):
 
     def undo(self):
         parent.new(self.itemType, **self.itemDict)
+
+class CommandEdit(QUndoCommand):
+    """ Reversibly edit an item's attributes """
+    def __init__(self, *, item, newParams, description):
+        super(CommandEdit, self).__init__(description)
+        self.item = item
+        self.newParams = itemParams
+        self.oldParams = obj_to_dict(item)
+        self.oldParams.pop("__type__") # Not strictly necessary but hey,
+        self.oldParams.pop("id")       # let's be nice to the backend
+
+    def redo(self):
+        item.edit(self.newParams)
+
+    def undo(self):
+        item.edit(self.oldParams)

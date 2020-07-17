@@ -1,4 +1,5 @@
-from cutscene.utils import NameDescription, ID
+from cutscene.utils import NameDescription, Instantiable
+from typing import Optional
 
 class EntitiesWrapper(object):
     def __init__(self):
@@ -78,14 +79,15 @@ class Objects(EntitiesWrapper):
         return misc
 
 
-class Character(NameDescription, ID):
+class Character(NameDescription, Instantiable):
     """Character object/entity"""
-    def __init__(self, 
+    def __init__(self,
                  name: str,
                  description: str,
-                 entityType: str):
+                 entityType: str,
+                 itemID: Optional[int] = None):
         NameDescription.__init__(self, name, description)
-        ID.__init__(self)
+        Instantiable.__init__(self, itemID)
         self.entityType = entityType
         ## TODO add image of character, character.face
 
@@ -99,14 +101,15 @@ class Character(NameDescription, ID):
         assert entityType.upper() in ["PLAYER", "ENEMY", "OTHER"]
         self.__entityType = entityType
 
-class Misc(NameDescription, ID):
+class Misc(NameDescription, Instantiable):
     """Misc object/entity"""
-    def __init__(self, 
+    def __init__(self,
                  name: str,
                  description: str,
-                 entityType: str):
+                 entityType: str,
+                 itemID: Optional[int] = None):
         NameDescription.__init__(self, name, description)
-        ID.__init__(self)
+        Instantiable.__init__(self, itemID)
         self.entityType = entityType
         ## TODO add image of character, character.face
 

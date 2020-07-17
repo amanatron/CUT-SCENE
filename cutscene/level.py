@@ -1,17 +1,17 @@
-from cutscene.utils import OrderedInstanceHolder, NameDescription, ID
+from cutscene.utils import OrderedInstanceHolder, NameDescription, Instantiable
 from cutscene.scene import Scene
+from typing import Optional
 from uuid import uuid4
 
-class LevelWrapper(OrderedInstanceHolder, NameDescription, ID):
+class LevelWrapper(OrderedInstanceHolder, NameDescription):
     """Thin wrapper around level and sublevel classes.
     These share many similar methods so a wrapper is used here."""
 
-    def __init__(self, 
+    def __init__(self,
                  name: str,
                  description: str):
         OrderedInstanceHolder.__init__(self)
         NameDescription.__init__(self, name, description)
-        ID.__init__(self)
 
     def addScene(self, *args, **kwargs):
         scene = Scene(*args, **kwargs)
@@ -22,7 +22,7 @@ class LevelWrapper(OrderedInstanceHolder, NameDescription, ID):
         if item == "SCENE":
             return self.addScene(**kwargs)
 
-class Level(LevelWrapper):
+class Level(LevelWrapper, Instantiable):
     """Level object
 
     init: 
@@ -50,8 +50,10 @@ class Level(LevelWrapper):
     """
     def __init__(self, 
                  name: str,
-                 description: str):
-        super().__init__(name, description)
+                 description: str,
+                 itemID: Optional[int] = None):
+        LevelWrapper.__init__(self, name, description)
+        Instantiable.__init__(self, itemID)
 
     def new(self, item, **kwargs):
         if item == "SUBLEVEL":
@@ -62,7 +64,7 @@ class Level(LevelWrapper):
         self.addNew(subLevel)
         return subLevel
 
-class SubLevel(LevelWrapper):
+class SubLevel(LevelWrapper, Instantiable):
     """Sublevel object
 
     init: 
@@ -75,5 +77,7 @@ class SubLevel(LevelWrapper):
     """
     def __init__(self, 
                  name: str,
-                 description: str):
-        super().__init__(name, description)
+                 description: str,
+                 itemID: Optional[int] = None):
+        LevelWrapper.__init__(self, name, description)
+        Instantiable.__init__(self, itemID)

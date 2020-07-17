@@ -1,8 +1,8 @@
 from cutscene.sceneElements.action import Action
-from cutscene.utils import Description, NameDescription, OrderedInstanceHolder, ID
+from cutscene.utils import Description, NameDescription, OrderedInstanceHolder, Instantiable
 from typing import Optional
 
-class Animation(NameDescription, OrderedInstanceHolder, ID):
+class Animation(NameDescription, OrderedInstanceHolder, Instantiable):
     """Animation Class. Used to make a written screenplay with Characters, Actions, etc
     init: 
         name: str,
@@ -35,10 +35,11 @@ class Animation(NameDescription, OrderedInstanceHolder, ID):
     """
     def __init__(self, 
                  name: str,
-                 description: str):
+                 description: str,
+                 itemID: Optional[int] = None):
         NameDescription.__init__(self, name, description)
         OrderedInstanceHolder.__init__(self)
-        ID.__init__(self)
+        Instantiable.__init__(self, itemID)
 
 
     def new(self, item, **kwargs):
@@ -78,35 +79,39 @@ class Animation(NameDescription, OrderedInstanceHolder, ID):
         self.addNew(act)
         return act
 
-class Transition(Description, ID):
+class Transition(Description, Instantiable):
     """Describe a transition in an animation"""
     def __init__(self,
-                 description: str):
+                 description: str,
+                 itemID: Optional[int] = None):
         Description.__init__(self, description)
-        ID.__init__(self)
+        Instantiable.__init__(self, itemID)
 
-class Act(Description, ID):
+class Act(Description, Instantiable):
     """Describe a transition in an animation"""
     def __init__(self,
-                 description: str):
+                 description: str,
+                 itemID: Optional[int] = None):
         Description.__init__(self, description)
-        ID.__init__(self)
+        Instantiable.__init__(self, itemID)
 
 
-class Heading(Description, ID):
+class Heading(Description, Instantiable):
     """Add a heading in an animation"""
     def __init__(self,
-                 description: str):
+                 description: str,
+                 itemID: Optional[int] = None):
         Description.__init__(self, description)
-        ID.__init__(self)
+        Instantiable.__init__(self, itemID)
 
-class Dialogue(Animation, ID):
+class Dialogue(Animation, Instantiable):
     """A single piece of dialogue from a character"""
     def __init__(self,
                  character_name: str, # character = getCharacter(character_name)
                  dialogue: str,
-                 paranthetical: Optional[str] = None):
-        ID.__init__(self)
+                 paranthetical: Optional[str] = None,
+                 itemID: Optional[int] = None):
+        Instantiable.__init__(self, itemID)
         self.character_name = character_name
         self.dialogue = dialogue
         self.paranthetical = paranthetical

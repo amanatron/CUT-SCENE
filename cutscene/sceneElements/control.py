@@ -1,7 +1,7 @@
-from cutscene.utils import ID
-from typing import Tuple
+from cutscene.utils import Instantiable
+from typing import Tuple, Optional
 
-class Control(ID):
+class Control(Instantiable):
     """This basically describes the controls a user assigns to the player object – upon choosing to 
     add controls, the user will be prompted to either “add a new control or edit an existing one”.
     They can choose any key on their keyboard and describe in one line what that control does
@@ -18,8 +18,9 @@ class Control(ID):
         remove: Remove a keybind eg "a"
             keycode: str
     """
-    def __init__(self):
-        ID.__init__(self)
+    def __init__(self,
+                 itemID: Optional[int] = None):
+        Instantiable.__init__(self, itemID)
         self.__controls = []
 
     @property

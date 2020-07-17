@@ -1,6 +1,8 @@
-from cutscene.utils import ID
+from cutscene.utils import Instantiable
+from typing import Optional
 
-class Signal(ID):
+class Signal(Instantiable):
     """docstring for Signal"""
-    def __init__(self):
-        ID.__init__(self)
+    def __init__(self,
+                 itemID: Optional[int] = None):
+        Instantiable.__init__(self, itemID)

@@ -1,7 +1,7 @@
 import uuid
 
 class OrderedInstanceHolder(object):
-    """ Base class for classes that need to store instances in a specific order.
+    """ Helper class for classes that need to store instances in a specific order.
     classes that use this (not limited to): LevelWrapper, Animation, Scene
 
     init:
@@ -81,7 +81,7 @@ class OrderedInstanceHolder(object):
         self.__ordered_holder.insert(newIndex, item)
 
 class Name(object):
-    """Base class providing name functionality to other classes"""
+    """Helper class providing name functionality to other classes"""
     def __init__(self,
                  name: str):
         self.name = name
@@ -96,7 +96,7 @@ class Name(object):
         self.__name = name
 
 class Description(object):
-    """Base class providing description functionality to other classes"""
+    """Helper class providing description functionality to other classes"""
     def __init__(self,
                  description: str):
         self.description = description
@@ -111,13 +111,26 @@ class Description(object):
         self.__description = description
 
 class NameDescription(Description, Name):
-    """Base class providing name and description functionality to other classes"""
+    """Helper class providing name and description functionality to other classes"""
     def __init__(self, 
                  name: str,
                  description: str):
         Description.__init__(self, description)
         Name.__init__(self, name)
 
-class ID(object):
-    def __init__(self):
-        self.id = uuid.uuid4().int
+class Instantiable(object):
+    """Base class for all instantiable objects, providing core functionality"""
+    def __init__(self, itemID):
+        if not itemID:
+            self.itemID = uuid.uuid4().int
+        else:
+            assert type(itemID) is int
+            self.itemID = itemID
+
+    def edit(self, params):
+        """ Allows any class to update its attributes from a dict """
+        for key, value in params.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+            else:
+                raise ValueError("{} has no attribute {}".format(self, key))

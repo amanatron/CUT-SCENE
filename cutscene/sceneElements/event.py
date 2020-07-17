@@ -1,9 +1,11 @@
-from cutscene.utils import NameDescription, ID
+from cutscene.utils import NameDescription, Instantiable
+from typing import Optional
 
-class Event(NameDescription, ID):
+class Event(NameDescription, Instantiable):
     """docstring for Event"""
     def __init__(self, 
                  name: str,
-                 description: str):
+                 description: str,
+                 itemID: Optional[int] = None):
         NameDescription.__init__(self, name, description)
-        ID.__init__(self)
+        Instantiable.__init__(self, itemID)
