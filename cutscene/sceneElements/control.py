@@ -24,6 +24,11 @@ class Control(Instantiable):
         self.__controls = []
 
     @property
+    def help(self):
+        """ Get info on what items can be created by this class, and their required parameters """
+        return None
+
+    @property
     def controls(self):
         return self.__controls
 

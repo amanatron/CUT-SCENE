@@ -1,4 +1,4 @@
-from cutscene.utils import OrderedInstanceHolder, NameDescription, Instantiable
+from cutscene.utils import OrderedInstanceHolder, NameDescription, Instantiable, paramHelp
 from cutscene.level import Level, SubLevel
 from cutscene.scene import Scene
 from cutscene.entities import Characters, Objects
@@ -58,12 +58,10 @@ class CutSceneProject(OrderedInstanceHolder, NameDescription, Instantiable):
         elif item == "SCENE":
             return self.addScene(**kwargs)
 
-    def edit(self, params):
-        for key, value in params.items():
-            if hasattr(self, key):
-                setattr(self, key, value)
-            else:
-                raise ValueError("{} has no attribute {}".format(self, key))
+    @property
+    def help(self):
+        """ Get info on what items can be created by this class, and their required parameters """
+        return (paramHelp["LEVEL"], paramHelp["SCENE"])
 
     def addLevel(self, **kwargs):
         """ Add a new level to the project """

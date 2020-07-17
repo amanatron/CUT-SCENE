@@ -8,3 +8,8 @@ class Physics(Description, Instantiable):
                  itemID: Optional[int] = None):
         Description.__init__(self, description)
         Instantiable.__init__(self, itemID)
+
+    @property
+    def help(self):
+        """ Get info on what items can be created by this class, and their required parameters """
+        return None

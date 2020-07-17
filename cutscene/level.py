@@ -55,6 +55,11 @@ class Level(LevelWrapper, Instantiable):
         LevelWrapper.__init__(self, name, description)
         Instantiable.__init__(self, itemID)
 
+    @property
+    def help(self):
+        """ Get info on what items can be created by this class, and their required parameters """
+        return (paramHelp["SUBLEVEL"], paramHelp["SCENE"])
+
     def new(self, item, **kwargs):
         if item == "SUBLEVEL":
             return self.addSubLevel(**kwargs)
@@ -81,3 +86,8 @@ class SubLevel(LevelWrapper, Instantiable):
                  itemID: Optional[int] = None):
         LevelWrapper.__init__(self, name, description)
         Instantiable.__init__(self, itemID)
+
+    @property
+    def help(self):
+        """ Get info on what items can be created by this class, and their required parameters """
+        return (paramHelp["SCENE"])

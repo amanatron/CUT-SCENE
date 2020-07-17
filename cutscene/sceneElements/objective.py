@@ -44,7 +44,13 @@ class Objective(NameDescription, Instantiable):
         NameDescription.__init__(self, name, description)
         Instantiable.__init__(self, itemID)
 
-
+    @property
+    def help(self):
+        """ Get info on what items can be created by this class, and their required parameters """
+        return (paramHelp["ANIMATION"], 
+                paramHelp["EVENT"], 
+                paramHelp["OBJECTIVE"])
+        
     def new(self, item, **kwargs):
         if item == "ANIMATION":
             return self.addAnimation(**kwargs)

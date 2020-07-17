@@ -54,6 +54,15 @@ class Animation(NameDescription, OrderedInstanceHolder, Instantiable):
         elif item == "ACT":
             return self.addAct(**kwargs)
 
+    @property
+    def help(self):
+        """ Get info on what items can be created by this class, and their required parameters """
+        return (paramHelp["ACTION"], 
+                paramHelp["TRANSITION"], 
+                paramHelp["HEADING"], 
+                paramHelp["DIALOGUE"], 
+                paramHelp["ACT"])
+
     def addAction(self, **kwargs):
         action = Action(**kwargs)
         self.addNew(action)

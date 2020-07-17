@@ -49,6 +49,13 @@ class Scene(OrderedInstanceHolder, NameDescription, Instantiable):
         elif item == "OBJECTIVE":
             return self.addObjective(**kwargs)
 
+    @property
+    def help(self):
+        """ Get info on what items can be created by this class, and their required parameters """
+        return (paramHelp["ANIMATION"], 
+                paramHelp["EVENT"], 
+                paramHelp["OBJECTIVE"])
+
     def addAnimation(self, *args, **kwargs):
         animation = Animation(*args, **kwargs)
         self.addNew(animation)

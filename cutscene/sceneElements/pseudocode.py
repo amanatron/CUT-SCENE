@@ -21,6 +21,11 @@ class Pseudocode(Name, Instantiable):
         self.pscode = pscode
 
     @property
+    def help(self):
+        """ Get info on what items can be created by this class, and their required parameters """
+        return None
+
+    @property
     def purpose(self) -> str:
         return self.__purpose
 

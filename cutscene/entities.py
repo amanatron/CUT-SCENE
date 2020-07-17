@@ -42,6 +42,11 @@ class Characters(EntitiesWrapper):
     def __init__(self):
         super().__init__()
 
+    @property
+    def help(self):
+        """ Get info on what items can be created by this class, and their required parameters """
+        return (paramHelp["CHARACTER"])
+
     def new(self, item, **kwargs):
         if item == "CHARACTER":
             return self.addCharacter(**kwargs)
@@ -68,6 +73,11 @@ class Objects(EntitiesWrapper):
     """
     def __init__(self):
         super().__init__()
+
+    @property
+    def help(self):
+        """ Get info on what items can be created by this class, and their required parameters """
+        return (paramHelp["OBJECT"])
 
     def new(self, item, **kwargs):
         if item == "OBJECT":

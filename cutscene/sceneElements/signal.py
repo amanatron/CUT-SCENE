@@ -6,3 +6,8 @@ class Signal(Instantiable):
     def __init__(self,
                  itemID: Optional[int] = None):
         Instantiable.__init__(self, itemID)
+
+    @property
+    def help(self):
+        """ Get info on what items can be created by this class, and their required parameters """
+        return None

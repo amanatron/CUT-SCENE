@@ -1,5 +1,39 @@
 import uuid
 
+paramHelp = {
+"LEVEL":        {"name":            "shortStr",
+                 "description":     "Str"},
+"SUBLEVEL":     {"name":            "shortStr",
+                 "description":     "Str"},
+"SCENE":        {"name":            "shortStr",
+                 "description":     "Str"},
+"CHARACTER":    {"name":            "shortStr",
+                 "description":     "Str",
+                 "entityType":      ["PLAYER", "ENEMY", "OTHER"]},
+"OBJECT":       {"name":            "shortStr",
+                 "description":     "Str",
+                 "entityType":      ["RESPONSIVE", "NON-RESPONSIVE"]},
+"ACTION":       {"description":     "Str"},
+"ANIMATION":    {"name":            "shortStr",
+                 "description":     "Str"},
+"TRANSITION":   {"description":     "Str"},
+"ACT":          {"description":     "Str"},
+"HEADING":      {"description":     "Str"},
+"DIALOGUE":     {"character_name":  "shortStr",
+                 "dialogue":        "Str",
+                 "paranthetical":   "Str"},
+"EVENT":        {"name":            "shortStr",
+                 "description":     "Str"},
+"OBJECTIVE":    {"name":            "shortStr",
+                 "description":     "Str"},
+"PHYSICS":      {"description":     "Str"},
+"PSEUDOCODE":   {"name":            "shortStr",
+                 "purpose":         "Str",
+                 "pscode":          "Str"},
+"CONTROL":      None,
+"SIGNAL":       None
+}
+
 class OrderedInstanceHolder(object):
     """ Helper class for classes that need to store instances in a specific order.
     classes that use this (not limited to): LevelWrapper, Animation, Scene
