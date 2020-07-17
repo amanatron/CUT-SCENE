@@ -36,6 +36,14 @@ class OrderedInstanceHolder(object):
         assert type(index) is int
         del self.__ordered_holder[index]
 
+    def removeByID(self,
+                   itemID: int):
+        assert type(itemID) is int
+        for index, item in enumerate(self.__ordered_holder):
+            if item.id == itemID:               
+                self.remove(index)
+                break
+
     def __elementSwap(self,
                       index1: int,
                       index2: int):

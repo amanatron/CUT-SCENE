@@ -15,6 +15,14 @@ class EntitiesWrapper(object):
         assert type(index) is int
         del self.__entities[index]
 
+    def removeByID(self,
+                   itemID: int):
+        assert type(itemID) is int
+        for index, item in enumerate(self.__entities):
+            if item.id == itemID:               
+                del self.__entities[index]
+                break
+
 class Characters(EntitiesWrapper):
     """ Manager for all the characters, allowing you to add, get, and remove characters
 
