@@ -12,8 +12,8 @@ class OBJECT:
         self.name = name
         self.sprite_directory = sprite_directory
         self.sprite = pygame.image.load(self.sprite_directory)
-        self.x = "NONE"
-        self.y = "NONE"
+        self.x = "NONE" #x coordinate of the image 
+        self.y = "NONE" #y coordinate of the image 
         self.initialise = False #boolean value to see if the object is already on screen or has just been added
         
     def display_sprite(self):
@@ -22,8 +22,8 @@ class OBJECT:
                
 aman = OBJECT("aman","Graphics/Icons/godot.png") #create an object
 
-object_inserted = aman
-object_selected = "NONE"
+object_inserted = aman #check to see which object has been inserted from the GUI list of objects
+object_selected = "NONE" #check to see which object has been selected on screen 
 
 def add_to_window(object_inserted):
     if object_inserted not in objects_on_window:
