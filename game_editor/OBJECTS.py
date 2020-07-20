@@ -8,12 +8,12 @@ window = pygame.display.set_mode((screen_length,screen_height))
 objects_on_window = []
 
 class OBJECT:
-    def __init__(self,name,sprite_directory):
+    def __init__(self,name,sprite_directory,x=200,y=200):
         self.name = name
         self.sprite_directory = sprite_directory
         self.sprite = pygame.image.load(self.sprite_directory)
-        self.x = "NONE" #x coordinate of the image 
-        self.y = "NONE" #y coordinate of the image 
+        self.x = x #x coordinate of the image 
+        self.y = y #y coordinate of the image 
         self.initialise = False #boolean value to see if the object is already on screen or has just been added
         
     def display_sprite(self):
