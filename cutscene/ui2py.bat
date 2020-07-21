@@ -1,0 +1,1 @@
+pyside2-uic .\resources\mainwindow_view.ui -o .\views\mainwindow_view_ui.py

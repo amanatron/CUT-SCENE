@@ -1,0 +1,41 @@
+from PySide2.QtWidgets import QApplication
+from PySide2.QtCore import QSettings
+from model.model import Model
+from controllers.main_control import MainController
+from views.mainwindow_view import MainView
+import cutscene
+import sys
+
+# mvc_app.py would be responsible for instantiating each of the view, controllers, 
+# and model(s) and passing references between them. This can be quite minimal:
+
+class CutSceneApp(QApplication):
+
+    def __init__(self, args):
+        # Initialise
+        super(CutSceneApp, self).__init__(args)
+        
+        # Initialise and Load settings
+        self.settings = QSettings("AmanTrivedi", "CUTSCENE")
+
+        # Initalise Model, controllers, and views
+        self.model = Model()
+        self.mainController = MainController(self.model)
+        self.mainView = MainView(self.model, self.mainController, self.settings)
+
+        # Load Project from projectPath (first arg to program)
+        if len(args) > 1:
+            self.mainController.load_project(args[1])        
+
+        # Show window
+        self.mainView.show()
+        self.exec_()
+
+    def closeEvent(self, event):
+        # Save window layout before closing
+        self.settings.setValue("geometry", self.saveGeometry())
+        self.settings.setValue("windowState", self.saveState())
+
+if __name__ == "__main__":
+    app = CutSceneApp(sys.argv)
+    sys.exit(0)
