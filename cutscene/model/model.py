@@ -1,4 +1,6 @@
-from PyQt5.QtCore import QObject, pyqtSignal
+from PySide2.QtCore import QObject, Signal, Slot
+import cutscene
+
 
 # The model class stores program data and state and some minimal logic for announcing changes to this data. 
 # This model shouldn't be confused with the Qt model (see http://qt-project.org/doc/qt-4.8/model-view-programming.html) as it's not really the same thing.
@@ -13,40 +15,57 @@ from PyQt5.QtCore import QObject, pyqtSignal
 
 
 class Model(QObject):
-    amount_changed = pyqtSignal(int)
-    even_odd_changed = pyqtSignal(str)
-    enable_reset_changed = pyqtSignal(bool)
+    activeLevelChanged = Signal(int)
+    projectLoaded = Signal()
+
+    #even_odd_changed = Signal(str)
+    #enable_reset_changed = Signal(bool)
+
 
     @property
-    def amount(self):
-        return self._amount
+    def active_level(self):
+        return self._active_level
 
-    @amount.setter
-    def amount(self, value):
-        self._amount = value
-        self.amount_changed.emit(value)
+    @active_level.setter
+    def active_level(self, value):
+        self._active_level = value
+        self.activeLevelChanged.emit(value)
 
-    @property
-    def even_odd(self):
-        return self._even_odd
+    def get_project(self):
+        return self.project
 
-    @even_odd.setter
-    def even_odd(self, value):
-        self._even_odd = value
-        self.even_odd_changed.emit(value)
+    def get_levels(self):
+        return self.project.get()
 
-    @property
-    def enable_reset(self):
-        return self._enable_reset
+    def load_project(self, projectPath):
+        self.project = cutscene.loadProject(projectPath)
+        print("SIGNAL FIRED loading project")
+        self.projectPath = projectPath
+        self.projectLoaded.emit()
 
-    @enable_reset.setter
-    def enable_reset(self, value):
-        self._enable_reset = value
-        self.enable_reset_changed.emit(value)
+    # @property
+    # def even_odd(self):
+    #     return self._even_odd
+
+    # @even_odd.setter
+    # def even_odd(self, value):
+    #     self._even_odd = value
+    #     self.even_odd_changed.emit(value)
+
+    # @property
+    # def enable_reset(self):
+    #     return self._enable_reset
+
+    # @enable_reset.setter
+    # def enable_reset(self, value):
+    #     self._enable_reset = value
+    #     self.enable_reset_changed.emit(value)
 
     def __init__(self):
         super().__init__()
+        self._active_level = None
+        self.project = None
+        self.projectPath = None
 
-        self._amount = 0
-        self._even_odd = ''
-        self._enable_reset = False
+        # self._even_odd = ''
+        # self._enable_reset = False

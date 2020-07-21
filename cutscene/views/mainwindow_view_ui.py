@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file '.\resources\mainwindow_view.ui',
 # licensing of '.\resources\mainwindow_view.ui' applies.
 #
-# Created: Tue Jul 21 13:43:35 2020
+# Created: Tue Jul 21 15:58:28 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -19,12 +19,12 @@ class Ui_MainWindow(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setContentsMargins(7, 7, 7, 7)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.listView = QtWidgets.QListView(self.centralwidget)
-        self.listView.setObjectName("listView")
-        self.horizontalLayout.addWidget(self.listView)
-        self.listView_2 = QtWidgets.QListView(self.centralwidget)
-        self.listView_2.setObjectName("listView_2")
-        self.horizontalLayout.addWidget(self.listView_2)
+        self.levelsWidget = QtWidgets.QListWidget(self.centralwidget)
+        self.levelsWidget.setObjectName("levelsWidget")
+        self.horizontalLayout.addWidget(self.levelsWidget)
+        self.levelWidget = QtWidgets.QListWidget(self.centralwidget)
+        self.levelWidget.setObjectName("levelWidget")
+        self.horizontalLayout.addWidget(self.levelWidget)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 786, 26))
@@ -43,8 +43,8 @@ class Ui_MainWindow(object):
         self.actionOpen.setObjectName("actionOpen")
         self.actionSave = QtWidgets.QAction(MainWindow)
         self.actionSave.setObjectName("actionSave")
-        self.actionSave_As = QtWidgets.QAction(MainWindow)
-        self.actionSave_As.setObjectName("actionSave_As")
+        self.actionSaveAs = QtWidgets.QAction(MainWindow)
+        self.actionSaveAs.setObjectName("actionSaveAs")
         self.actionExit = QtWidgets.QAction(MainWindow)
         self.actionExit.setObjectName("actionExit")
         self.actionUndo = QtWidgets.QAction(MainWindow)
@@ -55,7 +55,7 @@ class Ui_MainWindow(object):
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionSave)
-        self.menuFile.addAction(self.actionSave_As)
+        self.menuFile.addAction(self.actionSaveAs)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionExit)
         self.menuEdit.addAction(self.actionUndo)
@@ -79,9 +79,9 @@ class Ui_MainWindow(object):
         self.actionSave.setText(QtWidgets.QApplication.translate("MainWindow", "Save", None, -1))
         self.actionSave.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Save this project", None, -1))
         self.actionSave.setShortcut(QtWidgets.QApplication.translate("MainWindow", "Ctrl+S", None, -1))
-        self.actionSave_As.setText(QtWidgets.QApplication.translate("MainWindow", "Save As", None, -1))
-        self.actionSave_As.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Save a copy of this project", None, -1))
-        self.actionSave_As.setShortcut(QtWidgets.QApplication.translate("MainWindow", "Ctrl+Shift+S", None, -1))
+        self.actionSaveAs.setText(QtWidgets.QApplication.translate("MainWindow", "Save As", None, -1))
+        self.actionSaveAs.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Save a copy of this project", None, -1))
+        self.actionSaveAs.setShortcut(QtWidgets.QApplication.translate("MainWindow", "Ctrl+Shift+S", None, -1))
         self.actionExit.setText(QtWidgets.QApplication.translate("MainWindow", "Exit", None, -1))
         self.actionExit.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Exit CutScene", None, -1))
         self.actionExit.setShortcut(QtWidgets.QApplication.translate("MainWindow", "Ctrl+Q", None, -1))
