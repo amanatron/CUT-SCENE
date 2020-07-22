@@ -168,3 +168,18 @@ class Instantiable(object):
                 setattr(self, key, value)
             else:
                 raise ValueError("{} has no attribute {}".format(self, key))
+
+    def dict(self):
+        """Return a nice dict of the object, including its __type__"""
+        return obj_to_dict(self)
+
+def obj_to_dict(obj):
+    obj_dict = {}
+    obj_dict["__type__"] = obj.__class__.__name__.upper()
+    for key, value in obj.__dict__.items():
+        # eg turns "_Description__description" to "description"
+        if "__" in key:
+            obj_dict[key.split("__",1)[1]] = value
+        else:
+            obj_dict[key] = value
+    return obj_dict

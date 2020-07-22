@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file '.\resources\mainwindow_view.ui',
 # licensing of '.\resources\mainwindow_view.ui' applies.
 #
-# Created: Tue Jul 21 15:58:28 2020
+# Created: Wed Jul 22 16:31:31 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -19,12 +19,19 @@ class Ui_MainWindow(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setContentsMargins(7, 7, 7, 7)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.levelsWidget = QtWidgets.QListWidget(self.centralwidget)
-        self.levelsWidget.setObjectName("levelsWidget")
-        self.horizontalLayout.addWidget(self.levelsWidget)
-        self.levelWidget = QtWidgets.QListWidget(self.centralwidget)
-        self.levelWidget.setObjectName("levelWidget")
-        self.horizontalLayout.addWidget(self.levelWidget)
+        self.levelsView = QtWidgets.QTreeView(self.centralwidget)
+        self.levelsView.setEditTriggers(QtWidgets.QAbstractItemView.AnyKeyPressed)
+        self.levelsView.setDragEnabled(True)
+        self.levelsView.setIndentation(25)
+        self.levelsView.setObjectName("levelsView")
+        self.levelsView.header().setVisible(False)
+        self.horizontalLayout.addWidget(self.levelsView)
+        self.sceneView = QtWidgets.QTreeView(self.centralwidget)
+        self.sceneView.setEditTriggers(QtWidgets.QAbstractItemView.AnyKeyPressed)
+        self.sceneView.setDragEnabled(True)
+        self.sceneView.setHeaderHidden(True)
+        self.sceneView.setObjectName("sceneView")
+        self.horizontalLayout.addWidget(self.sceneView)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 786, 26))

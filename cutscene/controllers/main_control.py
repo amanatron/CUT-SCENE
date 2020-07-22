@@ -11,8 +11,8 @@ class MainController(QObject):
         self._model = model
 
     @Slot(int)
-    def level_selected(self, item):
-        self._model.active_level = item
+    def levelItemSelected(self, item):
+        self._model.levelItemSelected()
 
         # # calculate even or odd
         # self._model.even_odd = 'odd' if value % 2 else 'even'
@@ -21,5 +21,5 @@ class MainController(QObject):
         # self._model.enable_reset = True if value else False
 
     @Slot(str)
-    def load_project(self, projectPath):
-        self._model.load_project(projectPath)
+    def loadProject(self, projectPath):
+        self._model.loadProject(projectPath)

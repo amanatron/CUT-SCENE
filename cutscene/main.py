@@ -25,16 +25,11 @@ class CutSceneApp(QApplication):
 
         # Load Project from projectPath (first arg to program)
         if len(args) > 1:
-            self.mainController.load_project(args[1])        
+            self.mainController.loadProject(args[1])        
 
         # Show window
         self.mainView.show()
         self.exec_()
-
-    def closeEvent(self, event):
-        # Save window layout before closing
-        self.settings.setValue("geometry", self.saveGeometry())
-        self.settings.setValue("windowState", self.saveState())
 
 if __name__ == "__main__":
     app = CutSceneApp(sys.argv)

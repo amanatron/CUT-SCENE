@@ -28,10 +28,33 @@
      <number>7</number>
     </property>
     <item>
-     <widget class="QListWidget" name="levelsWidget"/>
+     <widget class="QTreeView" name="levelsView">
+      <property name="editTriggers">
+       <set>QAbstractItemView::AnyKeyPressed</set>
+      </property>
+      <property name="dragEnabled">
+       <bool>true</bool>
+      </property>
+      <property name="indentation">
+       <number>25</number>
+      </property>
+      <attribute name="headerVisible">
+       <bool>false</bool>
+      </attribute>
+     </widget>
     </item>
     <item>
-     <widget class="QListWidget" name="levelWidget"/>
+     <widget class="QTreeView" name="sceneView">
+      <property name="editTriggers">
+       <set>QAbstractItemView::AnyKeyPressed</set>
+      </property>
+      <property name="dragEnabled">
+       <bool>true</bool>
+      </property>
+      <property name="headerHidden">
+       <bool>true</bool>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

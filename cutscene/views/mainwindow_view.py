@@ -36,12 +36,13 @@ class MainView(QMainWindow):
             self.restoreState(self._settings.value("windowState"))
 
         # connect widgets to controller
-        self._ui.levelsWidget.currentRowChanged.connect(self._main_controller.level_selected)
+        self._ui.levelsView.clicked.connect(self._model.levelItemSelected)
+        # self._ui.sceneView.clicked.connect(self._model.levelItemSelected)
         # self._ui.pushButton_reset.clicked.connect(lambda: self._main_controller.change_amount(0))
 
         # listen for model event signals
         self._model.projectLoaded.connect(self.on_ProjectLoad)
-        self._model.activeLevelChanged.connect(self.on_levelChange)
+        self._model.activeSceneChanged.connect(self.on_levelSelect)
 
         self.connect_actions()
 
@@ -77,7 +78,7 @@ class MainView(QMainWindow):
         projectPath = QFileDialog.getOpenFileName(self, 'Open Project', 
                 os.path.expanduser("~"),"CutScene Projects (*.cutscene)")[0]
         if projectPath:
-            self._main_controller.load_project(projectPath)
+            self._main_controller.loadProject(projectPath)
 
     def closeEvent(self, event):
         # Save window layout before closing
@@ -86,16 +87,16 @@ class MainView(QMainWindow):
 
     @Slot()
     def on_ProjectLoad(self):
-        levels = self._model.get_levels()
-        levelnames = [level.name for level in levels]
-        self._ui.levelsWidget.addItems(levelnames)
+        self._ui.levelsView.setModel(self._model.levels_model)
+        self._ui.levelsView.expandToDepth(0)
+        # levels = self._model.get_levels()
+        # levelnames = [level.name for level in levels]
+        # self._ui.levelsView.addItems(levelnames)
 
-    @Slot(int)
-    def on_levelChange(self, value):
-        self._ui.levelWidget.clear()
-        level = self._model.get_levels()[value].get()
-        levelitems = [item.name for item in level]
-        self._ui.levelWidget.addItems(levelitems)
+    @Slot()
+    def on_levelSelect(self):
+        self._ui.sceneView.setModel(self._model.scene_model)
+        self._ui.sceneView.expandToDepth(0)
 
     # @Slot(str)
     # def on_even_odd_changed(self, value):

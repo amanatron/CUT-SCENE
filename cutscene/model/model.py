@@ -1,4 +1,5 @@
-from PySide2.QtCore import QObject, Signal, Slot
+from PySide2.QtCore import QObject, Signal, Slot 
+from PySide2.QtGui import QStandardItemModel, QStandardItem
 import cutscene
 
 
@@ -15,21 +16,20 @@ import cutscene
 
 
 class Model(QObject):
-    activeLevelChanged = Signal(int)
+    activeSceneChanged = Signal()
     projectLoaded = Signal()
-
     #even_odd_changed = Signal(str)
     #enable_reset_changed = Signal(bool)
 
 
-    @property
-    def active_level(self):
-        return self._active_level
+    # @property
+    # def active_level(self):
+    #     return self._active_level
 
-    @active_level.setter
-    def active_level(self, value):
-        self._active_level = value
-        self.activeLevelChanged.emit(value)
+    # @active_level.setter
+    # def active_level(self, value):
+    #     self._active_level = value
+    #     self.activeLevelChanged.emit(value)
 
     def get_project(self):
         return self.project
@@ -37,11 +37,50 @@ class Model(QObject):
     def get_levels(self):
         return self.project.get()
 
-    def load_project(self, projectPath):
+    def loadProject(self, projectPath):
         self.project = cutscene.loadProject(projectPath)
-        print("SIGNAL FIRED loading project")
         self.projectPath = projectPath
         self.projectLoaded.emit()
+
+    def initLevelModel(self):
+
+        # item here refers to level or sublevel
+        def newItemEntry(level, parent_item):
+            new_item = StandardItem(level, level.name)
+            parent_item.appendRow(new_item)
+            item_dict = level.dict()
+            if item_dict["__type__"] in ["LEVEL", "SUBLEVEL", "CUTSCENEPROJECT"]:
+                for item in level.get():
+                    newItemEntry(item, new_item)
+
+        self.levels_model = QStandardItemModel()
+        parent_item = self.levels_model.invisibleRootItem()
+
+        newItemEntry(self.project, parent_item)
+
+    def initSceneModel(self, scene):
+
+        # item here refers to sceneElement
+        def newItemEntry(element, parent_item):
+            item_dict = element.dict()
+            new_item = StandardItem(element, item_dict["__type__"])
+            parent_item.appendRow(new_item)
+            if item_dict["__type__"] in ["ANIMATION", "SCENE"]:
+                for item in element.get():
+                    newItemEntry(item, new_item)
+
+        self.scene_model = QStandardItemModel()
+        parent_item = self.scene_model.invisibleRootItem()
+        newItemEntry(scene, parent_item)
+
+    def levelItemSelected(self, item):
+        """ function called when an item is selected from the levelsView """
+        level_item = self.levels_model.itemFromIndex(item).obj
+        item_dict = level_item.dict()
+        if item_dict["__type__"] == "SCENE":
+            self.initSceneModel(level_item)
+            self.activeSceneChanged.emit()
+
 
     # @property
     # def even_odd(self):
@@ -66,6 +105,13 @@ class Model(QObject):
         self._active_level = None
         self.project = None
         self.projectPath = None
+        self.projectLoaded.connect(self.initLevelModel)
+
 
         # self._even_odd = ''
         # self._enable_reset = False
+
+class StandardItem(QStandardItem):
+    def __init__(self, obj, name):
+        super().__init__(name)
+        self.obj = obj

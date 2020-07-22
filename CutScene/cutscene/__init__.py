@@ -1,4 +1,4 @@
-from cutscene.utils import OrderedInstanceHolder, NameDescription, Instantiable, paramHelp
+from cutscene.utils import OrderedInstanceHolder, NameDescription, Instantiable, paramHelp, obj_to_dict
 from cutscene.level import Level, SubLevel
 from cutscene.scene import Scene
 from cutscene.entities import Characters, Objects
@@ -130,13 +130,3 @@ def dict_to_project(proj_dict):
 
     return project
 
-def obj_to_dict(obj):
-    obj_dict = {}
-    obj_dict["__type__"] = obj.__class__.__name__.upper()
-    for key, value in obj.__dict__.items():
-        # eg turns "_Description__description" to "description"
-        if "__" in key:
-            obj_dict[key.split("__",1)[1]] = value
-        else:
-            obj_dict[key] = value
-    return obj_dict
