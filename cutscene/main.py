@@ -3,6 +3,7 @@ from PySide2.QtCore import QSettings
 from model.model import Model
 from controllers.main_control import MainController
 from views.mainwindow_view import MainView
+#import qdarkstyle
 import cutscene
 import sys
 
@@ -17,6 +18,13 @@ class CutSceneApp(QApplication):
         
         # Initialise and Load settings
         self.settings = QSettings("AmanTrivedi", "CUTSCENE")
+
+        # Styling
+        #self.setStyle("Windows")
+        # setup stylesheet
+        #app.setStyleSheet(qdarkstyle.load_stylesheet_pyside2())
+        # or in new API
+        #self.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyside2'))
 
         # Initalise Model, controllers, and views
         self.model = Model()

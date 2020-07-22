@@ -55,7 +55,6 @@ class Model(QObject):
 
         self.levels_model = QStandardItemModel()
         parent_item = self.levels_model.invisibleRootItem()
-
         newItemEntry(self.project, parent_item)
 
     def initSceneModel(self, scene):
