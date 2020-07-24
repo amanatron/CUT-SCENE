@@ -37,6 +37,8 @@ class MainView(QMainWindow):
 
         # connect widgets to controller
         self._ui.levelsView.clicked.connect(self._model.levelItemSelected)
+        self._ui.levelsView.clicked.connect(self.treeview_clicked)
+
         # self._ui.sceneView.clicked.connect(self._model.levelItemSelected)
         # self._ui.pushButton_reset.clicked.connect(lambda: self._main_controller.change_amount(0))
 
@@ -48,6 +50,13 @@ class MainView(QMainWindow):
 
         # self._model.even_odd_changed.connect(self.on_even_odd_changed)
         # self._model.enable_reset_changed.connect(self.on_enable_reset_changed)
+
+    def treeview_clicked(self, index):
+        """ Expand items in the levelsView on single click rather than double click """
+        if self._ui.levelsView.isExpanded(index):
+            self._ui.levelsView.collapse(index)
+        else:
+            self._ui.levelsView.expand(index)
 
     def connect_actions(self):
         # self.actionNew.triggered.connect()
@@ -95,8 +104,7 @@ class MainView(QMainWindow):
 
     @Slot()
     def on_levelSelect(self):
-        self._ui.sceneView.setModel(self._model.scene_model)
-        self._ui.sceneView.expandToDepth(0)
+        pass
 
     # @Slot(str)
     # def on_even_odd_changed(self, value):

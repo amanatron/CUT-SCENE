@@ -57,27 +57,27 @@ class Model(QObject):
         parent_item = self.levels_model.invisibleRootItem()
         newItemEntry(self.project, parent_item)
 
-    def initSceneModel(self, scene):
+    # def initSceneModel(self, scene):
 
-        # item here refers to sceneElement
-        def newItemEntry(element, parent_item):
-            item_dict = element.dict()
-            new_item = StandardItem(element, item_dict["__type__"])
-            parent_item.appendRow(new_item)
-            if item_dict["__type__"] in ["ANIMATION", "SCENE"]:
-                for item in element.get():
-                    newItemEntry(item, new_item)
+    #     # item here refers to sceneElement
+    #     def newItemEntry(element, parent_item):
+    #         item_dict = element.dict()
+    #         new_item = StandardItem(element, item_dict["__type__"])
+    #         parent_item.appendRow(new_item)
+    #         if item_dict["__type__"] in ["ANIMATION", "SCENE"]:
+    #             for item in element.get():
+    #                 newItemEntry(item, new_item)
 
-        self.scene_model = QStandardItemModel()
-        parent_item = self.scene_model.invisibleRootItem()
-        newItemEntry(scene, parent_item)
+    #     self.scene_model = QStandardItemModel()
+    #     parent_item = self.scene_model.invisibleRootItem()
+    #     newItemEntry(scene, parent_item)
 
     def levelItemSelected(self, item):
         """ function called when an item is selected from the levelsView """
         level_item = self.levels_model.itemFromIndex(item).obj
         item_dict = level_item.dict()
         if item_dict["__type__"] == "SCENE":
-            self.initSceneModel(level_item)
+            #self.initSceneModel(level_item)
             self.activeSceneChanged.emit()
 
 

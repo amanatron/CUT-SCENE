@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file '.\resources\mainwindow_view.ui',
 # licensing of '.\resources\mainwindow_view.ui' applies.
 #
-# Created: Wed Jul 22 23:05:29 2020
+# Created: Fri Jul 24 15:49:36 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -14,20 +14,17 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(910, 683)
+        MainWindow.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setSpacing(0)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout.setObjectName("gridLayout")
-        self.listView = QtWidgets.QListView(self.centralwidget)
-        self.listView.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.listView.setObjectName("listView")
-        self.gridLayout.addWidget(self.listView, 1, 2, 1, 1)
         self.widget = QtWidgets.QWidget(self.centralwidget)
         self.widget.setMinimumSize(QtCore.QSize(250, 0))
         self.widget.setMaximumSize(QtCore.QSize(250, 16777215))
-        self.widget.setStyleSheet("background-color: rgb(57, 57, 57);")
+        self.widget.setStyleSheet("background-color: rgb(35, 47, 52);")
         self.widget.setObjectName("widget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.widget)
         self.verticalLayout.setSpacing(5)
@@ -35,55 +32,101 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtWidgets.QLabel(self.widget)
         font = QtGui.QFont()
-        font.setPointSize(11)
+        font.setFamily("Segoe UI")
+        font.setPointSize(14)
+        font.setWeight(50)
+        font.setItalic(False)
+        font.setBold(False)
         self.label.setFont(font)
-        self.label.setStyleSheet("color: rgb(255, 255, 255);")
+        self.label.setStyleSheet("color: rgb(255, 255, 255);\n"
+"font: 14pt \"Segoe UI\";\n"
+"margin-left: 5px;")
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.levelsView = QtWidgets.QTreeView(self.widget)
-        self.levelsView.setStyleSheet("color: rgb(255, 255, 255);")
+        self.levelsView.setStyleSheet("QTreeView {\n"
+"    show-decoration-selected: 1;\n"
+"    color: rgb(255, 255, 255);\n"
+"    font: 25 12pt \"Segoe UI Light\";\n"
+"    outline: none;\n"
+"}\n"
+"\n"
+"QTreeView::item {\n"
+"    border-radius: 2px;\n"
+"    border: 0px;\n"
+"    margin: 3px;\n"
+"    padding: 5px;\n"
+"    color: rgb(255, 255, 255);\n"
+"}\n"
+"\n"
+"QTreeView::item:hover {\n"
+"    background: rgb(40, 57, 66)\n"
+"}\n"
+"\n"
+"QTreeView::item:selected {\n"
+"    background: rgb(52, 73, 85);\n"
+"}")
         self.levelsView.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.levelsView.setFrameShadow(QtWidgets.QFrame.Plain)
         self.levelsView.setLineWidth(1)
         self.levelsView.setAutoScrollMargin(16)
         self.levelsView.setEditTriggers(QtWidgets.QAbstractItemView.AnyKeyPressed)
+        self.levelsView.setProperty("showDropIndicator", False)
         self.levelsView.setDragEnabled(True)
+        self.levelsView.setSelectionMode(QtWidgets.QAbstractItemView.ContiguousSelection)
         self.levelsView.setIndentation(25)
         self.levelsView.setAnimated(True)
+        self.levelsView.setExpandsOnDoubleClick(False)
         self.levelsView.setObjectName("levelsView")
         self.levelsView.header().setVisible(False)
         self.verticalLayout.addWidget(self.levelsView)
-        self.gridLayout.addWidget(self.widget, 1, 0, 1, 1)
-        self.widget_2 = QtWidgets.QWidget(self.centralwidget)
-        self.widget_2.setMinimumSize(QtCore.QSize(250, 0))
-        self.widget_2.setMaximumSize(QtCore.QSize(250, 16777215))
-        self.widget_2.setStyleSheet("background-color: rgb(61, 61, 61);")
+        self.widget_2 = QtWidgets.QWidget(self.widget)
+        self.widget_2.setStyleSheet("QPushButton {\n"
+"background-color: rgb(40, 57, 66);\n"
+"padding: 5px;\n"
+"border-radius: 3px\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background-color: rgb(52, 73, 85);\n"
+"padding: 5px;\n"
+"border-radius: 3px\n"
+"}")
         self.widget_2.setObjectName("widget_2")
-        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.widget_2)
-        self.verticalLayout_3.setSpacing(5)
-        self.verticalLayout_3.setContentsMargins(5, 5, 5, 5)
-        self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.label_2 = QtWidgets.QLabel(self.widget_2)
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(11)
-        self.label_2.setFont(font)
-        self.label_2.setStyleSheet("color: rgb(255, 255, 255);")
-        self.label_2.setObjectName("label_2")
-        self.verticalLayout_3.addWidget(self.label_2)
-        self.sceneView = QtWidgets.QTreeView(self.widget_2)
-        self.sceneView.setProperty("cursor", QtCore.Qt.ArrowCursor)
-        self.sceneView.setStyleSheet("color: rgb(255, 255, 255);")
-        self.sceneView.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.sceneView.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.sceneView.setLineWidth(1)
-        self.sceneView.setEditTriggers(QtWidgets.QAbstractItemView.AnyKeyPressed)
-        self.sceneView.setDragEnabled(True)
-        self.sceneView.setAnimated(True)
-        self.sceneView.setHeaderHidden(True)
-        self.sceneView.setObjectName("sceneView")
-        self.verticalLayout_3.addWidget(self.sceneView)
-        self.gridLayout.addWidget(self.widget_2, 1, 1, 1, 1)
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.widget_2)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.addLevel = QtWidgets.QPushButton(self.widget_2)
+        self.addLevel.setStyleSheet("")
+        self.addLevel.setText("")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/img/img/icons/add_box_white_48x48.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.addLevel.setIcon(icon)
+        self.addLevel.setIconSize(QtCore.QSize(30, 30))
+        self.addLevel.setObjectName("addLevel")
+        self.horizontalLayout.addWidget(self.addLevel)
+        self.addSubLevel = QtWidgets.QPushButton(self.widget_2)
+        self.addSubLevel.setText("")
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/img/img/icons/library_add_white_48x48.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.addSubLevel.setIcon(icon1)
+        self.addSubLevel.setIconSize(QtCore.QSize(30, 30))
+        self.addSubLevel.setObjectName("addSubLevel")
+        self.horizontalLayout.addWidget(self.addSubLevel)
+        self.addScene = QtWidgets.QPushButton(self.widget_2)
+        self.addScene.setText("")
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(":/img/img/icons/videogame_asset_white_48x48.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.addScene.setIcon(icon2)
+        self.addScene.setIconSize(QtCore.QSize(30, 30))
+        self.addScene.setObjectName("addScene")
+        self.horizontalLayout.addWidget(self.addScene)
+        self.verticalLayout.addWidget(self.widget_2)
+        self.gridLayout.addWidget(self.widget, 1, 0, 1, 1)
+        self.listView = QtWidgets.QListView(self.centralwidget)
+        self.listView.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.listView.setObjectName("listView")
+        self.gridLayout.addWidget(self.listView, 1, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 910, 26))
@@ -125,7 +168,9 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "CutScene", None, -1))
         self.label.setText(QtWidgets.QApplication.translate("MainWindow", "Project Explorer", None, -1))
-        self.label_2.setText(QtWidgets.QApplication.translate("MainWindow", "Scene Explorer", None, -1))
+        self.addLevel.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Add Level", None, -1))
+        self.addSubLevel.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Add SubLevel", None, -1))
+        self.addScene.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Add Scene", None, -1))
         self.menuFile.setTitle(QtWidgets.QApplication.translate("MainWindow", "File", None, -1))
         self.menuEdit.setTitle(QtWidgets.QApplication.translate("MainWindow", "Edit", None, -1))
         self.actionNew.setText(QtWidgets.QApplication.translate("MainWindow", "New", None, -1))
@@ -148,3 +193,4 @@ class Ui_MainWindow(object):
         self.actionRedo.setText(QtWidgets.QApplication.translate("MainWindow", "Redo", None, -1))
         self.actionRedo.setShortcut(QtWidgets.QApplication.translate("MainWindow", "Ctrl+Shift+Z", None, -1))
 
+import resources_rc

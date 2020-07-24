@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="img">
+    <file>img/icons/add_box_white_48x48.png</file>
+    <file>img/icons/library_add_white_48x48.png</file>
+    <file>img/icons/videogame_asset_white_48x48.png</file>
+  </qresource>
+</RCC>
