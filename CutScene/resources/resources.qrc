@@ -1,7 +1,10 @@
 <RCC>
-  <qresource prefix="img">
-    <file>img/icons/add_box_white_48x48.png</file>
-    <file>img/icons/library_add_white_48x48.png</file>
-    <file>img/icons/videogame_asset_white_48x48.png</file>
+  <qresource prefix="levelIcons">
+    <file>img/icons/levelIcons/add_box_grey_96x96.png</file>
+    <file>img/icons/levelIcons/add_box_white_96x96.png</file>
+    <file>img/icons/levelIcons/library_add_grey_96x96.png</file>
+    <file>img/icons/levelIcons/library_add_white_96x96.png</file>
+    <file>img/icons/levelIcons/videogame_asset_grey_96x96.png</file>
+    <file>img/icons/levelIcons/videogame_asset_white_96x96.png</file>
   </qresource>
 </RCC>

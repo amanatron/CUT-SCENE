@@ -36,15 +36,15 @@ class MainView(QMainWindow):
             self.restoreState(self._settings.value("windowState"))
 
         # connect widgets to controller
-        self._ui.levelsView.clicked.connect(self._model.levelItemSelected)
+        self._ui.levelsView.clicked.connect(self._main_controller.levelItemSelected)
         self._ui.levelsView.clicked.connect(self.treeview_clicked)
 
         # self._ui.sceneView.clicked.connect(self._model.levelItemSelected)
         # self._ui.pushButton_reset.clicked.connect(lambda: self._main_controller.change_amount(0))
 
         # listen for model event signals
-        self._model.projectLoaded.connect(self.on_ProjectLoad)
-        self._model.activeSceneChanged.connect(self.on_levelSelect)
+        self._main_controller.projectLoaded.connect(self.on_ProjectLoad)
+        self._main_controller.activeLevelItemChanged.connect(self.on_LevelItemChanged)
 
         self.connect_actions()
 
@@ -59,13 +59,14 @@ class MainView(QMainWindow):
             self._ui.levelsView.expand(index)
 
     def connect_actions(self):
-        # self.actionNew.triggered.connect()
-        self._ui.actionOpen.triggered.connect(self.openProject)
-        # self.actionSave.triggered.connect()
-        # self.actionSaveAs.triggered.connect()
-        # self.actionExit.triggered.connect()
-        # self.actionUndo.triggered.connect()
-        # self.actionRedo.triggered.connect()
+        self._ui.buttonAddLevel.clicked.connect(self._main_controller.newLevel)
+        self._ui.actionNew.triggered.connect(self._main_controller.newProject)
+        self._ui.actionOpen.triggered.connect(self._main_controller.openProject)
+        self._ui.actionSave.triggered.connect(self._main_controller.saveProject)
+        self._ui.actionSaveAs.triggered.connect(self._main_controller.saveAsProject)
+        # self._ui.actionExit.triggered.connect(self._main_controller)
+        # self._ui.actionUndo.triggered.connect(self.undo)
+        # self._ui.actionRedo.triggered.connect(self.redo)
 
     def handleUnsavedChanges(self):
         if self._model.get_project():
@@ -78,17 +79,6 @@ class MainView(QMainWindow):
             elif retval == QMessageBox.Cancel:
                 return False # No save, not okay to proceed
 
-
-    def openProject(self):
-        # toProceed = self.handleUnsavedChanges()
-        toProceed = True
-        if not toProceed:
-            return
-        projectPath = QFileDialog.getOpenFileName(self, 'Open Project', 
-                os.path.expanduser("~"),"CutScene Projects (*.cutscene)")[0]
-        if projectPath:
-            self._main_controller.loadProject(projectPath)
-
     def closeEvent(self, event):
         # Save window layout before closing
         self._settings.setValue("geometry", self.saveGeometry())
@@ -96,15 +86,34 @@ class MainView(QMainWindow):
 
     @Slot()
     def on_ProjectLoad(self):
-        self._ui.levelsView.setModel(self._model.levels_model)
+        self._ui.levelsView.setModel(self._main_controller.levels_model)
         self._ui.levelsView.expandToDepth(0)
         # levels = self._model.get_levels()
         # levelnames = [level.name for level in levels]
         # self._ui.levelsView.addItems(levelnames)
 
-    @Slot()
-    def on_levelSelect(self):
-        pass
+    @Slot(str)
+    def on_LevelItemChanged(self, itemType):
+        if itemType == "CUTSCENEPROJECT":
+            self._ui.buttonAddLevel.setEnabled(True)
+            self._ui.buttonAddSubLevel.setEnabled(False)
+            self._ui.buttonAddScene.setEnabled(False)
+        else:
+            self._ui.buttonAddLevel.setEnabled(True)
+            self._ui.buttonAddSubLevel.setEnabled(True)
+            self._ui.buttonAddScene.setEnabled(True)
+        # elif itemType == "LEVEL":
+        #     self._ui.buttonAddLevel.setEnabled(True)
+        #     self._ui.buttonAddSubLevel.setEnabled(True)
+        #     self._ui.buttonAddScene.setEnabled(True)
+        # elif itemType == "SUBLEVEL":
+        #     self._ui.buttonAddLevel.setEnabled(True)
+        #     self._ui.buttonAddSubLevel.setEnabled(True)
+        #     self._ui.buttonAddScene.setEnabled(True)
+        # elif itemType == "SCENE":
+        #     self._ui.buttonAddLevel.setEnabled(True)
+        #     self._ui.buttonAddSubLevel.setEnabled(True)
+        #     self._ui.buttonAddScene.setEnabled(True)
 
     # @Slot(str)
     # def on_even_odd_changed(self, value):
