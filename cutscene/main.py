@@ -33,7 +33,7 @@ class CutSceneApp(QApplication):
 
         # Load Project from projectPath (first arg to program)
         if len(args) > 1:
-            self.mainController.loadProject(args[1])        
+            self.model.loadProject(args[1])        
 
         # Show window
         self.mainView.show()

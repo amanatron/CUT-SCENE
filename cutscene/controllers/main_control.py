@@ -1,96 +1,89 @@
-from PySide2.QtCore import QObject, Signal, Slot
+from PySide2.QtCore import QObject, Signal, Slot, QModelIndex
 from PySide2.QtWidgets import QFileDialog
-from PySide2.QtGui import QStandardItemModel, QStandardItem
-
 from views.paramdialogue_view import ParamDialogue
+import os
 
 # The controller class(es) perform any logic and then sets data in the model.
 # An example:The change_amount function takes the new value from the widget, performs logic, and sets attributes on the model.
 
 
 class MainController(QObject):
-    activeLevelItemChanged = Signal(str)
-    projectLoaded = Signal()
-
     def __init__(self, model):
         super().__init__()
         self._model = model
         self.activeLevelItem = None
-        self.projectLoaded.connect(self.initLevelModel)
+
+
+    def getParentFor(self, item_type):
+        if item_type == "CUTSCENEPROJECT":
+            parent_types = []
+        elif item_type == "LEVEL":
+            parent_types = ["CUTSCENEPROJECT"]
+        elif item_type == "SUBLEVEL":
+            parent_types = ["LEVEL"]
+        elif item_type == "SCENE":
+            parent_types = ["LEVEL", "SUBLEVEL"]
+
+        def suitableParentType(active, item_type):
+            if active.type in parent_types:
+                return active
+            else:
+                return suitableParentType(active.parent(), item_type)
+
+        return suitableParentType(self.activeLevelItem, item_type)
 
     def openProject(self):
         # toProceed = self.handleUnsavedChanges()
         toProceed = True
         if not toProceed:
             return
-        projectPath = QFileDialog.getOpenFileName(self, 'Open Project', 
+        projectPath = QFileDialog.getOpenFileName(None, 'Open Project', 
                 os.path.expanduser("~"),"CutScene Projects (*.cutscene)")[0]
         if projectPath:
-            self.loadProject(projectPath)
+            self._model.loadProject(projectPath)
+            # bit hacky but mm
+            idx = self._model.levels_model.index(0,0)
+            self.activeLevelItem = self._model.levels_model.itemFromIndex(idx)
+            print("active:", self.activeLevelItem)
 
-    def newItem(self, item_type, item_parent):
-        pass
 
     def newProject(self):
-        # toProceed = self.handleUnsavedChanges()
-        toProceed = True
-        if not toProceed:
-            return
-        params = ParamDialogue.getParams(self, "PROJECT")
-        if params:
-            print(params)
-            self._model.newProject(**params)
-        else:
-            pass
-        # self._model.newProject(**params)
-
-    def newLevel(self):
-        # toProceed = self.handleUnsavedChanges()
-        toProceed = True
-        if not toProceed:
-            return
-        params = ParamDialogue.getParams(self, "PROJECT")
-        if params:
-            print(params)
-            self._model.newProject(**params)
-        else:
-            pass
+        params = ParamDialogue.getParams(self, "CUTSCENEPROJECT")
+        self._model.newProject(params)
 
     def saveProject(self):
-        pass
+        projectPath = self._model.projectPath
+        if not projectPath:
+            projectPath = QFileDialog.getSaveFileName(None, 'Save Project', 
+                    os.path.expanduser("~"),"CutScene Projects (*.cutscene)")[0]
+        self._model.saveProject(projectPath)
 
-    def saveAsProject(self):
-        pass
+    def saveProjectAs(self):
+        projectPath = QFileDialog.getSaveFileName(None, 'Save Project As', 
+                os.path.expanduser("~"),"CutScene Projects (*.cutscene)")[0]
+        if projectPath:
+            self._model.saveProject(projectPath)
 
-    @Slot(str)
-    def loadProject(self, projectPath):
-        self._model.loadProject(projectPath)
-        self.projectLoaded.emit()
+    def newLevel(self):
+        self.newLevelItem("LEVEL")
 
-    def initLevelModel(self):
-        # item here refers to level or sublevel
-        def newItemEntry(level, parent_item):
-            new_item = StandardItem(level, level.name)
-            parent_item.appendRow(new_item)
-            item_dict = level.dict()
-            if item_dict["__type__"] in ["LEVEL", "SUBLEVEL", "CUTSCENEPROJECT"]:
-                for item in level.get():
-                    newItemEntry(item, new_item)
+    def newSubLevel(self):
+        self.newLevelItem("SUBLEVEL")
 
-        self.levels_model = QStandardItemModel()
-        parent_item = self.levels_model.invisibleRootItem()
-        newItemEntry(self._model.project, parent_item)
+    def newScene(self):
+        self.newLevelItem("SCENE")
+
+    def newLevelItem(self, item_type):
+        # toProceed = self.handleUnsavedChanges()
+        toProceed = True
+        if not toProceed:
+            return
+        params = ParamDialogue.getParams(self, item_type)
+        parent = self.getParentFor(item_type)
+        print(parent)
+        self._model.addLevelItem(parent, item_type, params)
 
     @Slot(int)
-    def levelItemSelected(self, item):
+    def levelItemSelected(self, index):
         """ function called when an item is selected from the levelsView """
-        level_item = self.levels_model.itemFromIndex(item).obj
-        item_dict = level_item.dict()
-        print(item_dict["__type__"])
-        self.activeLevelItem = level_item
-        self.activeLevelItemChanged.emit(item_dict["__type__"])
-
-class StandardItem(QStandardItem):
-    def __init__(self, obj, name):
-        super().__init__(name)
-        self.obj = obj
+        self.activeLevelItem = self._model.levels_model.itemFromIndex(index)

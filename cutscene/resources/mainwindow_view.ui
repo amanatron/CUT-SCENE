@@ -127,7 +127,7 @@ QTreeView::item:selected {
           <number>16</number>
          </property>
          <property name="editTriggers">
-          <set>QAbstractItemView::AnyKeyPressed</set>
+          <set>QAbstractItemView::NoEditTriggers</set>
          </property>
          <property name="showDropIndicator" stdset="0">
           <bool>false</bool>

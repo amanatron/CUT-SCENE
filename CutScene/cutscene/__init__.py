@@ -55,13 +55,11 @@ class CutSceneProject(OrderedInstanceHolder, NameDescription, Instantiable):
     def new(self, item, **kwargs):
         if item == "LEVEL":
             return self.addLevel(**kwargs)
-        elif item == "SCENE":
-            return self.addScene(**kwargs)
 
     @property
     def help(self):
         """ Get info on what items can be created by this class, and their required parameters """
-        return (paramHelp["LEVEL"], paramHelp["SCENE"])
+        return (paramHelp["LEVEL"])
 
     def addLevel(self, **kwargs):
         """ Add a new level to the project """

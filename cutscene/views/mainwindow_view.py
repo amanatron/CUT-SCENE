@@ -1,7 +1,6 @@
 from PySide2.QtWidgets import QMainWindow, QFileDialog
-from PySide2.QtCore import Slot
+from PySide2.QtCore import Slot, QItemSelectionModel
 from views.mainwindow_view_ui import Ui_MainWindow
-import os
 
 # Use Qt designer to create the .ui layout files to the extent that you assign variables names to widgets and adjust their basic properties. 
 # Don't bother adding signals or slots as it's generally easier just to connect them to functions from within the view class.
@@ -35,23 +34,14 @@ class MainView(QMainWindow):
             self.restoreGeometry(self._settings.value("geometry"))
             self.restoreState(self._settings.value("windowState"))
 
-        # connect widgets to controller
-        self._ui.levelsView.clicked.connect(self._main_controller.levelItemSelected)
-        self._ui.levelsView.clicked.connect(self.treeview_clicked)
-
-        # self._ui.sceneView.clicked.connect(self._model.levelItemSelected)
-        # self._ui.pushButton_reset.clicked.connect(lambda: self._main_controller.change_amount(0))
-
         # listen for model event signals
-        self._main_controller.projectLoaded.connect(self.on_ProjectLoad)
-        self._main_controller.activeLevelItemChanged.connect(self.on_LevelItemChanged)
+        self._model.levelsChanged.connect(self.on_LevelModelChanged)
+        self._model.projectLoaded.connect(self.on_ProjectLoad)
 
         self.connect_actions()
 
-        # self._model.even_odd_changed.connect(self.on_even_odd_changed)
-        # self._model.enable_reset_changed.connect(self.on_enable_reset_changed)
 
-    def treeview_clicked(self, index):
+    def levelsViewClicked(self, index):
         """ Expand items in the levelsView on single click rather than double click """
         if self._ui.levelsView.isExpanded(index):
             self._ui.levelsView.collapse(index)
@@ -60,10 +50,12 @@ class MainView(QMainWindow):
 
     def connect_actions(self):
         self._ui.buttonAddLevel.clicked.connect(self._main_controller.newLevel)
+        self._ui.buttonAddSubLevel.clicked.connect(self._main_controller.newSubLevel)
+        self._ui.buttonAddScene.clicked.connect(self._main_controller.newScene)
         self._ui.actionNew.triggered.connect(self._main_controller.newProject)
         self._ui.actionOpen.triggered.connect(self._main_controller.openProject)
         self._ui.actionSave.triggered.connect(self._main_controller.saveProject)
-        self._ui.actionSaveAs.triggered.connect(self._main_controller.saveAsProject)
+        self._ui.actionSaveAs.triggered.connect(self._main_controller.saveProjectAs)
         # self._ui.actionExit.triggered.connect(self._main_controller)
         # self._ui.actionUndo.triggered.connect(self.undo)
         # self._ui.actionRedo.triggered.connect(self.redo)
@@ -86,15 +78,31 @@ class MainView(QMainWindow):
 
     @Slot()
     def on_ProjectLoad(self):
-        self._ui.levelsView.setModel(self._main_controller.levels_model)
+        # manually select root item for convenience and connection some signals to slots
+        self._ui.levelsView.setModel(self._model.levels_model)
         self._ui.levelsView.expandToDepth(0)
+        self._ui.levelsView.selectionModel().currentChanged.connect(self._main_controller.levelItemSelected)
+        self._ui.levelsView.selectionModel().currentChanged.connect(self.on_LevelItemChanged)
+        self._ui.levelsView.clicked.connect(self.levelsViewClicked)
+        idx = self._model.levels_model.index(0,0)
+        self._ui.levelsView.selectionModel().select(idx, QItemSelectionModel.SelectCurrent)
+        self._ui.buttonAddLevel.setEnabled(True)
+        self._ui.buttonAddSubLevel.setEnabled(False)
+        self._ui.buttonAddScene.setEnabled(False)
+        print("new project loaded")
+
+    @Slot()
+    def on_LevelModelChanged(self):
+        pass
+        # 
         # levels = self._model.get_levels()
         # levelnames = [level.name for level in levels]
         # self._ui.levelsView.addItems(levelnames)
 
     @Slot(str)
-    def on_LevelItemChanged(self, itemType):
-        if itemType == "CUTSCENEPROJECT":
+    def on_LevelItemChanged(self, index):
+        item = self._model.levels_model.itemFromIndex(index)
+        if item.type == "CUTSCENEPROJECT":
             self._ui.buttonAddLevel.setEnabled(True)
             self._ui.buttonAddSubLevel.setEnabled(False)
             self._ui.buttonAddScene.setEnabled(False)

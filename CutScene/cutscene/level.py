@@ -60,9 +60,12 @@ class Level(LevelWrapper, Instantiable):
         """ Get info on what items can be created by this class, and their required parameters """
         return (paramHelp["SUBLEVEL"], paramHelp["SCENE"])
 
+    # extend new() for Level to include addScene
     def new(self, item, **kwargs):
         if item == "SUBLEVEL":
             return self.addSubLevel(**kwargs)
+        elif item == "SCENE":
+            return self.addScene(**kwargs)
 
     def addSubLevel(self, *args, **kwargs):
         subLevel = SubLevel(*args, **kwargs)
