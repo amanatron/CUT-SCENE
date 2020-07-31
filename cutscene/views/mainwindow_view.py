@@ -57,8 +57,8 @@ class MainView(QMainWindow):
         self._ui.actionSave.triggered.connect(self._main_controller.saveProject)
         self._ui.actionSaveAs.triggered.connect(self._main_controller.saveProjectAs)
         # self._ui.actionExit.triggered.connect(self._main_controller)
-        # self._ui.actionUndo.triggered.connect(self.undo)
-        # self._ui.actionRedo.triggered.connect(self.redo)
+        self._ui.actionUndo.triggered.connect(self._main_controller.undo)
+        self._ui.actionRedo.triggered.connect(self._main_controller.redo)
 
     def handleUnsavedChanges(self):
         if self._model.get_project():

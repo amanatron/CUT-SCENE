@@ -1,5 +1,5 @@
 from PySide2.QtCore import QObject, Signal, Slot, QModelIndex
-from PySide2.QtWidgets import QFileDialog
+from PySide2.QtWidgets import QFileDialog, QUndoStack, QUndoCommand
 from views.paramdialogue_view import ParamDialogue
 import os
 
@@ -12,7 +12,7 @@ class MainController(QObject):
         super().__init__()
         self._model = model
         self.activeLevelItem = None
-
+        self.undoStack = QUndoStack()
 
     def getParentFor(self, item_type):
         if item_type == "CUTSCENEPROJECT":
@@ -74,16 +74,35 @@ class MainController(QObject):
         self.newLevelItem("SCENE")
 
     def newLevelItem(self, item_type):
-        # toProceed = self.handleUnsavedChanges()
-        toProceed = True
-        if not toProceed:
-            return
         params = ParamDialogue.getParams(self, item_type)
         parent = self.getParentFor(item_type)
-        print(parent)
-        self._model.addLevelItem(parent, item_type, params)
+        command = newLevelItemCommand(self._model, parent, item_type, params)
+        self.undoStack.push(command)
+
+    def undo(self):
+        self.undoStack.undo()
+
+    def redo(self):
+        self.undoStack.redo()
 
     @Slot(int)
     def levelItemSelected(self, index):
         """ function called when an item is selected from the levelsView """
         self.activeLevelItem = self._model.levels_model.itemFromIndex(index)
+
+class newLevelItemCommand(QUndoCommand):
+    def __init__(self, model, parent, item_type, params):
+        QUndoCommand.__init__(self, f"Add new {item_type}")
+        self.parent_id = parent.id
+        self.item_type = item_type
+        self.params = params
+        self._model = model
+        self.item_id = None
+        
+    def redo(self):
+        self.params["itemID"] = self.item_id
+        parent = self._model.getLevelItemById(self.parent_id)
+        self.item_id = self._model.addLevelItem(parent, self.item_type, self.params)
+
+    def undo(self):
+        self._model.deleteLevelItem(self.item_id)

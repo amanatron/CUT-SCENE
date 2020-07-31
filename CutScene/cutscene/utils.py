@@ -54,6 +54,10 @@ paramHelp = {
 "SIGNAL":           ("Add Physics", []),
 }
 
+# Global registry, all instantiable items with an ID give their id and a reference to themselves into this dict
+global REGISTRY
+REGISTRY = {}
+
 class OrderedInstanceHolder(object):
     """ Helper class for classes that need to store instances in a specific order.
     classes that use this (not limited to): LevelWrapper, Animation, Scene
@@ -180,6 +184,14 @@ class Instantiable(object):
         else:
             assert type(itemID) is int
             self.itemID = itemID
+        self.type = objToDict(self)["__type__"]
+
+        global REGISTRY
+        REGISTRY[self.itemID] = self
+
+    @property
+    def id(self):
+        return self.itemID
 
     def edit(self, params):
         """ Allows any class to update its attributes from a dict """
@@ -191,9 +203,9 @@ class Instantiable(object):
 
     def dict(self):
         """Return a nice dict of the object, including its __type__"""
-        return obj_to_dict(self)
+        return objToDict(self)
 
-def obj_to_dict(obj):
+def objToDict(obj):
     obj_dict = {}
     obj_dict["__type__"] = obj.__class__.__name__.upper()
     for key, value in obj.__dict__.items():
@@ -204,5 +216,9 @@ def obj_to_dict(obj):
             obj_dict[key] = value
     return obj_dict
 
-def obj_from_id(id):
-    obj_dict = obj_to_dict(obj)
+def getByID(item_id):
+    global REGISTRY
+    try:
+        return REGISTRY[item_id]
+    except KeyError:
+        raise

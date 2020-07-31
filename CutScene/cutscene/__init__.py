@@ -1,4 +1,4 @@
-from cutscene.utils import OrderedInstanceHolder, NameDescription, Instantiable, paramHelp, obj_to_dict
+from cutscene.utils import OrderedInstanceHolder, NameDescription, Instantiable, paramHelp, objToDict
 from cutscene.level import Level, SubLevel
 from cutscene.scene import Scene
 from cutscene.entities import Characters, Objects
@@ -84,7 +84,7 @@ def loadProject(filePath):
 
 def saveProject(project, filePath):
     with open(filePath, "w") as projectFile:
-        json.dump(obj_to_dict(project), projectFile, default=obj_to_dict)
+        json.dump(objToDict(project), projectFile, default=objToDict)
 
 def dict_to_project(proj_dict):
 
@@ -127,4 +127,3 @@ def dict_to_project(proj_dict):
         restoreOrderedHolder(project, proj_dict["ordered_holder"])
 
     return project
-

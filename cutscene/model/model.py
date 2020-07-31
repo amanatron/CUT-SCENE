@@ -41,15 +41,62 @@ class Model(QObject):
         self.projectPath = projectPath
         self.projectSaved.emit()
 
-    def addLevelItem(self, parent, item_type, params):
-        level_inst = parent.obj.new(item_type, **params)
-        new_item = StandardItem(level_inst, level_inst.name)
-        parent.appendRow(new_item)
+    def addLevelItem(self, parent_item, item_type, params):
+        parent_inst = cutscene.utils.getByID(parent_item.id)
+        level_inst = parent_inst.new(item_type, **params)
+        level_item = StandardItem(level_inst, level_inst.name)
+        parent_item.appendRow(level_item)
+        self.levelsChanged.emit()
+        return level_inst.id
+
+    def getLevelItemById(self, item_id):
+        def searchById(parent_index, item_id):
+            parent_item = self.levels_model.itemFromIndex(parent_index)
+            if parent_item.id == item_id:
+                return parent_item
+            elif parent_item.type in ["LEVEL", "SUBLEVEL", "CUTSCENEPROJECT"]:
+                for row in range(parent_item.rowCount()):
+                    index = self.levels_model.index(row, 0, parent_index)
+                    item = searchById(index, item_id)
+                    if item:
+                        return item
+
+        root_index = self.levels_model.index(0,0)
+        obj = searchById(root_index, item_id)
+        if obj:
+            return obj
+        else:
+            raise ValueError(f"Item with id {item_id} not found")
+
+    def deleteLevelItem(self, item_id):
+        def deleteById(level, item_id):
+            for idx, item in enumerate(level.get()):
+                if item.id == item_id:
+                    level.remove(idx)
+                elif item.type in ["LEVEL", "SUBLEVEL"]:
+                    deleteById(item, item_id)
+        def deleteItemById(parent_index, item_id):
+            parent_item = self.levels_model.itemFromIndex(parent_index)
+            if parent_item.type in ["LEVEL", "SUBLEVEL", "CUTSCENEPROJECT"]:
+                for row in range(parent_item.rowCount()):
+                    index = self.levels_model.index(row, 0, parent_index)
+                    item = self.levels_model.itemFromIndex(index)
+                    if item.id == item_id:
+                        self.levels_model.removeRow(row, parent_index)
+                        return True
+                    else:
+                        ret = deleteItemById(index, item_id)
+                        if ret:
+                            return ret
+
+        root_index = self.levels_model.index(0,0)
+        deleteById(self.project, item_id)
+        deleteItemById(root_index, item_id)
         self.levelsChanged.emit()
 
     def getProject(self):
         return self.project
-
+ 
     def getLevels(self):
         return self.project.get()
 
@@ -71,8 +118,9 @@ class Model(QObject):
 class StandardItem(QStandardItem):
     def __init__(self, obj, name):
         super().__init__(name)
-        self.obj = obj
-        self.type = obj.dict()["__type__"]
+        _dict = obj.dict()
+        self.type = _dict["__type__"]
+        self.id = _dict["itemID"]
         if self.type == "SCENE":
             icon = QIcon()
             icon.addPixmap(QPixmap(":/levelViewIcons/img/icons/levelViewIcons/videogame_white_96x96.png"), QIcon.Normal, QIcon.Off)
