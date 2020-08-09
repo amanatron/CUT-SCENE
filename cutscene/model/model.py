@@ -49,6 +49,9 @@ class Model(QObject):
         self.levelsChanged.emit()
         return level_inst.id
 
+    def getInstByID(self, item_id):
+        return cutscene.utils.getByID(item_id)
+
     def getLevelItemById(self, item_id):
         def searchById(parent_index, item_id):
             parent_item = self.levels_model.itemFromIndex(parent_index)
@@ -119,7 +122,7 @@ class StandardItem(QStandardItem):
     def __init__(self, obj, name):
         super().__init__(name)
         _dict = obj.dict()
-        self.type = _dict["__type__"]
+        self.type = _dict["type"]
         self.id = _dict["itemID"]
         if self.type == "SCENE":
             icon = QIcon()
@@ -133,9 +136,9 @@ class StandardItem(QStandardItem):
     #     # item here refers to sceneElement
     #     def newItemEntry(element, parent_item):
     #         item_dict = element.dict()
-    #         new_item = StandardItem(element, item_dict["__type__"])
+    #         new_item = StandardItem(element, item_dict["type"])
     #         parent_item.appendRow(new_item)
-    #         if item_dict["__type__"] in ["ANIMATION", "SCENE"]:
+    #         if item_dict["type"] in ["ANIMATION", "SCENE"]:
     #             for item in element.get():
     #                 newItemEntry(item, new_item)
 

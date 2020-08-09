@@ -44,12 +44,13 @@ class MainController(QObject):
             # bit hacky but mm
             idx = self._model.levels_model.index(0,0)
             self.activeLevelItem = self._model.levels_model.itemFromIndex(idx)
-            print("active:", self.activeLevelItem)
 
 
     def newProject(self):
         params = ParamDialogue.getParams(self, "CUTSCENEPROJECT")
         self._model.newProject(params)
+        idx = self._model.levels_model.index(0,0)
+        self.activeLevelItem = self._model.levels_model.itemFromIndex(idx)
 
     def saveProject(self):
         projectPath = self._model.projectPath

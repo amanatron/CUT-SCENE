@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file '.\resources\mainwindow_view.ui',
 # licensing of '.\resources\mainwindow_view.ui' applies.
 #
-# Created: Tue Jul 28 11:50:27 2020
+# Created: Sun Aug  9 11:21:43 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,7 +13,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1239, 683)
+        MainWindow.resize(1432, 934)
         MainWindow.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -71,7 +71,7 @@ class Ui_MainWindow(object):
         self.levelsView.setFrameShadow(QtWidgets.QFrame.Plain)
         self.levelsView.setLineWidth(1)
         self.levelsView.setAutoScrollMargin(16)
-        self.levelsView.setEditTriggers(QtWidgets.QAbstractItemView.AnyKeyPressed)
+        self.levelsView.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.levelsView.setProperty("showDropIndicator", False)
         self.levelsView.setDragEnabled(True)
         self.levelsView.setSelectionMode(QtWidgets.QAbstractItemView.ContiguousSelection)
@@ -127,14 +127,56 @@ class Ui_MainWindow(object):
         self.buttonAddScene.setObjectName("buttonAddScene")
         self.horizontalLayout.addWidget(self.buttonAddScene)
         self.verticalLayout.addWidget(self.widget_2)
-        self.gridLayout.addWidget(self.widget, 1, 0, 1, 1)
-        self.listView = QtWidgets.QListView(self.centralwidget)
-        self.listView.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.listView.setObjectName("listView")
-        self.gridLayout.addWidget(self.listView, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.widget, 3, 0, 1, 1)
+        self.widget_3 = QtWidgets.QWidget(self.centralwidget)
+        self.widget_3.setObjectName("widget_3")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.widget_3)
+        self.verticalLayout_2.setSpacing(10)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 10)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.sceneView = QtWidgets.QGraphicsView(self.widget_3)
+        self.sceneView.setAcceptDrops(False)
+        self.sceneView.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.sceneView.setObjectName("sceneView")
+        self.verticalLayout_2.addWidget(self.sceneView)
+        self.widget_4 = QtWidgets.QWidget(self.widget_3)
+        self.widget_4.setStyleSheet("QPushButton {\n"
+"background-color: rgb(40, 57, 66);\n"
+"padding: 5px;\n"
+"border-radius: 3px\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background-color: rgb(52, 73, 85);\n"
+"padding: 5px;\n"
+"border-radius: 3px\n"
+"}")
+        self.widget_4.setObjectName("widget_4")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.widget_4)
+        self.horizontalLayout_2.setSpacing(10)
+        self.horizontalLayout_2.setContentsMargins(10, 0, 10, 0)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.pushButton = QtWidgets.QPushButton(self.widget_4)
+        self.pushButton.setText("")
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/add_box_grey_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton.setIcon(icon3)
+        self.pushButton.setIconSize(QtCore.QSize(30, 30))
+        self.pushButton.setObjectName("pushButton")
+        self.horizontalLayout_2.addWidget(self.pushButton)
+        self.pushButton_2 = QtWidgets.QPushButton(self.widget_4)
+        self.pushButton_2.setText("")
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/videogame_asset_grey_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_2.setIcon(icon4)
+        self.pushButton_2.setIconSize(QtCore.QSize(30, 30))
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.horizontalLayout_2.addWidget(self.pushButton_2)
+        self.verticalLayout_2.addWidget(self.widget_4)
+        self.gridLayout.addWidget(self.widget_3, 3, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1239, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1432, 26))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")

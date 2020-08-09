@@ -21,7 +21,7 @@ class CommandRemove(QUndoCommand):
         super(CommandRemove, self).__init__(description)
         self.parent = parent
         self.itemDict = obj_to_dict(item)
-        self.itemType = self.itemDict.pop("__type__").upper()
+        self.itemType = self.itemDict.pop("type").upper()
 
     def redo(self):
         parent.removeByID(self.itemDict["id"])
@@ -36,7 +36,7 @@ class CommandEdit(QUndoCommand):
         self.item = item
         self.newParams = itemParams
         self.oldParams = obj_to_dict(item)
-        self.oldParams.pop("__type__") # Not strictly necessary but hey,
+        self.oldParams.pop("type")     # Not strictly necessary but hey,
         self.oldParams.pop("id")       # let's be nice to the backend
 
     def redo(self):

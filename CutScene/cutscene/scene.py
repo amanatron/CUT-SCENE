@@ -36,11 +36,13 @@ class Scene(NameDescription, Instantiable):
     def __init__(self, 
                  name: str,
                  description: str,
+                 elements: Optional[list] = None,
+                 sceneMatrix: Optional[list] = None,
                  itemID: Optional[int] = None):
         NameDescription.__init__(self, name, description)
         Instantiable.__init__(self, itemID)
-        self.elements = []
-        self.sceneMatrix = []
+        self.elements = elements
+        self.sceneMatrix = sceneMatrix
 
     def __itemIdxFromId(self, elem_id):
         for idx, element in enumerate(self.elements):
@@ -58,6 +60,9 @@ class Scene(NameDescription, Instantiable):
     def __elementCount(self):
         return len(self.elements)
         # returns number of scene elements
+
+    def get(self):
+        return (self.elements, self.sceneMatrix)
 
     def addNew(self, item):
         # add row at bottom of scene matrix

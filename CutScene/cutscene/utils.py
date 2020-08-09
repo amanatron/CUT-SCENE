@@ -184,7 +184,7 @@ class Instantiable(object):
         else:
             assert type(itemID) is int
             self.itemID = itemID
-        self.type = objToDict(self)["__type__"]
+        self.type = objToDict(self)["type"]
 
         global REGISTRY
         REGISTRY[self.itemID] = self
@@ -202,12 +202,12 @@ class Instantiable(object):
                 raise ValueError("{} has no attribute {}".format(self, key))
 
     def dict(self):
-        """Return a nice dict of the object, including its __type__"""
+        """Return a nice dict of the object, including its type"""
         return objToDict(self)
 
 def objToDict(obj):
     obj_dict = {}
-    obj_dict["__type__"] = obj.__class__.__name__.upper()
+    obj_dict["type"] = obj.__class__.__name__.upper()
     for key, value in obj.__dict__.items():
         # eg turns "_Description__description" to "description"
         if "__" in key:

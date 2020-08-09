@@ -7,6 +7,10 @@
     <file>img/icons/levelIcons/videogame_asset_grey_96x96.png</file>
     <file>img/icons/levelIcons/videogame_asset_white_96x96.png</file>
   </qresource>
+  <qresource prefix="visualModeIcons">
+    <file>img/icons/elementIcons/delete_black_96x96.png</file>
+    <file>img/icons/elementIcons/edit_black_96x96.png</file>
+  </qresource>
   <qresource prefix="levelViewIcons">
     <file>img/icons/levelViewIcons/box_white_96x96.png</file>
     <file>img/icons/levelViewIcons/library_white_96x96.png</file>

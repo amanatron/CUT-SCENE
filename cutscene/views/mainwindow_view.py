@@ -1,6 +1,7 @@
 from PySide2.QtWidgets import QMainWindow, QFileDialog
 from PySide2.QtCore import Slot, QItemSelectionModel
 from views.mainwindow_view_ui import Ui_MainWindow
+from views.visualmodescene_view import VisualModeScene
 
 # Use Qt designer to create the .ui layout files to the extent that you assign variables names to widgets and adjust their basic properties. 
 # Don't bother adding signals or slots as it's generally easier just to connect them to functions from within the view class.
@@ -38,6 +39,7 @@ class MainView(QMainWindow):
         self._model.levelsChanged.connect(self.on_LevelModelChanged)
         self._model.projectLoaded.connect(self.on_ProjectLoad)
 
+        self.visualModeScene = VisualModeScene(model, main_controller)
         self.connect_actions()
 
 
@@ -78,18 +80,21 @@ class MainView(QMainWindow):
 
     @Slot()
     def on_ProjectLoad(self):
+        print("Project loaded")
         # manually select root item for convenience and connection some signals to slots
         self._ui.levelsView.setModel(self._model.levels_model)
         self._ui.levelsView.expandToDepth(0)
         self._ui.levelsView.selectionModel().currentChanged.connect(self._main_controller.levelItemSelected)
         self._ui.levelsView.selectionModel().currentChanged.connect(self.on_LevelItemChanged)
+        self._ui.levelsView.selectionModel().currentChanged.connect(self.visualModeScene.on_LevelItemChanged)
         self._ui.levelsView.clicked.connect(self.levelsViewClicked)
         idx = self._model.levels_model.index(0,0)
         self._ui.levelsView.selectionModel().select(idx, QItemSelectionModel.SelectCurrent)
         self._ui.buttonAddLevel.setEnabled(True)
         self._ui.buttonAddSubLevel.setEnabled(False)
         self._ui.buttonAddScene.setEnabled(False)
-        print("new project loaded")
+        
+        self._ui.sceneView.setScene(self.visualModeScene)
 
     @Slot()
     def on_LevelModelChanged(self):
@@ -110,6 +115,8 @@ class MainView(QMainWindow):
             self._ui.buttonAddLevel.setEnabled(True)
             self._ui.buttonAddSubLevel.setEnabled(True)
             self._ui.buttonAddScene.setEnabled(True)
+
+            # self.visualModeScene.loadScene(item)
         # elif itemType == "LEVEL":
         #     self._ui.buttonAddLevel.setEnabled(True)
         #     self._ui.buttonAddSubLevel.setEnabled(True)

@@ -91,7 +91,7 @@ def dict_to_project(proj_dict):
     def restoreOrderedHolder(parent, orderedHolder):
         for item in orderedHolder:
             # Get the classname of the item
-            item_type = item.pop("__type__")
+            item_type = item.pop("type")
             # See if the item has any contents eg an animation class with dialogue, act etc
             if "ordered_holder" in item.keys():
                 itemOrderedHolder = item.pop("ordered_holder")
