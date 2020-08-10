@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file '.\resources\mainwindow_view.ui',
 # licensing of '.\resources\mainwindow_view.ui' applies.
 #
-# Created: Sun Aug  9 11:21:43 2020
+# Created: Mon Aug 10 10:17:20 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -24,7 +24,9 @@ class Ui_MainWindow(object):
         self.widget = QtWidgets.QWidget(self.centralwidget)
         self.widget.setMinimumSize(QtCore.QSize(300, 0))
         self.widget.setMaximumSize(QtCore.QSize(300, 16777215))
-        self.widget.setStyleSheet("background-color: rgb(35, 47, 52);")
+        self.widget.setStyleSheet("background-color: rgb(35, 47, 52);\n"
+"\n"
+"")
         self.widget.setObjectName("widget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.widget)
         self.verticalLayout.setSpacing(10)
@@ -81,6 +83,30 @@ class Ui_MainWindow(object):
         self.levelsView.setObjectName("levelsView")
         self.levelsView.header().setVisible(False)
         self.verticalLayout.addWidget(self.levelsView)
+        self.buttonCreateProject = QtWidgets.QPushButton(self.widget)
+        self.buttonCreateProject.setStyleSheet("QPushButton {\n"
+"color: rgb(255, 255, 255);\n"
+"font: 9pt \"Segoe UI\";\n"
+"background-color: rgb(40, 57, 66);\n"
+"padding: 5px;\n"
+"border-radius: 3px\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background-color: rgb(52, 73, 85);\n"
+"padding: 5px;\n"
+"border-radius: 3px\n"
+"}\n"
+"\n"
+"")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/create_white_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.buttonCreateProject.setIcon(icon)
+        self.buttonCreateProject.setIconSize(QtCore.QSize(30, 30))
+        self.buttonCreateProject.setAutoDefault(False)
+        self.buttonCreateProject.setFlat(False)
+        self.buttonCreateProject.setObjectName("buttonCreateProject")
+        self.verticalLayout.addWidget(self.buttonCreateProject)
         self.widget_2 = QtWidgets.QWidget(self.widget)
         self.widget_2.setStyleSheet("QPushButton {\n"
 "background-color: rgb(40, 57, 66);\n"
@@ -101,28 +127,28 @@ class Ui_MainWindow(object):
         self.buttonAddLevel = QtWidgets.QPushButton(self.widget_2)
         self.buttonAddLevel.setStyleSheet("")
         self.buttonAddLevel.setText("")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/add_box_white_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        icon.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/add_box_grey_96x96.png"), QtGui.QIcon.Disabled, QtGui.QIcon.Off)
-        self.buttonAddLevel.setIcon(icon)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/add_box_white_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/add_box_grey_96x96.png"), QtGui.QIcon.Disabled, QtGui.QIcon.Off)
+        self.buttonAddLevel.setIcon(icon1)
         self.buttonAddLevel.setIconSize(QtCore.QSize(30, 30))
         self.buttonAddLevel.setObjectName("buttonAddLevel")
         self.horizontalLayout.addWidget(self.buttonAddLevel)
         self.buttonAddSubLevel = QtWidgets.QPushButton(self.widget_2)
         self.buttonAddSubLevel.setText("")
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/library_add_white_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        icon1.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/library_add_grey_96x96.png"), QtGui.QIcon.Disabled, QtGui.QIcon.Off)
-        self.buttonAddSubLevel.setIcon(icon1)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/library_add_white_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/library_add_grey_96x96.png"), QtGui.QIcon.Disabled, QtGui.QIcon.Off)
+        self.buttonAddSubLevel.setIcon(icon2)
         self.buttonAddSubLevel.setIconSize(QtCore.QSize(30, 30))
         self.buttonAddSubLevel.setObjectName("buttonAddSubLevel")
         self.horizontalLayout.addWidget(self.buttonAddSubLevel)
         self.buttonAddScene = QtWidgets.QPushButton(self.widget_2)
         self.buttonAddScene.setText("")
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/videogame_asset_white_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        icon2.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/videogame_asset_grey_96x96.png"), QtGui.QIcon.Disabled, QtGui.QIcon.Off)
-        self.buttonAddScene.setIcon(icon2)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/videogame_asset_white_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/videogame_asset_grey_96x96.png"), QtGui.QIcon.Disabled, QtGui.QIcon.Off)
+        self.buttonAddScene.setIcon(icon3)
         self.buttonAddScene.setIconSize(QtCore.QSize(30, 30))
         self.buttonAddScene.setObjectName("buttonAddScene")
         self.horizontalLayout.addWidget(self.buttonAddScene)
@@ -158,17 +184,17 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.pushButton = QtWidgets.QPushButton(self.widget_4)
         self.pushButton.setText("")
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/add_box_grey_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton.setIcon(icon3)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/add_box_grey_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton.setIcon(icon4)
         self.pushButton.setIconSize(QtCore.QSize(30, 30))
         self.pushButton.setObjectName("pushButton")
         self.horizontalLayout_2.addWidget(self.pushButton)
         self.pushButton_2 = QtWidgets.QPushButton(self.widget_4)
         self.pushButton_2.setText("")
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/videogame_asset_grey_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_2.setIcon(icon4)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/videogame_asset_grey_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_2.setIcon(icon5)
         self.pushButton_2.setIconSize(QtCore.QSize(30, 30))
         self.pushButton_2.setObjectName("pushButton_2")
         self.horizontalLayout_2.addWidget(self.pushButton_2)
@@ -215,6 +241,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "CutScene", None, -1))
         self.label.setText(QtWidgets.QApplication.translate("MainWindow", "Project Explorer", None, -1))
+        self.buttonCreateProject.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Create Project", None, -1))
+        self.buttonCreateProject.setText(QtWidgets.QApplication.translate("MainWindow", "Create Project", None, -1))
         self.buttonAddLevel.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Add Level", None, -1))
         self.buttonAddSubLevel.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Add SubLevel", None, -1))
         self.buttonAddScene.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Add Scene", None, -1))

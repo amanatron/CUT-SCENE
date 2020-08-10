@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file '.\resources\paramdialogue_view.ui',
 # licensing of '.\resources\paramdialogue_view.ui' applies.
 #
-# Created: Sun Aug  9 11:21:43 2020
+# Created: Mon Aug 10 10:17:20 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!

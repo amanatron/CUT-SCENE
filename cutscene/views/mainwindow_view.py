@@ -42,6 +42,10 @@ class MainView(QMainWindow):
         self.visualModeScene = VisualModeScene(model, main_controller)
         self.connect_actions()
 
+        self._ui.buttonAddLevel.setEnabled(False)
+        self._ui.buttonAddSubLevel.setEnabled(False)
+        self._ui.buttonAddScene.setEnabled(False)
+
 
     def levelsViewClicked(self, index):
         """ Expand items in the levelsView on single click rather than double click """
@@ -51,6 +55,7 @@ class MainView(QMainWindow):
             self._ui.levelsView.expand(index)
 
     def connect_actions(self):
+        self._ui.buttonCreateProject.clicked.connect(self._main_controller.newProject)
         self._ui.buttonAddLevel.clicked.connect(self._main_controller.newLevel)
         self._ui.buttonAddSubLevel.clicked.connect(self._main_controller.newSubLevel)
         self._ui.buttonAddScene.clicked.connect(self._main_controller.newScene)
@@ -93,6 +98,7 @@ class MainView(QMainWindow):
         self._ui.buttonAddLevel.setEnabled(True)
         self._ui.buttonAddSubLevel.setEnabled(False)
         self._ui.buttonAddScene.setEnabled(False)
+        self._ui.buttonCreateProject.hide()
         
         self._ui.sceneView.setScene(self.visualModeScene)
 
