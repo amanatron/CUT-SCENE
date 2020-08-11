@@ -8,11 +8,26 @@ import os
 
 
 class MainController(QObject):
+    activeSceneChanged = Signal()
+
     def __init__(self, model):
         super().__init__()
         self._model = model
         self.activeLevelItem = None
+        self.activeScene = None
         self.undoStack = QUndoStack()
+
+    @property
+    def activeScene(self):
+        return self.__activeScene
+
+    @activeScene.setter
+    def activeScene(self, item):
+        if item:
+            self.__activeScene = self._model.getInstByID(item.id)
+        else:
+            self.__activeScene = None
+        self.activeSceneChanged.emit()
 
     def getParentFor(self, item_type):
         if item_type == "CUTSCENEPROJECT":
@@ -74,8 +89,24 @@ class MainController(QObject):
     def newScene(self):
         self.newLevelItem("SCENE")
 
+    def newAnimation(self):
+        self.newSceneItem("ANIMATION")
+
+    def newObjective(self):
+        self.newSceneItem("OBJECTIVE")
+
+    def newSceneItem(self, item_type):
+        params = ParamDialogue.getParams(self, item_type)
+        if not params:
+            return
+        parent = self.activeScene
+        command = newSceneItemCommand(self._model, parent, item_type, params)
+        self.undoStack.push(command)
+
     def newLevelItem(self, item_type):
         params = ParamDialogue.getParams(self, item_type)
+        if not params:
+            return
         parent = self.getParentFor(item_type)
         command = newLevelItemCommand(self._model, parent, item_type, params)
         self.undoStack.push(command)
@@ -90,6 +121,8 @@ class MainController(QObject):
     def levelItemSelected(self, index):
         """ function called when an item is selected from the levelsView """
         self.activeLevelItem = self._model.levels_model.itemFromIndex(index)
+        if self.activeLevelItem.type == "SCENE":
+            self.activeScene = self.activeLevelItem
 
 class newLevelItemCommand(QUndoCommand):
     def __init__(self, model, parent, item_type, params):
@@ -104,6 +137,23 @@ class newLevelItemCommand(QUndoCommand):
         self.params["itemID"] = self.item_id
         parent = self._model.getLevelItemById(self.parent_id)
         self.item_id = self._model.addLevelItem(parent, self.item_type, self.params)
+
+    def undo(self):
+        self._model.deleteLevelItem(self.item_id)
+
+class newSceneItemCommand(QUndoCommand):
+    def __init__(self, model, parent, item_type, params):
+        QUndoCommand.__init__(self, f"Add new {item_type}")
+        self.parent_id = parent.id
+        self.item_type = item_type
+        self.params = params
+        self._model = model
+        self.item_id = None
+        
+    def redo(self):
+        self.params["itemID"] = self.item_id
+        parent = self._model.getLevelItemById(self.parent_id)
+        self.item_id = self._model.addSceneItem(parent, self.item_type, self.params)
 
     def undo(self):
         self._model.deleteLevelItem(self.item_id)

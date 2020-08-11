@@ -24,10 +24,10 @@ class VisualModeScene(QGraphicsScene):
         # self._ui.setupUi(self)
 
         # listen for model event signals
-        self._model.levelsChanged.connect(self.on_LevelModelChanged)
-        self._model.projectLoaded.connect(self.on_ProjectLoad)
+        self._main_controller.activeSceneChanged.connect(self.activeSceneChanged)
 
         self.connectActions()
+
 
 
     def connectActions(self):
@@ -35,25 +35,14 @@ class VisualModeScene(QGraphicsScene):
         pass
 
     def loadScene(self, scene):
-        self.scene = self._model.getInstByID(scene.id)
+        self.scene = scene
         for element in self.scene.elements:
             widget = VisualModeElement(element)
             self.addWidget(widget)
 
     @Slot()
-    def on_ProjectLoad(self):
-        # might need this
-        pass
-
-    @Slot()
-    def on_LevelModelChanged(self):
-        # might need this
-        pass
-
-    @Slot(str)
-    def on_LevelItemChanged(self, index):
-        item = self._model.levels_model.itemFromIndex(index)
-
-        if item.type == "SCENE":
-            self.loadScene(item)
+    def activeSceneChanged(self):
+        scene = self._main_controller.activeScene
+        if scene:
+            self.loadScene(scene)
             print("load a new scene")

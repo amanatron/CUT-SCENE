@@ -1,4 +1,4 @@
-from PySide2.QtWidgets import QMainWindow, QFileDialog
+from PySide2.QtWidgets import QMainWindow, QFileDialog, QMenu
 from PySide2.QtCore import Slot, QItemSelectionModel
 from views.mainwindow_view_ui import Ui_MainWindow
 from views.visualmodescene_view import VisualModeScene
@@ -38,14 +38,16 @@ class MainView(QMainWindow):
         # listen for model event signals
         self._model.levelsChanged.connect(self.on_LevelModelChanged)
         self._model.projectLoaded.connect(self.on_ProjectLoad)
+        self._main_controller.activeSceneChanged.connect(self.activeSceneChanged)
 
         self.visualModeScene = VisualModeScene(model, main_controller)
         self.connect_actions()
 
+        # manually set initial button states
+        self.activeSceneChanged()
         self._ui.buttonAddLevel.setEnabled(False)
         self._ui.buttonAddSubLevel.setEnabled(False)
         self._ui.buttonAddScene.setEnabled(False)
-
 
     def levelsViewClicked(self, index):
         """ Expand items in the levelsView on single click rather than double click """
@@ -59,6 +61,8 @@ class MainView(QMainWindow):
         self._ui.buttonAddLevel.clicked.connect(self._main_controller.newLevel)
         self._ui.buttonAddSubLevel.clicked.connect(self._main_controller.newSubLevel)
         self._ui.buttonAddScene.clicked.connect(self._main_controller.newScene)
+        self._ui.buttonAddAnimation.clicked.connect(self._main_controller.newAnimation)
+        self._ui.buttonAddObjective.clicked.connect(self._main_controller.newObjective)
         self._ui.actionNew.triggered.connect(self._main_controller.newProject)
         self._ui.actionOpen.triggered.connect(self._main_controller.openProject)
         self._ui.actionSave.triggered.connect(self._main_controller.saveProject)
@@ -91,7 +95,6 @@ class MainView(QMainWindow):
         self._ui.levelsView.expandToDepth(0)
         self._ui.levelsView.selectionModel().currentChanged.connect(self._main_controller.levelItemSelected)
         self._ui.levelsView.selectionModel().currentChanged.connect(self.on_LevelItemChanged)
-        self._ui.levelsView.selectionModel().currentChanged.connect(self.visualModeScene.on_LevelItemChanged)
         self._ui.levelsView.clicked.connect(self.levelsViewClicked)
         idx = self._model.levels_model.index(0,0)
         self._ui.levelsView.selectionModel().select(idx, QItemSelectionModel.SelectCurrent)
@@ -109,6 +112,15 @@ class MainView(QMainWindow):
         # levels = self._model.get_levels()
         # levelnames = [level.name for level in levels]
         # self._ui.levelsView.addItems(levelnames)
+
+    @Slot()
+    def activeSceneChanged(self):
+        if self._main_controller.activeScene:
+            self._ui.buttonAddObjective.setEnabled(True)
+            self._ui.buttonAddAnimation.setEnabled(True)
+        else:
+            self._ui.buttonAddObjective.setEnabled(False)
+            self._ui.buttonAddAnimation.setEnabled(False)
 
     @Slot(str)
     def on_LevelItemChanged(self, index):

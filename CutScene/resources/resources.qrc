@@ -9,8 +9,46 @@
     <file>img/icons/levelIcons/videogame_asset_white_96x96.png</file>
   </qresource>
   <qresource prefix="visualModeIcons">
+    <file>img/icons/visualModeIcons/forum_black_96x96.png</file>
+    <file>img/icons/visualModeIcons/comment_black_96x96.png</file>
+    <file>img/icons/visualModeIcons/vertical_align_bottom_black_96x96.png</file>
+    <file>img/icons/visualModeIcons/code_black_96x96.png</file>
+    <file>img/icons/visualModeIcons/keyboard_black_96x96.png</file>
+    <file>img/icons/visualModeIcons/explore_black_96x96.png</file>
+    <file>img/icons/visualModeIcons/forum_black_96x96(1).png</file>
     <file>img/icons/elementIcons/delete_black_96x96.png</file>
     <file>img/icons/elementIcons/edit_black_96x96.png</file>
+  </qresource>
+  <qresource prefix="paintIcons">
+    <file>img/icons/paintIcons/blue-folder-open-image.png</file>
+    <file>img/icons/paintIcons/border-weight.png</file>
+    <file>img/icons/paintIcons/cake.png</file>
+    <file>img/icons/paintIcons/disk.png</file>
+    <file>img/icons/paintIcons/document-image.png</file>
+    <file>img/icons/paintIcons/edit.png</file>
+    <file>img/icons/paintIcons/edit-bold.png</file>
+    <file>img/icons/paintIcons/edit-italic.png</file>
+    <file>img/icons/paintIcons/edit-underline.png</file>
+    <file>img/icons/paintIcons/eraser.png</file>
+    <file>img/icons/paintIcons/layer-shape.png</file>
+    <file>img/icons/paintIcons/layer-shape-ellipse.png</file>
+    <file>img/icons/paintIcons/layer-shape-line.png</file>
+    <file>img/icons/paintIcons/layer-shape-polygon.png</file>
+    <file>img/icons/paintIcons/layer-shape-polyline.png</file>
+    <file>img/icons/paintIcons/layer-shape-round.png</file>
+    <file>img/icons/paintIcons/magnifier-zoom.png</file>
+    <file>img/icons/paintIcons/paint-brush.png</file>
+    <file>img/icons/paintIcons/paint-can.png</file>
+    <file>img/icons/paintIcons/paint-can-color.png</file>
+    <file>img/icons/paintIcons/pencil.png</file>
+    <file>img/icons/paintIcons/piecasso.ico</file>
+    <file>img/icons/paintIcons/piecasso.png</file>
+    <file>img/icons/paintIcons/pipette.png</file>
+    <file>img/icons/paintIcons/printer.png</file>
+    <file>img/icons/paintIcons/selection.png</file>
+    <file>img/icons/paintIcons/selection-poly.png</file>
+    <file>img/icons/paintIcons/spray.png</file>
+    <file>img/icons/paintIcons/stamp.png</file>
   </qresource>
   <qresource prefix="levelViewIcons">
     <file>img/icons/levelViewIcons/box_white_96x96.png</file>

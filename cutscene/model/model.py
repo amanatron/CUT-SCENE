@@ -49,6 +49,10 @@ class Model(QObject):
         self.levelsChanged.emit()
         return level_inst.id
 
+    def addSceneItem(self, parent_item, item_type, params):
+        print(f"model called to add {item_type} to {parent_item.type} with params: {params}")
+        pass
+
     def getInstByID(self, item_id):
         return cutscene.utils.getByID(item_id)
 
@@ -128,7 +132,6 @@ class StandardItem(QStandardItem):
             icon = QIcon()
             icon.addPixmap(QPixmap(":/levelViewIcons/img/icons/levelViewIcons/videogame_white_96x96.png"), QIcon.Normal, QIcon.Off)
             self.setIcon(icon)
-
 
 
     # def initSceneModel(self, scene):

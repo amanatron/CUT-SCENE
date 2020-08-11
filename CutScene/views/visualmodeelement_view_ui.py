@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file '.\resources\visualmodeelement_view.ui',
 # licensing of '.\resources\visualmodeelement_view.ui' applies.
 #
-# Created: Mon Aug 10 10:17:21 2020
+# Created: Mon Aug 10 18:48:42 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!

@@ -91,6 +91,9 @@ margin-left: 5px;</string>
        </item>
        <item>
         <widget class="QTreeView" name="levelsView">
+         <property name="contextMenuPolicy">
+          <enum>Qt::DefaultContextMenu</enum>
+         </property>
          <property name="styleSheet">
           <string notr="true">QTreeView {
     show-decoration-selected: 1;
@@ -332,13 +335,13 @@ border-radius: 3px
         <widget class="QWidget" name="widget_4" native="true">
          <property name="styleSheet">
           <string notr="true">QPushButton {
-background-color: rgb(40, 57, 66);
+background-color: rgb(238, 238, 238);
 padding: 5px;
 border-radius: 3px
 }
 
 QPushButton:hover {
-background-color: rgb(52, 73, 85);
+background-color: rgb(200, 200, 200);
 padding: 5px;
 border-radius: 3px
 }</string>
@@ -360,13 +363,47 @@ border-radius: 3px
            <number>0</number>
           </property>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QLabel" name="sceneToolsLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font: 14pt &quot;Segoe UI&quot;;</string>
+            </property>
+            <property name="text">
+             <string>Scene Tools</string>
+            </property>
+            <property name="margin">
+             <number>1</number>
+            </property>
+            <property name="indent">
+             <number>10</number>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::NoTextInteraction</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonAddObjective">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>Add Objective</string>
+            </property>
             <property name="text">
              <string/>
             </property>
             <property name="icon">
              <iconset resource="resources.qrc">
-              <normaloff>:/levelIcons/img/icons/levelIcons/add_box_grey_96x96.png</normaloff>:/levelIcons/img/icons/levelIcons/add_box_grey_96x96.png</iconset>
+              <normaloff>:/visualModeIcons/img/icons/visualModeIcons/explore_black_96x96.png</normaloff>:/visualModeIcons/img/icons/visualModeIcons/explore_black_96x96.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -377,13 +414,22 @@ border-radius: 3px
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_2">
+           <widget class="QPushButton" name="buttonAddAnimation">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>Add Animation</string>
+            </property>
             <property name="text">
              <string/>
             </property>
             <property name="icon">
              <iconset resource="resources.qrc">
-              <normaloff>:/levelIcons/img/icons/levelIcons/videogame_asset_grey_96x96.png</normaloff>:/levelIcons/img/icons/levelIcons/videogame_asset_grey_96x96.png</iconset>
+              <normaloff>:/visualModeIcons/img/icons/visualModeIcons/forum_black_96x96.png</normaloff>:/visualModeIcons/img/icons/visualModeIcons/forum_black_96x96.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -392,6 +438,19 @@ border-radius: 3px
              </size>
             </property>
            </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>

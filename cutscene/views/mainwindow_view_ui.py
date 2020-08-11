@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file '.\resources\mainwindow_view.ui',
 # licensing of '.\resources\mainwindow_view.ui' applies.
 #
-# Created: Mon Aug 10 10:17:20 2020
+# Created: Mon Aug 10 18:48:41 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -46,6 +46,7 @@ class Ui_MainWindow(object):
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.levelsView = QtWidgets.QTreeView(self.widget)
+        self.levelsView.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
         self.levelsView.setStyleSheet("QTreeView {\n"
 "    show-decoration-selected: 1;\n"
 "    color: rgb(255, 255, 255);\n"
@@ -167,13 +168,13 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addWidget(self.sceneView)
         self.widget_4 = QtWidgets.QWidget(self.widget_3)
         self.widget_4.setStyleSheet("QPushButton {\n"
-"background-color: rgb(40, 57, 66);\n"
+"background-color: rgb(238, 238, 238);\n"
 "padding: 5px;\n"
 "border-radius: 3px\n"
 "}\n"
 "\n"
 "QPushButton:hover {\n"
-"background-color: rgb(52, 73, 85);\n"
+"background-color: rgb(200, 200, 200);\n"
 "padding: 5px;\n"
 "border-radius: 3px\n"
 "}")
@@ -182,22 +183,46 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setSpacing(10)
         self.horizontalLayout_2.setContentsMargins(10, 0, 10, 0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.pushButton = QtWidgets.QPushButton(self.widget_4)
-        self.pushButton.setText("")
+        self.sceneToolsLabel = QtWidgets.QLabel(self.widget_4)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.sceneToolsLabel.sizePolicy().hasHeightForWidth())
+        self.sceneToolsLabel.setSizePolicy(sizePolicy)
+        self.sceneToolsLabel.setStyleSheet("font: 14pt \"Segoe UI\";")
+        self.sceneToolsLabel.setMargin(1)
+        self.sceneToolsLabel.setIndent(10)
+        self.sceneToolsLabel.setTextInteractionFlags(QtCore.Qt.NoTextInteraction)
+        self.sceneToolsLabel.setObjectName("sceneToolsLabel")
+        self.horizontalLayout_2.addWidget(self.sceneToolsLabel)
+        self.buttonAddObjective = QtWidgets.QPushButton(self.widget_4)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.buttonAddObjective.sizePolicy().hasHeightForWidth())
+        self.buttonAddObjective.setSizePolicy(sizePolicy)
+        self.buttonAddObjective.setText("")
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/add_box_grey_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton.setIcon(icon4)
-        self.pushButton.setIconSize(QtCore.QSize(30, 30))
-        self.pushButton.setObjectName("pushButton")
-        self.horizontalLayout_2.addWidget(self.pushButton)
-        self.pushButton_2 = QtWidgets.QPushButton(self.widget_4)
-        self.pushButton_2.setText("")
+        icon4.addPixmap(QtGui.QPixmap(":/visualModeIcons/img/icons/visualModeIcons/explore_black_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.buttonAddObjective.setIcon(icon4)
+        self.buttonAddObjective.setIconSize(QtCore.QSize(30, 30))
+        self.buttonAddObjective.setObjectName("buttonAddObjective")
+        self.horizontalLayout_2.addWidget(self.buttonAddObjective)
+        self.buttonAddAnimation = QtWidgets.QPushButton(self.widget_4)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.buttonAddAnimation.sizePolicy().hasHeightForWidth())
+        self.buttonAddAnimation.setSizePolicy(sizePolicy)
+        self.buttonAddAnimation.setText("")
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(":/levelIcons/img/icons/levelIcons/videogame_asset_grey_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_2.setIcon(icon5)
-        self.pushButton_2.setIconSize(QtCore.QSize(30, 30))
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.horizontalLayout_2.addWidget(self.pushButton_2)
+        icon5.addPixmap(QtGui.QPixmap(":/visualModeIcons/img/icons/visualModeIcons/forum_black_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.buttonAddAnimation.setIcon(icon5)
+        self.buttonAddAnimation.setIconSize(QtCore.QSize(30, 30))
+        self.buttonAddAnimation.setObjectName("buttonAddAnimation")
+        self.horizontalLayout_2.addWidget(self.buttonAddAnimation)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem)
         self.verticalLayout_2.addWidget(self.widget_4)
         self.gridLayout.addWidget(self.widget_3, 3, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -246,6 +271,9 @@ class Ui_MainWindow(object):
         self.buttonAddLevel.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Add Level", None, -1))
         self.buttonAddSubLevel.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Add SubLevel", None, -1))
         self.buttonAddScene.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Add Scene", None, -1))
+        self.sceneToolsLabel.setText(QtWidgets.QApplication.translate("MainWindow", "Scene Tools", None, -1))
+        self.buttonAddObjective.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Add Objective", None, -1))
+        self.buttonAddAnimation.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Add Animation", None, -1))
         self.menuFile.setTitle(QtWidgets.QApplication.translate("MainWindow", "File", None, -1))
         self.menuEdit.setTitle(QtWidgets.QApplication.translate("MainWindow", "Edit", None, -1))
         self.actionNew.setText(QtWidgets.QApplication.translate("MainWindow", "New", None, -1))
