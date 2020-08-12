@@ -1,4 +1,6 @@
 import uuid
+import base64
+from typing import Optional
 
 paramHelp = {
 "CUTSCENEPROJECT":  ("Create a New Project",
@@ -8,26 +10,31 @@ paramHelp = {
                          ("genre",           "Genre",             "shortStr")]),
 "LEVEL":            ("Add Level",
                         [("name",            "Name",              "shortStr"),
-                         ("description",     "Description",       "Str")]),
+                         ("description",     "Description",       "Str"),
+                         ("img",             "Map",               "mapImg")]),
 "SUBLEVEL":         ("Add Sublevel",
                         [("name",            "Name",              "shortStr"),
-                         ("description",     "Description",       "Str")]),
+                         ("description",     "Description",       "Str"),
+                         ("img",             "Map",               "mapImg")]),
 "SCENE":            ("Add Scene",
                         [("name",            "Name",              "shortStr"),
-                         ("description",     "Description",       "Str")]),
+                         ("description",     "Description",       "Str"),
+                         ("img",             "Map",               "mapImg")]),
 "CHARACTER":        ("Create Character",
                         [("name",            "Name",              "shortStr"),
                          ("description",     "Description",       "Str"),
-                         ("entityType",      "Character Type",    ["PLAYER", "ENEMY", "OTHER"])]),
+                         ("entityType",      "Character Type",    ["PLAYER", "ENEMY", "OTHER"]),
+                         ("img",             "Character Image",   "charImg")]),
 "OBJECT":           ("Create Object",
                         [("name",            "Name",              "shortStr"),
                          ("description",     "Description",       "Str"),
-                         ("entityType",      "Object Type",       ["RESPONSIVE", "NON-RESPONSIVE"])]),
+                         ("entityType",      "Object Type",       ["RESPONSIVE", "NON-RESPONSIVE"]),
+                         ("img",             "Object Image",      "charImg")]),
 "ACTION":           ("Add Action",
                         [("description",     "Description",       "Str")]),
 "ANIMATION":        ("Create Animation",
                         [("name",            "Name",              "shortStr"),
-                     ("description",     "Description",       "Str")]),
+                         ("description",     "Description",       "Str")]),
 "TRANSITION":       ("Add Transistion",
                         [("description",     "Description",       "Str")]),
 "ACT":              ("Add Act",
@@ -137,6 +144,38 @@ class OrderedInstanceHolder(object):
             raise ValueError("newIndex out of range: {}".format(newIndex))
         item = self.__ordered_holder.pop(index)
         self.__ordered_holder.insert(newIndex, item)
+
+class Image(object):
+    """ Base class for image support. Stores image data as base64 encoded strings """
+    def __init__(self,
+                 img: Optional[str] = None):
+        self.img = img
+
+    @property
+    def img(self) -> str:
+        return self.__img
+
+    @img.setter
+    def img(self, img: str):
+        try:
+            if not img:
+                self.__img = None
+                return
+            if type(img) is bytes:
+                img = img.decode("utf-8")
+            base64.b64decode(img)
+            assert type(img) is str
+            self.__img = img
+        except:
+            raise
+
+class CharacterImage(Image):
+    def __init__(self, img):
+        Image.__init__(self, img)
+
+class MapImage(Image):
+    def __init__(self, img):
+        Image.__init__(self, img)
 
 class Name(object):
     """Helper class providing name functionality to other classes"""

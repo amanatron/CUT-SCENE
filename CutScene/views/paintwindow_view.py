@@ -7,21 +7,13 @@ from PySide2 import QtGui, QtWidgets, QtCore
 from PySide2.QtGui import QPainter, QBitmap, QPolygon, QPen, QBrush, QColor
 from PySide2.QtCore import Qt, Signal
 
-#from views.paintwindow_view_ui import Ui_MainWindow
-from paintwindow_view_ui import Ui_MainWindow
+from views.paintwindow_view_ui import Ui_MainWindow
+# from paintwindow_view_ui import Ui_Dialog
 
 import os
 import sys
 import random
 import types
-
-try:
-    # Include in try/except block if you're also targeting Mac/Linux
-    from PySide2.QtWinExtras import QtWin
-    myappid = 'com.learnpyqt.minute-apps.paint'
-    QtWin.setCurrentProcessExplicitAppUserModelID(myappid)    
-except ImportError:
-    pass
 
 
 BRUSH_MULT = 3
@@ -687,10 +679,10 @@ class Canvas(QLabel):
         self.generic_shape_mouseReleaseEvent(e)
 
 
-class MainWindow(QMainWindow, Ui_MainWindow):
+class PaintWindow(QMainWindow, Ui_MainWindow):
 
     def __init__(self, *args, **kwargs):
-        super(MainWindow, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.setupUi(self)
 
         # Replace canvas placeholder from QtDesigner.
@@ -893,12 +885,3 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def flip_vertical(self):
         pixmap = self.canvas.pixmap()
         self.canvas.setPixmap(pixmap.transformed(QTransform().scale(1, -1)))
-
-
-
-if __name__ == '__main__':
-
-    app = QApplication(sys.argv)
-    app.setWindowIcon(QtGui.QIcon(':/icons/piecasso.ico'))
-    window = MainWindow()
-    app.exec_()

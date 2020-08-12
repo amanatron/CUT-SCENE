@@ -117,6 +117,7 @@ class Graph(Node):
                 w=x_+w_-x
             if(y+h<y_+h_):
                 h=y_+h_-y 
+        print("SIZE: ", x, y, w, h)
         return x,y,w,h
 
 

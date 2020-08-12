@@ -1,17 +1,19 @@
-from cutscene.utils import OrderedInstanceHolder, NameDescription, Instantiable
+from cutscene.utils import OrderedInstanceHolder, NameDescription, Instantiable, MapImage
 from cutscene.scene import Scene
 from typing import Optional
 from uuid import uuid4
 
-class LevelWrapper(OrderedInstanceHolder, NameDescription):
+class LevelWrapper(OrderedInstanceHolder, NameDescription, MapImage):
     """Thin wrapper around level and sublevel classes.
     These share many similar methods so a wrapper is used here."""
 
     def __init__(self,
                  name: str,
-                 description: str):
+                 description: str,
+                 img: Optional[str] = None):
         OrderedInstanceHolder.__init__(self)
         NameDescription.__init__(self, name, description)
+        MapImage.__init__(self, img)
 
     def addScene(self, *args, **kwargs):
         scene = Scene(*args, **kwargs)
@@ -51,8 +53,9 @@ class Level(LevelWrapper, Instantiable):
     def __init__(self, 
                  name: str,
                  description: str,
+                 img: Optional[str] = None,
                  itemID: Optional[int] = None):
-        LevelWrapper.__init__(self, name, description)
+        LevelWrapper.__init__(self, name, description, img)
         Instantiable.__init__(self, itemID)
 
     @property
@@ -86,8 +89,9 @@ class SubLevel(LevelWrapper, Instantiable):
     def __init__(self, 
                  name: str,
                  description: str,
+                 img: Optional[str] = None,
                  itemID: Optional[int] = None):
-        LevelWrapper.__init__(self, name, description)
+        LevelWrapper.__init__(self, name, description, img)
         Instantiable.__init__(self, itemID)
 
     @property

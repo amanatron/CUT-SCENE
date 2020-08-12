@@ -1,6 +1,12 @@
-from PySide2.QtWidgets import QDialog, QLineEdit, QPlainTextEdit, QComboBox
+from PySide2.QtWidgets import QDialog, QLineEdit, QPlainTextEdit, QComboBox, QWidget, QLabel, QFileDialog, QVBoxLayout, QDialogButtonBox
+from PySide2.QtGui import QPixmap, QResizeEvent
+from PySide2.QtCore import Qt, QBuffer, QIODevice
 from views.paramdialogue_view_ui import Ui_paramdialogue
+from views.paintdialogue_view_ui import Ui_PaintDialog
+from views.addimage_view_ui import Ui_addimage
+from views.paintwindow_view import PaintWindow
 from cutscene.utils import paramHelp
+import base64
 
 class ParamDialogue(QDialog):
     def __init__(self, parent, paramType):
@@ -18,8 +24,7 @@ class ParamDialogue(QDialog):
     @classmethod
     def getParams(self, parent, paramType):
         dialog = self(parent, paramType)
-        result = dialog.exec_()
-        if result:
+        if dialog.exec_():
             params = {}
             for row in dialog._rows:
                 params[row.param_str] = row.get()
@@ -27,8 +32,9 @@ class ParamDialogue(QDialog):
         else:
             return None
 
-class DialogueRow(object):
+class DialogueRow(QWidget):
     def __init__(self, param_str, label, input_type):
+        super().__init__()
         self.param_str = param_str
         self.input_type = input_type
         self.label = label
@@ -38,6 +44,8 @@ class DialogueRow(object):
             self.widget = QPlainTextEdit()
         elif type(input_type) is list:
             self.widget = QComboBox(input_type)
+        elif "Img" in input_type:
+            self.widget = AddImageWidget()
         else:
             raise ValueError("Unsupported input type: {}".format(input_type))
 
@@ -48,4 +56,93 @@ class DialogueRow(object):
             return self.widget.text()
         elif type(self.input_type) is list:
             return self.widget.currentText()
+        elif "Img" in self.input_type:
+            buff = QBuffer()
+            buff.open(QIODevice.ReadWrite)
+            self.widget.pixmap.save(buff, "PNG")
+            data = buff.data().data()
+            return base64.b64encode(data)
 
+class AddImageWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self._ui = Ui_addimage()
+        self._ui.setupUi(self)
+        self._ui.importButton.clicked.connect(self.openImage)
+        self._ui.drawButton.clicked.connect(self.drawImage)
+
+        self.pixmap = None
+        self.imagePreview = ImageLabel()
+        self._ui.verticalLayout.addWidget(self.imagePreview)
+
+    def openImage(self):
+        path, _ = QFileDialog.getOpenFileName(self, "Open file", "", "PNG image files (*.png); JPEG image files (*jpg); All files (*.*)")
+        if path:
+            self.pixmap = QPixmap()
+            self.pixmap.load(path)
+            self.imagePreview.setPixmap(self.pixmap)
+
+    def drawImage(self):
+        dialogue = PaintDialog()
+        if dialogue.exec_():
+            self.pixmap = QPixmap(dialogue.paint.canvas.pixmap())
+            self.imagePreview.setPixmap(self.pixmap)
+
+class PaintDialog(QDialog):
+    def __init__(self):
+        super().__init__()
+        self._ui = Ui_PaintDialog()
+        self._ui.setupUi(self)
+        
+        self.paint = PaintWindow()
+
+        self._ui.paintLayout.addWidget(self.paint)
+
+        # QBtn = QDialogButtonBox.Reset | QDialogButtonBox.Ok | QDialogButtonBox.Cancel
+        
+        # self.buttonBox = QDialogButtonBox(QBtn)
+        # self.buttonBox.accepted.connect(self.accept)
+        # self.buttonBox.rejected.connect(self.reject)
+
+        # self.resetButton.clicked.connect(self.canvas.reset)
+        # self.okayButton.clicked.connect(self.okayButtonPressed)
+        # self.cancelButton.clicked.connect(self.cancelButtonPressed)
+
+class ImageLabel(QLabel):
+    def __init__(self):
+        super(ImageLabel, self).__init__()
+        self.pixmap_width: int = 1
+        self.pixmapHeight: int = 1
+        self._pixmap = None
+
+    def setPixmap(self, pixmap: QPixmap) -> None:
+        self._pixmap = pixmap
+        self.pixmap_width = self._pixmap.width()
+        self.pixmapHeight = self._pixmap.height()
+
+        self.updateMargins()
+        super(ImageLabel, self).setPixmap(self._pixmap)
+
+    def resizeEvent(self, a0: QResizeEvent) -> None:
+        self.updateMargins()
+        super(ImageLabel, self).resizeEvent(a0)
+
+    def updateMargins(self):
+        if self._pixmap is None:
+            return
+        pixmap_scaled = self._pixmap.scaled(self.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        super(ImageLabel, self).setPixmap(pixmap_scaled)
+        pixmapWidth = pixmap_scaled.width()
+        pixmapHeight = pixmap_scaled.height()
+        if pixmapWidth <= 0 or pixmapHeight <= 0:
+            return
+        w, h = self.width(), self.height()
+        if w <= 0 or h <= 0:
+            return
+
+        if w * pixmapHeight > h * pixmapWidth:
+            m = int((w - (pixmapWidth * h / pixmapHeight)) / 2)
+            self.setContentsMargins(m, 0, m, 0)
+        else:
+            m = int((h - (pixmapHeight * w / pixmapWidth)) / 2)
+            self.setContentsMargins(0, m, 0, m)

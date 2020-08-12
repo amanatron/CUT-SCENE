@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file '.\resources\paramdialogue_view.ui',
 # licensing of '.\resources\paramdialogue_view.ui' applies.
 #
-# Created: Mon Aug 10 18:48:41 2020
+# Created: Wed Aug 12 18:59:48 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -15,7 +15,13 @@ class Ui_paramdialogue(object):
         paramdialogue.setObjectName("paramdialogue")
         paramdialogue.setWindowModality(QtCore.Qt.ApplicationModal)
         paramdialogue.resize(400, 300)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(paramdialogue.sizePolicy().hasHeightForWidth())
+        paramdialogue.setSizePolicy(sizePolicy)
         self.verticalLayout = QtWidgets.QVBoxLayout(paramdialogue)
+        self.verticalLayout.setSizeConstraint(QtWidgets.QLayout.SetNoConstraint)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtWidgets.QLabel(paramdialogue)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
@@ -33,9 +39,16 @@ class Ui_paramdialogue(object):
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.formLayout = QtWidgets.QFormLayout()
+        self.formLayout.setSizeConstraint(QtWidgets.QLayout.SetNoConstraint)
+        self.formLayout.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
         self.formLayout.setObjectName("formLayout")
         self.verticalLayout.addLayout(self.formLayout)
         self.buttonBox = QtWidgets.QDialogButtonBox(paramdialogue)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.buttonBox.sizePolicy().hasHeightForWidth())
+        self.buttonBox.setSizePolicy(sizePolicy)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
