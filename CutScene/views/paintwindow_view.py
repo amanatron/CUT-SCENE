@@ -8,7 +8,6 @@ from PySide2.QtGui import QPainter, QBitmap, QPolygon, QPen, QBrush, QColor
 from PySide2.QtCore import Qt, Signal
 
 from views.paintwindow_view_ui import Ui_MainWindow
-# from paintwindow_view_ui import Ui_Dialog
 
 import os
 import sys

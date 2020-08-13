@@ -1,7 +1,8 @@
-from PySide2.QtWidgets import QMainWindow, QFileDialog, QMenu
+from PySide2.QtWidgets import QMainWindow, QFileDialog, QMenu, QVBoxLayout
 from PySide2.QtCore import Slot, QItemSelectionModel
 from views.mainwindow_view_ui import Ui_MainWindow
 from views.visualmodescene_view import VisualModeScene
+from views.sceneview_widget import SceneViewWidget
 
 # Use Qt designer to create the .ui layout files to the extent that you assign variables names to widgets and adjust their basic properties. 
 # Don't bother adding signals or slots as it's generally easier just to connect them to functions from within the view class.
@@ -40,7 +41,18 @@ class MainView(QMainWindow):
         self._model.projectLoaded.connect(self.on_ProjectLoad)
         self._main_controller.activeSceneChanged.connect(self.activeSceneChanged)
 
-        self.visualModeScene = VisualModeScene(model, main_controller)
+        self.sceneview = SceneViewWidget()
+
+        # Manually create and arrange the sceneview widget
+        self._ui.verticalLayout_2 = QVBoxLayout(self._ui.widget_3)
+        self._ui.verticalLayout_2.setSpacing(10)
+        self._ui.verticalLayout_2.setContentsMargins(0, 0, 0, 10)
+        self._ui.verticalLayout_2.setObjectName("verticalLayout_2")
+
+        self._ui.verticalLayout_2.addWidget(self.sceneview)
+        self._ui.verticalLayout_2.addWidget(self._ui.widget_4)
+
+        # self.visualModeScene = VisualModeScene(model, main_controller)
         self.connect_actions()
 
         # manually set initial button states
@@ -103,7 +115,7 @@ class MainView(QMainWindow):
         self._ui.buttonAddScene.setEnabled(False)
         self._ui.buttonCreateProject.hide()
         
-        self._ui.sceneView.setScene(self.visualModeScene)
+        # self._ui.sceneView.setScene(self.visualModeScene)
 
     @Slot()
     def on_LevelModelChanged(self):

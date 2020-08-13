@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file '.\resources\mainwindow_view.ui',
 # licensing of '.\resources\mainwindow_view.ui' applies.
 #
-# Created: Wed Aug 12 18:59:48 2020
+# Created: Thu Aug 13 11:29:58 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -157,16 +157,8 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.widget, 3, 0, 1, 1)
         self.widget_3 = QtWidgets.QWidget(self.centralwidget)
         self.widget_3.setObjectName("widget_3")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.widget_3)
-        self.verticalLayout_2.setSpacing(10)
-        self.verticalLayout_2.setContentsMargins(0, 0, 0, 10)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.sceneView = QtWidgets.QGraphicsView(self.widget_3)
-        self.sceneView.setAcceptDrops(False)
-        self.sceneView.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.sceneView.setObjectName("sceneView")
-        self.verticalLayout_2.addWidget(self.sceneView)
         self.widget_4 = QtWidgets.QWidget(self.widget_3)
+        self.widget_4.setGeometry(QtCore.QRect(0, 0, 308, 40))
         self.widget_4.setStyleSheet("QPushButton {\n"
 "background-color: rgb(238, 238, 238);\n"
 "padding: 5px;\n"
@@ -223,7 +215,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addWidget(self.buttonAddAnimation)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem)
-        self.verticalLayout_2.addWidget(self.widget_4)
         self.gridLayout.addWidget(self.widget_3, 3, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)

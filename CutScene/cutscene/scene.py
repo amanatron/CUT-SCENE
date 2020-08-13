@@ -1,10 +1,10 @@
-from cutscene.utils import NameDescription, Instantiable
+from cutscene.utils import NameDescription, Instantiable, MapImage
 from cutscene.sceneElements.animation import Animation
 from cutscene.sceneElements.event import Event
 from cutscene.sceneElements.objective import Objective
 from typing import Optional
 
-class Scene(NameDescription, Instantiable):
+class Scene(NameDescription, Instantiable, MapImage):
     """Scene object. Everything in cutscene happens in a Scene.
 
     init: 
@@ -36,11 +36,13 @@ class Scene(NameDescription, Instantiable):
     def __init__(self, 
                  name: str,
                  description: str,
+                 img: Optional[str] = None,
                  elements: Optional[list] = None,
                  sceneMatrix: Optional[list] = None,
                  itemID: Optional[int] = None):
         NameDescription.__init__(self, name, description)
         Instantiable.__init__(self, itemID)
+        MapImage.__init__(self, img)
         self.elements = elements
         self.sceneMatrix = sceneMatrix
 
