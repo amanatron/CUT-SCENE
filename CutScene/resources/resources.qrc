@@ -9,6 +9,10 @@
     <file>img/icons/levelIcons/videogame_asset_white_96x96.png</file>
   </qresource>
   <qresource prefix="visualModeIcons">
+    <file>img/icons/visualModeIcons/movie_black_96x96.png</file>
+    <file>img/icons/visualModeIcons/record_voice_over_black_96x96.png</file>
+    <file>img/icons/visualModeIcons/swap_horiz_black_96x96.png</file>
+    <file>img/icons/visualModeIcons/title_black_96x96.png</file>
     <file>img/icons/visualModeIcons/remove_circle_black_96x96.png</file>
     <file>img/icons/visualModeIcons/forum_black_96x96.png</file>
     <file>img/icons/visualModeIcons/comment_black_96x96.png</file>

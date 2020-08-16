@@ -113,14 +113,17 @@ class Model(QObject):
         deleteItemById(root_index, item_id)
         self.levelsChanged.emit()
 
-    def deleteSceneItem(self, scene_id, item_id):
-        scene = self.getInstByID(scene_id)
-        scene.delItem(item_id)
+    def deleteSceneItem(self, parent_id, item_id):
+        parent = self.getInstByID(parent_id)
+        if parent.type == "SCENE":
+            parent.delItem(item_id)
+        else:
+            parent.removeByID(item_id)
         print(f"model deleted scene item with id {item_id}")
         self.sceneModified.emit()
 
-    def deleteSceneEvent(self, scene_id, event_id):
-        scene = self.getInstByID(scene_id)
+    def deleteSceneEvent(self, scene, event_id):
+        scene = self.getInstByID(scene)
         scene.delEvent(event_id)
         print(f"model deleted scene event with id {event_id}")
         self.sceneModified.emit()

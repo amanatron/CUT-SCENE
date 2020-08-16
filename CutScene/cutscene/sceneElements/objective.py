@@ -1,5 +1,7 @@
 from cutscene.sceneElements.event import Event
-from cutscene.sceneElements.animation import Animation
+from cutscene.sceneElements.action import Action
+from cutscene.sceneElements.physics import Physics
+from cutscene.sceneElements.pseudocode import Pseudocode
 from cutscene.utils import NameDescription, Instantiable, OrderedInstanceHolder
 from typing import Optional
 
@@ -15,15 +17,10 @@ class Objective(NameDescription, Instantiable, OrderedInstanceHolder):
         description: str
 
     methods:
-        addAnimation: Add an Animation to the objective
-            name: str
-            description: str
-        addEvent: Add an Event to the objective
-            name: str
-            description: str
-        addObjective: Add an Objective to the objective
-            name: str
-            description: str
+        addControl: 
+        addAction:
+        addPseudocode:
+        addPhysics
 
         get: Get a list of all the elements of the objective
         remove: Delete an objective element
@@ -47,29 +44,37 @@ class Objective(NameDescription, Instantiable, OrderedInstanceHolder):
     @property
     def help(self):
         """ Get info on what items can be created by this class, and their required parameters """
-        return (paramHelp["ANIMATION"], 
-                paramHelp["EVENT"], 
-                paramHelp["OBJECTIVE"])
+        return (paramHelp["CONTROL"], 
+                paramHelp["ACTION"], 
+                paramHelp["PHYSICS"], 
+                paramHelp["PSEUDOCODE"])
         
     def new(self, item, **kwargs):
-        if item == "ANIMATION":
+        if item == "CONTROL":
             return self.addAnimation(**kwargs)
-        elif item == "EVENT":
-            return self.addEvent(**kwargs)
-        elif item == "OBJECTIVE":
-            return self.addObjective(**kwargs)
+        elif item == "ACTION":
+            return self.addAction(**kwargs)
+        elif item == "PHYSICS":
+            return self.addPhysics(**kwargs)
+        elif item == "PSEUDOCODE":
+            return self.addPseudocode(**kwargs)
 
-    def addAnimation(self, *args, **kwargs):
-        animation = Animation(*args, **kwargs)
-        self.addNew(animation)
-        return animation
+    def addControl(self, *args, **kwargs):
+        control = Control(*args, **kwargs)
+        self.addNew(control)
+        return control
 
-    def addEvent(self, *args, **kwargs):
-        event = Event(*args, **kwargs)
-        self.addNew(event)
-        return event
+    def addAction(self, *args, **kwargs):
+        action = Action(*args, **kwargs)
+        self.addNew(action)
+        return action
 
-    def addObjective(self, *args, **kwargs):
-        objective = Objective(*args, **kwargs)
-        self.addNew(objective)
-        return objective
+    def addPseudocode(self, *args, **kwargs):
+        pseudocode = Pseudocode(*args, **kwargs)
+        self.addNew(pseudocode)
+        return pseudocode
+
+    def addPhysics(self, *args, **kwargs):
+        physics = Physics(*args, **kwargs)
+        self.addNew(physics)
+        return physics

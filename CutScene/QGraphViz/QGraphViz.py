@@ -156,11 +156,14 @@ class QGraphViz_Core(QWidget):
         graph.nodes.append(node)
         return node
 
-    def addWidget(self, graph, scene_element, edit_callback = None, delete_callback = None, **kwargs):
+    def addWidget(self, graph, scene_element, edit_callback = None, delete_callback = None, new_item_callbacks={}, **kwargs):
         """
         Adds a node to a graph or subgraph
         """
-        widget = Widget(self, scene_element, graph, edit_callback, delete_callback, **kwargs)
+        widget = Widget(self, scene_element, graph,
+                        edit_callback = edit_callback, 
+                        delete_callback=delete_callback,
+                        new_item_callbacks=new_item_callbacks, **kwargs)
         graph.nodes.append(widget)
         return widget
 
@@ -965,11 +968,14 @@ class QGraphViz(QScrollArea):
         return self.core.addNode(graph, node_name, **kwargs)
 
 
-    def addWidget(self, graph, scene_element, edit_callback = None, delete_callback = None, **kwargs):
+    def addWidget(self, graph, scene_element, edit_callback = None, delete_callback = None, new_item_callbacks={}, **kwargs):
         """
         Adds a node to a graph or subgraph
         """
-        return self.core.addWidget(graph, scene_element, edit_callback, delete_callback, **kwargs)
+        return self.core.addWidget(graph, scene_element,
+                                   edit_callback=edit_callback,
+                                   delete_callback=delete_callback,
+                                   new_item_callbacks=new_item_callbacks, **kwargs)
 
     def addEdge(self, source, dest, kwargs):
         """

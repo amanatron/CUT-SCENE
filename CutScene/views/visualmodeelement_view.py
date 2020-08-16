@@ -3,26 +3,83 @@ from views.visualmodeelement_view_ui import Ui_visualModeElement
 from views.paramdialogue_view import ParamDialogue
 
 class VisualModeElement(QFrame):
-    def __init__(self, parent, scene_element=None, edit_callback=None, delete_callback=None):
+    def __init__(self, parent, scene_element=None, edit_callback=None, delete_callback=None, new_item_callbacks={}):
         super().__init__(parent)
         self._ui = Ui_visualModeElement()
         self._ui.setupUi(self)
         self.scene_element = scene_element
         self.edit_callback = edit_callback
         self.delete_callback = delete_callback
+        self.new_item_callbacks = new_item_callbacks
 
         # connect buttons
         self._ui.editButton.clicked.connect(self.editElement)
         self._ui.deleteButton.clicked.connect(self.delete)
 
+        # wrote a lot of this out manually, tbh dont see why not, its robust and works
+        self._ui.transitionButton.clicked.connect(self.addTransition)
+        self._ui.headingButton.clicked.connect(self.addHeading)
+        self._ui.dialogueButton.clicked.connect(self.addDialogue)
+        self._ui.actButton.clicked.connect(self.addAct)
+        self._ui.controlButton.clicked.connect(self.addControl)
+        self._ui.pseudocodeButton.clicked.connect(self.addPseudocode)
+        self._ui.physicsButton.clicked.connect(self.addPhysics)
+        self._ui.actionButton.clicked.connect(self.addAction)
+
         # update labels
         self.updateLabels()
 
+        # set button visibility
+        if self.scene_element.type == "OBJECTIVE":
+            self._ui.transitionButton.setVisible(False)
+            self._ui.headingButton.setVisible(False)
+            self._ui.dialogueButton.setVisible(False)
+            self._ui.actButton.setVisible(False)
+        elif self.scene_element.type == "ANIMATION":
+            self._ui.controlButton.setVisible(False)
+            self._ui.pseudocodeButton.setVisible(False)
+            self._ui.physicsButton.setVisible(False)
+        else:
+            self._ui.transitionButton.setVisible(False)
+            self._ui.headingButton.setVisible(False)
+            self._ui.dialogueButton.setVisible(False)
+            self._ui.actButton.setVisible(False)
+            self._ui.controlButton.setVisible(False)
+            self._ui.pseudocodeButton.setVisible(False)
+            self._ui.physicsButton.setVisible(False)
+            self._ui.actionButton.setVisible(False)
+
+    def addTransition(self):
+        self.new_item_callbacks["TRANSITION"](self.scene_element.itemID)
+
+    def addHeading(self):
+        self.new_item_callbacks["HEADING"](self.scene_element.itemID)
+
+    def addDialogue(self):
+        self.new_item_callbacks["DIALOGUE"](self.scene_element.itemID)
+
+    def addAct(self):
+        self.new_item_callbacks["ACT"](self.scene_element.itemID)
+    
+    def addControl(self):
+        self.new_item_callbacks["CONTROL"](self.scene_element.itemID)
+
+    def addPseudocode(self):
+        self.new_item_callbacks["PSEUDOCODE"](self.scene_element.itemID)
+    
+    def addPhysics(self):
+        self.new_item_callbacks["PHYSICS"](self.scene_element.itemID)
+
+    def addAction(self):
+        self.new_item_callbacks["ACTION"](self.scene_element.itemID)
 
     def updateLabels(self):
         if self.scene_element:
             self._ui.elementLabel.setText(self.scene_element.type)
-            self._ui.nameLabel.setText(self.scene_element.name)
+            if self.scene_element.type in ["OBJECTIVE", "ANIMATION"]:
+                self._ui.nameLabel.setText(self.scene_element.name)
+            else:
+                self._ui.nameLabel.setParent(None)
 
     def delete(self):
         if self.delete_callback:
@@ -34,12 +91,3 @@ class VisualModeElement(QFrame):
             return
         self.scene_element.edit(params)
         self.updateLabels()
-    # def enterEvent(self, e):
-    #     print(f"mouse over {self}")
-    #     style = self.styleSheet()
-    #     print(style)
-    #     self.setStyleSheet("QFrame {border-width 3px}")
-
-    # def leaveEvent(self, e):
-    #     print(f"mouse left {self}")
-    #     self.setStyleSheet("QFrame {border-width 1px}")

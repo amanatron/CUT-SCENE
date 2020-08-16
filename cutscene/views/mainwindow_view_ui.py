@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file '.\resources\mainwindow_view.ui',
 # licensing of '.\resources\mainwindow_view.ui' applies.
 #
-# Created: Sun Aug 16 11:34:17 2020
+# Created: Sun Aug 16 22:38:24 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -116,12 +116,6 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "QPushButton:hover {\n"
-"background-color: rgb(52, 73, 85);\n"
-"padding: 5px;\n"
-"border-radius: 3px\n"
-"}\n"
-"\n"
-"QPushButton:active {\n"
 "background-color: rgb(52, 73, 85);\n"
 "padding: 5px;\n"
 "border-radius: 3px\n"

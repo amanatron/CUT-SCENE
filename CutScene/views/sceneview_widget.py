@@ -33,6 +33,18 @@ class SceneViewWidget(QWidget):
         self.setLayout(QVBoxLayout())
         self.setSizePolicy(sizePolicy)
 
+        # callbacks given to each visual mode widget
+        self.widget_callbacks = {
+            "TRANSITION"   :           self._main_controller.addTransition,
+            "HEADING"      :              self._main_controller.addHeading,
+            "DIALOGUE"     :             self._main_controller.addDialogue,
+            "ACT"          :                  self._main_controller.addAct,
+            "CONTROL"      :              self._main_controller.addControl,
+            "PSEUDOCODE"   :           self._main_controller.addPseudocode,
+            "PHYSICS"      :              self._main_controller.addPhysics,
+            "ACTION"       :               self._main_controller.addAction
+        }
+
         show_subgraphs=True
         self.qgv = QGraphViz(
             parent=self,
@@ -53,37 +65,37 @@ class SceneViewWidget(QWidget):
         # Create A new Graph using Dot layout engine
         self.qgv.new(Dot(Graph("Main_Graph"), show_subgraphs=show_subgraphs, font = QFont("Arial", 12),margins=[20,20]))
         # Define sone graph
-        n1 = self.qgv.addNode(self.qgv.engine.graph, "Node1", label="N1", fillcolor="red")
-        n2 = self.qgv.addNode(self.qgv.engine.graph, "Node2", label="N2", fillcolor="blue:white:red")
-        n3 = self.qgv.addNode(self.qgv.engine.graph, "Node3", label="N3", shape = "diamond",fillcolor="orange")
-        n4 = self.qgv.addNode(self.qgv.engine.graph, "Node4", label="N4", shape="diamond",fillcolor="white")
-        n5 = self.qgv.addNode(self.qgv.engine.graph, "Node5", label="N5", shape="polygon", fillcolor="red", color="white")
-        n6 = self.qgv.addNode(self.qgv.engine.graph, "Node6", label="N6", shape="triangle", fillcolor="blue:white:red")
+        # n1 = self.qgv.addNode(self.qgv.engine.graph, "Node1", label="N1", fillcolor="red")
+        # n2 = self.qgv.addNode(self.qgv.engine.graph, "Node2", label="N2", fillcolor="blue:white:red")
+        # n3 = self.qgv.addNode(self.qgv.engine.graph, "Node3", label="N3", shape = "diamond",fillcolor="orange")
+        # n4 = self.qgv.addNode(self.qgv.engine.graph, "Node4", label="N4", shape="diamond",fillcolor="white")
+        # n5 = self.qgv.addNode(self.qgv.engine.graph, "Node5", label="N5", shape="polygon", fillcolor="red", color="white")
+        # n6 = self.qgv.addNode(self.qgv.engine.graph, "Node6", label="N6", shape="triangle", fillcolor="blue:white:red")
 
-        sub = self.qgv.addSubgraph(self.qgv.engine.graph, "sub graph", self.qgv.engine.graph.graph_type, label="Subgraph", fillcolor="blue:white:red")
-        n7 = self.qgv.addNode(sub, "Node7", label="N7")
-        n8 = self.qgv.addNode(sub, "Node8", label="N8")
+        # sub = self.qgv.addSubgraph(self.qgv.engine.graph, "sub graph", self.qgv.engine.graph.graph_type, label="Subgraph", fillcolor="blue:white:red")
+        # n7 = self.qgv.addNode(sub, "Node7", label="N7")
+        # n8 = self.qgv.addNode(sub, "Node8", label="N8")
 
-        sub2 = self.qgv.addSubgraph(self.qgv.engine.graph, "sub graph 2", self.qgv.engine.graph.graph_type, label="Subgraph 2", fillcolor="blue:white:red")
-        n9 = self.qgv.addNode(sub, "Node9", label="N9")
-        n10 = self.qgv.addNode(sub, "Node10", label="N10")
+        # sub2 = self.qgv.addSubgraph(self.qgv.engine.graph, "sub graph 2", self.qgv.engine.graph.graph_type, label="Subgraph 2", fillcolor="blue:white:red")
+        # n9 = self.qgv.addNode(sub, "Node9", label="N9")
+        # n10 = self.qgv.addNode(sub, "Node10", label="N10")
 
-        # Adding nodes with an image as its shape
-        icon_path = os.path.dirname(os.path.abspath(__file__)) + r"\icon\dbicon.png,100,100"
-        n9 = self.qgv.addNode(self.qgv.engine.graph, "Node9", label="N9", shape=icon_path)
+        # # Adding nodes with an image as its shape
+        # icon_path = os.path.dirname(os.path.abspath(__file__)) + r"\icon\dbicon.png,100,100"
+        # n9 = self.qgv.addNode(self.qgv.engine.graph, "Node9", label="N9", shape=icon_path)
 
-        icon_path = os.path.dirname(os.path.abspath(__file__)) + r"\icon\cam.png"
-        n10 = self.qgv.addNode(self.qgv.engine.graph, "Node10", label="\n\n\nN10\nTest multilines", shape=icon_path, color="white")
+        # icon_path = os.path.dirname(os.path.abspath(__file__)) + r"\icon\cam.png"
+        # n10 = self.qgv.addNode(self.qgv.engine.graph, "Node10", label="\n\n\nN10\nTest multilines", shape=icon_path, color="white")
 
-        self.qgv.addEdge(n1, n2, {})
-        self.qgv.addEdge(n3, n2, {})
-        self.qgv.addEdge(n2, n4, {"width":2})
-        self.qgv.addEdge(n4, n5, {"width":4})
-        self.qgv.addEdge(n4, n6, {"width":5,"color":"red"})
-        self.qgv.addEdge(n3, n6, {"width":2})
-        self.qgv.addEdge(n6, n9, {"width":5,"color":"red"})
-        self.qgv.addEdge(n9, n10, {"width":5,"color":"red"})
-        self.qgv.addEdge(sub, sub2, {"width":4})
+        # self.qgv.addEdge(n1, n2, {})
+        # self.qgv.addEdge(n3, n2, {})
+        # self.qgv.addEdge(n2, n4, {"width":2})
+        # self.qgv.addEdge(n4, n5, {"width":4})
+        # self.qgv.addEdge(n4, n6, {"width":5,"color":"red"})
+        # self.qgv.addEdge(n3, n6, {"width":2})
+        # self.qgv.addEdge(n6, n9, {"width":5,"color":"red"})
+        # self.qgv.addEdge(n9, n10, {"width":5,"color":"red"})
+        # self.qgv.addEdge(sub, sub2, {"width":4})
 
 
         # Build the graph (the layout engine organizes where the nodes and connections are)
@@ -92,66 +104,72 @@ class SceneViewWidget(QWidget):
         # Save it to a file to be loaded by Graphviz if needed
 
         # Add buttons                
-        btnNew = QPushButton("New")    
-        btnNew.clicked.connect(self.new)
+        # btnNew = QPushButton("New")    
+        # btnNew.clicked.connect(self.new)
 
-        btnOpen = QPushButton("Open")    
-        btnOpen.clicked.connect(self.load)
+        # btnOpen = QPushButton("Open")    
+        # btnOpen.clicked.connect(self.load)
 
-        btnSave = QPushButton("Save")    
-        btnSave.clicked.connect(self.save)
+        # btnSave = QPushButton("Save")    
+        # btnSave.clicked.connect(self.save)
 
         # hpanel.addWidget(btnNew)    
         # hpanel.addWidget(btnOpen)
         # hpanel.addWidget(btnSave)
 
-        self.buttons_list=[]
-        btnManip = QPushButton("Manipulate")    
-        btnManip.setCheckable(True)
-        btnManip.setChecked(True)
-        btnManip.clicked.connect(self.manipulate)
-        # hpanel.addWidget(btnManip)
-        self.buttons_list.append(btnManip)
+        # self.buttons_list=[]
+        # btnManip = QPushButton("Manipulate")    
+        # btnManip.setCheckable(True)
+        # btnManip.setChecked(True)
+        # btnManip.clicked.connect(self.manipulate)
+        # # hpanel.addWidget(btnManip)
+        # self.buttons_list.append(btnManip)
 
-        btnAddNode = QPushButton("Add Node")    
-        btnAddNode.clicked.connect(self.add_node)
-        # hpanel.addWidget(btnAddNode)
-        self.buttons_list.append(btnManip)
+        # btnAddNode = QPushButton("Add Node")    
+        # btnAddNode.clicked.connect(self.add_node)
+        # # hpanel.addWidget(btnAddNode)
+        # self.buttons_list.append(btnManip)
 
-        btnRemNode = QPushButton("Rem Node")    
-        btnRemNode.setCheckable(True)
-        btnRemNode.clicked.connect(self.rem_node)
-        # hpanel.addWidget(btnRemNode)
-        self.buttons_list.append(btnRemNode)
+        # btnRemNode = QPushButton("Rem Node")    
+        # btnRemNode.setCheckable(True)
+        # btnRemNode.clicked.connect(self.rem_node)
+        # # hpanel.addWidget(btnRemNode)
+        # self.buttons_list.append(btnRemNode)
 
-        btnAddEdge = QPushButton("Add Edge")    
-        btnAddEdge.setCheckable(True)
-        btnAddEdge.clicked.connect(self.add_edge)
-        # hpanel.addWidget(btnAddEdge)
-        self.buttons_list.append(btnAddEdge)
+        # btnAddEdge = QPushButton("Add Edge")    
+        # btnAddEdge.setCheckable(True)
+        # btnAddEdge.clicked.connect(self.add_edge)
+        # # hpanel.addWidget(btnAddEdge)
+        # self.buttons_list.append(btnAddEdge)
 
-        btnRemEdge = QPushButton("Rem Edge")    
-        btnRemEdge.setCheckable(True)
-        btnRemEdge.clicked.connect(self.rem_edge)
-        # hpanel.addWidget(btnRemEdge)
-        self.buttons_list.append(btnRemEdge)
+        # btnRemEdge = QPushButton("Rem Edge")    
+        # btnRemEdge.setCheckable(True)
+        # btnRemEdge.clicked.connect(self.rem_edge)
+        # # hpanel.addWidget(btnRemEdge)
+        # self.buttons_list.append(btnRemEdge)
 
-        btnAddSubGraph = QPushButton("Add Subgraph")    
-        btnAddSubGraph.clicked.connect(self.add_subgraph)
-        # hpanel.addWidget(btnAddSubGraph)
+        # btnAddSubGraph = QPushButton("Add Subgraph")    
+        # btnAddSubGraph.clicked.connect(self.add_subgraph)
+        # # hpanel.addWidget(btnAddSubGraph)
 
-        btnRemSubGraph = QPushButton("Rem Subgraph")    
-        btnRemSubGraph.setCheckable(True)
-        btnRemSubGraph.clicked.connect(self.rem_subgraph)
-        # hpanel.addWidget(btnRemSubGraph)
-        self.buttons_list.append(btnRemSubGraph)
+        # btnRemSubGraph = QPushButton("Rem Subgraph")    
+        # btnRemSubGraph.setCheckable(True)
+        # btnRemSubGraph.clicked.connect(self.rem_subgraph)
+        # # hpanel.addWidget(btnRemSubGraph)
+        # self.buttons_list.append(btnRemSubGraph)
 
     def loadScene(self):
         self.qgv.clear()
         scene = self._main_controller.activeScene
         if scene:
             for scene_element in scene.elements:
-                self.qgv.addWidget(self.qgv.engine.graph, scene_element, delete_callback=self.delete_element)
+                node = self.qgv.addWidget(self.qgv.engine.graph, scene_element,
+                                          delete_callback=self.delete_element,
+                                          new_item_callbacks=self.widget_callbacks)
+                for item in scene_element.get():
+                    sub_node = self.qgv.addWidget(self.qgv.engine.graph, item,
+                                          delete_callback=self.delete_element)
+                    self.qgv.addEdge(node, sub_node, {"width":2})
             events_list = scene.getEvents()
             for event in events_list:
                 event_id, fr_id, to_id = event

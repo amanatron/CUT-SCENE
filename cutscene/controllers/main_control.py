@@ -95,16 +95,41 @@ class MainController(QObject):
     def newObjective(self):
         self.newSceneItem("OBJECTIVE")
 
+    def addTransition(self, parent_id):
+        self.newSceneItem("TRANSITION", parent_id=parent_id)
+
+    def addHeading(self, parent_id):
+        self.newSceneItem("HEADING", parent_id=parent_id)
+
+    def addDialogue(self, parent_id):
+        self.newSceneItem("DIALOGUE", parent_id=parent_id)
+
+    def addAct(self, parent_id):
+        self.newSceneItem("ACT", parent_id=parent_id)
+    
+    def addControl(self, parent_id):
+        self.newSceneItem("CONTROL", parent_id=parent_id)
+
+    def addPseudocode(self, parent_id):
+        self.newSceneItem("PSEUDOCODE", parent_id=parent_id)
+    
+    def addPhysics(self, parent_id):
+        self.newSceneItem("PHYSICS", parent_id=parent_id)
+
+    def addAction(self, parent_id):
+        self.newSceneItem("ACTION", parent_id=parent_id)
+
     def newEvent(self, *args):
         self.newSceneEvent(*args)
 
-    def newSceneItem(self, item_type):
+    def newSceneItem(self, item_type, parent_id=None):
         params = ParamDialogue.getParams(self, item_type)
         if not params:
             return
-        parent = self.activeScene
-        assert parent is not None
-        command = newSceneItemCommand(self._model, parent, item_type, params)
+        if not parent_id:
+            parent_id = self.activeScene.id
+        assert parent_id is not None
+        command = newSceneItemCommand(self._model, parent_id, item_type, params)
         self.undoStack.push(command)
 
     def newSceneEvent(self, fr_id, to_id):
@@ -116,10 +141,11 @@ class MainController(QObject):
         command = newSceneEventCommand(self._model, scene, fr_id, to_id, params)
         self.undoStack.push(command)
 
-    def delSceneItem(self, item_id):
-        scene = self.activeScene
-        assert scene is not None
-        command = deleteSceneItemCommand(self._model, scene, item_id)
+    def delSceneItem(self, item_id, parent_id=None):
+        if not parent_id:
+            parent_id = self.activeScene.id
+        assert parent_id is not None
+        command = deleteSceneItemCommand(self._model, parent_id, item_id)
         self.undoStack.push(command)
 
     def delSceneEvent(self, event_id):
@@ -188,9 +214,9 @@ class newLevelItemCommand(QUndoCommand):
         self._model.deleteLevelItem(self.item_id)
 
 class newSceneItemCommand(QUndoCommand):
-    def __init__(self, model, parent, item_type, params):
+    def __init__(self, model, parent_id, item_type, params):
         QUndoCommand.__init__(self, f"Add new {item_type}")
-        self.parent_id = parent.id
+        self.parent_id = parent_id
         self.item_type = item_type
         self.params = params
         self._model = model
@@ -201,22 +227,22 @@ class newSceneItemCommand(QUndoCommand):
         self.item_id = self._model.addSceneItem(self.parent_id, self.item_type, self.params)
 
     def undo(self):
-        self._model.deleteSceneItem(self.scene_id, self.item_id)
+        self._model.deleteSceneItem(self.parent_id, self.item_id)
 
 class deleteSceneItemCommand(QUndoCommand):
-    def __init__(self, model, scene, item_id):
+    def __init__(self, model, parent_id, item_id):
         QUndoCommand.__init__(self, f"Add Event")
-        self.scene_id = scene.id
+        self.parent_id = parent_id
         self.item_id = item_id
         self.params = model.getInstByID(item_id).dict()
         self.item_type = self.params.pop("type")
         self._model = model
     
     def redo(self):
-        self._model.deleteSceneItem(self.scene_id, self.item_id)
+        self._model.deleteSceneItem(self.parent_id, self.item_id)
 
     def undo(self):
-        self.event_id = self._model.addSceneItem(self.scene_id, self.item_type, self.params)
+        self.event_id = self._model.addSceneItem(self.parent_id, self.item_type, self.params)
 
 class newSceneEventCommand(QUndoCommand):
     def __init__(self, model, scene, fr, to, params):
