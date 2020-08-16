@@ -7,6 +7,7 @@ Description:
 Dot perser implementation
 """
 from PySide2.QtGui import QFontMetrics, QFont
+
 class Node():
     """
     The dot graphviz engine

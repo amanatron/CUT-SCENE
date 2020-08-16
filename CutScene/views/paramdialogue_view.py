@@ -9,21 +9,28 @@ from cutscene.utils import paramHelp
 import base64
 
 class ParamDialogue(QDialog):
-    def __init__(self, parent, paramType):
+    def __init__(self, parent, paramType, edit=False, defaults={}):
         super().__init__()
         self._dialogue = Ui_paramdialogue()
         self._dialogue.setupUi(self)
         self._rows = []
-        title, params = paramHelp[paramType]
-        self._dialogue.label.setText(title)
+        title, editTitle, params = paramHelp[paramType]
+        if edit:
+            self._dialogue.label.setText(editTitle)
+        else:
+            self._dialogue.label.setText(title)
         for param in params:
-            row = DialogueRow(*param)
+            if param[0] in defaults.keys():
+                default = defaults[param[0]]
+            else:
+                default = None
+            row = DialogueRow(*param, default)
             self._rows.append(row)
             self._dialogue.formLayout.addRow(row.label, row.widget)
 
     @classmethod
-    def getParams(self, parent, paramType):
-        dialog = self(parent, paramType)
+    def getParams(self, parent, paramType, edit=False, defaults={}):
+        dialog = self(parent, paramType, edit=edit, defaults=defaults)
         if dialog.exec_():
             params = {}
             for row in dialog._rows:
@@ -33,11 +40,12 @@ class ParamDialogue(QDialog):
             return None
 
 class DialogueRow(QWidget):
-    def __init__(self, param_str, label, input_type):
+    def __init__(self, param_str, label, input_type, default):
         super().__init__()
         self.param_str = param_str
         self.input_type = input_type
         self.label = label
+        self.default = default
         if input_type == "shortStr":
             self.widget = QLineEdit()
         elif input_type == "Str":
@@ -48,6 +56,20 @@ class DialogueRow(QWidget):
             self.widget = AddImageWidget()
         else:
             raise ValueError("Unsupported input type: {}".format(input_type))
+        if default:
+            self.setDefault()
+
+    def setDefault(self):
+        if self.input_type == "Str":
+            self.widget.setPlainText(self.default)
+        elif self.input_type == "shortStr":
+            self.widget.setText(self.default)
+        elif type(self.input_type) is list:
+            index = self.widget.findData(self.default)
+            self.widget.setCurrentIndex(index)
+        elif "Img" in self.input_type:
+            decoded = base64.b64decode(self.default)
+            self.widget.loadData(decoded)
 
     def get(self):
         if self.input_type == "Str":
@@ -57,6 +79,7 @@ class DialogueRow(QWidget):
         elif type(self.input_type) is list:
             return self.widget.currentText()
         elif "Img" in self.input_type:
+            if not self.widget.pixmap: return None
             buff = QBuffer()
             buff.open(QIODevice.ReadWrite)
             self.widget.pixmap.save(buff, "PNG")
@@ -74,6 +97,11 @@ class AddImageWidget(QWidget):
         self.pixmap = None
         self.imagePreview = ImageLabel()
         self._ui.verticalLayout.addWidget(self.imagePreview)
+
+    def loadData(self, data):
+        self.pixmap = QPixmap()
+        self.pixmap.loadFromData(data)
+        self.imagePreview.setPixmap(self.pixmap)
 
     def openImage(self):
         path, _ = QFileDialog.getOpenFileName(self, "Open file", "", "PNG image files (*.png); JPEG image files (*jpg); All files (*.*)")

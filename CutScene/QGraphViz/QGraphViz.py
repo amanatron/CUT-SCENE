@@ -13,7 +13,7 @@ import os
 import sys
 import enum
 import datetime
-from QGraphViz.DotParser import DotParser, Node, Edge, Graph, GraphType
+from QGraphViz.DotParser import DotParser, Node, Edge, Graph, GraphType, Widget
 import math
 
 class QGraphVizManipulationMode(enum.Enum):
@@ -105,11 +105,10 @@ class QGraphViz_Core(QWidget):
         self.hilight_Nodes=hilight_Nodes
         self.hilight_Edges=hilight_Edges
 
+
         self.setAutoFillBackground(True)
         self.setAttribute(Qt.WA_StyledBackground, True)
         self.setMouseTracking(True)
-
-        
 
     # =================== Exposed methods =======================
 
@@ -145,6 +144,10 @@ class QGraphViz_Core(QWidget):
         """
         self.engine=engine
 
+    def clear(self):
+        for node in list(self.engine.graph.nodes): #shallow copy nodes
+            self.removeNode(node)
+
     def addNode(self, graph, node_name, **kwargs):
         """
         Adds a node to a graph or subgraph
@@ -152,6 +155,14 @@ class QGraphViz_Core(QWidget):
         node = Node(node_name, graph, **kwargs)
         graph.nodes.append(node)
         return node
+
+    def addWidget(self, graph, scene_element, **kwargs):
+        """
+        Adds a node to a graph or subgraph
+        """
+        widget = Widget(self, scene_element, graph, **kwargs)
+        graph.nodes.append(widget)
+        return widget
 
     def addEdge(self, source, dest, kwargs):
         """
@@ -204,6 +215,8 @@ class QGraphViz_Core(QWidget):
                     del edge.source.parent_graph.edges[edge.source.parent_graph.edges.index(edge)]
                 else:
                     del self.engine.graph.edges[self.engine.graph.edges.index(edge)]
+            if type(node) is Widget:
+                node.widget.setParent(None)
             del graph.nodes[idx]
             self.repaint()
 
@@ -235,7 +248,7 @@ class QGraphViz_Core(QWidget):
             else:
                 del self.engine.graph.edges[self.engine.graph.edges.index(edge)]
 
-            self.repaint()
+        self.repaint()
 
     def load_file(self, filename):
         self.engine.graph = self.parser.parseFile(filename)
@@ -487,7 +500,7 @@ class QGraphViz_Core(QWidget):
                         if(add_the_edge):
                             if(self.new_edge_created_callback is not None):
                                 self.new_edge_created_callback(edge)
-                        self.build()
+                    self.build()
                 self.selected_Node=None
         # Removing node
         elif(self.manipulation_mode==QGraphVizManipulationMode.Node_remove_Mode):
@@ -623,7 +636,7 @@ class QGraphViz_Core(QWidget):
                     
          # TODO : add more painting parameters
         for node in graph.nodes:
-            if type(node)!=Graph:
+            if type(node)==Node:
                 if("color" in node.kwargs.keys()):
                     pen.setColor(QColor(node.kwargs["color"]))
                 else:
@@ -807,6 +820,14 @@ class QGraphViz_Core(QWidget):
                         gpos[1]-txt_height/2,
                         txt_width, txt_height,
                         Qt.AlignCenter|Qt.AlignTop,node.kwargs["label"])
+
+            elif type(node) == Widget:
+                x, y = node.pos
+                w, h = node.size
+                x -= w/2
+                y -= h/2
+                node.widget.setGeometry(x,y,w,h)
+
             else:
                 if(self.show_subgraphs):
                     self.paintGraph(subgraph, painter)
@@ -926,6 +947,9 @@ class QGraphViz(QScrollArea):
         If called, the nodes position can be recomputed in the future
         """
         self.core.unfreeze()
+
+    def clear(self):
+        self.core.clear()
                 
     def new(self, engine):
         """
@@ -939,6 +963,13 @@ class QGraphViz(QScrollArea):
         Adds a node to a graph or subgraph
         """
         return self.core.addNode(graph, node_name, **kwargs)
+
+
+    def addWidget(self, graph, scene_element, **kwargs):
+        """
+        Adds a node to a graph or subgraph
+        """
+        return self.core.addWidget(graph, scene_element, **kwargs)
 
     def addEdge(self, source, dest, kwargs):
         """
@@ -974,6 +1005,12 @@ class QGraphViz(QScrollArea):
 
     def saveAsJson(self, filename):
         self.core.saveAsJson(filename)
+
+    def getNodeFromID(self, itemID):
+        for node in self.core.engine.graph.nodes:
+            if type(node) is Widget:
+                if node.widget.scene_element.itemID == itemID:
+                    return node
 
     # ===== events
     def resizeEvent(self, event):

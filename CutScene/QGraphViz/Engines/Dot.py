@@ -10,6 +10,7 @@ from PySide2.QtWidgets import QApplication, QWidget
 from PySide2.QtGui import QFontMetrics, QFont, QImage
 from QGraphViz.Engines.LayoutEngine import LayoutEngine
 from QGraphViz.DotParser.Graph import Graph, GraphType
+from QGraphViz.DotParser import Widget
 
 # Import os is needed for locating image files
 import os
@@ -72,6 +73,10 @@ class Dot(LayoutEngine):
                 width = w if w>width else width
                 height = h if h>height else height
 
+        if type(n) == Widget:
+            size = n.widget.geometry().size()
+            width, height = size.width(), size.height()
+
         if width==0 or height==0:
             width=self.default_node_width
             height=self.default_node_height
@@ -85,9 +90,7 @@ class Dot(LayoutEngine):
             width = w_ if w_>width else width
             height = h_ if h_>height else height
             width += 2*self.margins[0]
-            height += 2*self.margins[1]
-            
-        
+            height += 2*self.margins[1]        
 
         n.size[0]=width
         n.size[1]=height        

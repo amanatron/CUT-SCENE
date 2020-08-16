@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file '.\resources\visualmodeelement_view.ui',
 # licensing of '.\resources\visualmodeelement_view.ui' applies.
 #
-# Created: Thu Aug 13 11:29:59 2020
+# Created: Sun Aug 16 11:34:18 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,8 +13,36 @@ from PySide2 import QtCore, QtGui, QtWidgets
 class Ui_visualModeElement(object):
     def setupUi(self, visualModeElement):
         visualModeElement.setObjectName("visualModeElement")
-        visualModeElement.resize(325, 176)
-        visualModeElement.setStyleSheet("")
+        visualModeElement.resize(375, 169)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(1)
+        sizePolicy.setHeightForWidth(visualModeElement.sizePolicy().hasHeightForWidth())
+        visualModeElement.setSizePolicy(sizePolicy)
+        visualModeElement.setStyleSheet("QWidget#visualModeElement {\n"
+"border: 1px solid rgb(213, 213, 213);\n"
+"border-radius: 5px;\n"
+"background-color: rgb(255, 255, 255) }\n"
+"\n"
+"QWidget#visualModeElement:hover {\n"
+"border: 2px solid rgb(213, 213, 213);\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"background-color: rgb(255, 255, 255)}\n"
+"\n"
+"QPushButton {\n"
+"background-color: rgb(238, 238, 238);\n"
+"padding: 5px;\n"
+"border-radius: 3px\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background-color: rgb(200, 200, 200);\n"
+"padding: 5px;\n"
+"border-radius: 3px\n"
+"}\n"
+"")
         self.verticalLayout = QtWidgets.QVBoxLayout(visualModeElement)
         self.verticalLayout.setObjectName("verticalLayout")
         self.elementLabel = QtWidgets.QLabel(visualModeElement)
@@ -26,6 +54,12 @@ class Ui_visualModeElement(object):
         self.elementLabel.setObjectName("elementLabel")
         self.verticalLayout.addWidget(self.elementLabel)
         self.nameLabel = QtWidgets.QLabel(visualModeElement)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(1)
+        sizePolicy.setVerticalStretch(1)
+        sizePolicy.setHeightForWidth(self.nameLabel.sizePolicy().hasHeightForWidth())
+        self.nameLabel.setSizePolicy(sizePolicy)
+        self.nameLabel.setSizeIncrement(QtCore.QSize(0, 0))
         self.nameLabel.setStyleSheet("font: 14pt \"Segoe UI\";")
         self.nameLabel.setText("")
         self.nameLabel.setWordWrap(True)

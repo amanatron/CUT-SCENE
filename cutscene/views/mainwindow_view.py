@@ -36,12 +36,9 @@ class MainView(QMainWindow):
             self.restoreGeometry(self._settings.value("geometry"))
             self.restoreState(self._settings.value("windowState"))
 
-        # listen for model event signals
-        self._model.levelsChanged.connect(self.on_LevelModelChanged)
-        self._model.projectLoaded.connect(self.on_ProjectLoad)
-        self._main_controller.activeSceneChanged.connect(self.activeSceneChanged)
 
-        self.sceneview = SceneViewWidget()
+
+        self.sceneview = SceneViewWidget(main_controller, model)
 
         # Manually create and arrange the sceneview widget
         self._ui.verticalLayout_2 = QVBoxLayout(self._ui.widget_3)
@@ -52,7 +49,10 @@ class MainView(QMainWindow):
         self._ui.verticalLayout_2.addWidget(self.sceneview)
         self._ui.verticalLayout_2.addWidget(self._ui.widget_4)
 
-        # self.visualModeScene = VisualModeScene(model, main_controller)
+        # listen for model event signals
+        self._model.levelsChanged.connect(self.on_LevelModelChanged)
+        self._model.projectLoaded.connect(self.on_ProjectLoad)
+        self._main_controller.activeSceneChanged.connect(self.activeSceneChanged)
         self.connect_actions()
 
         # manually set initial button states
@@ -75,6 +75,9 @@ class MainView(QMainWindow):
         self._ui.buttonAddScene.clicked.connect(self._main_controller.newScene)
         self._ui.buttonAddAnimation.clicked.connect(self._main_controller.newAnimation)
         self._ui.buttonAddObjective.clicked.connect(self._main_controller.newObjective)
+        self._ui.buttonManipulate.clicked.connect(self.buttonManipulateClicked)
+        self._ui.buttonConnect.clicked.connect(self.buttonConnectClicked)
+        self._ui.buttonDelete.clicked.connect(self.buttonDeleteClicked)
         self._ui.actionNew.triggered.connect(self._main_controller.newProject)
         self._ui.actionOpen.triggered.connect(self._main_controller.openProject)
         self._ui.actionSave.triggered.connect(self._main_controller.saveProject)
@@ -102,7 +105,7 @@ class MainView(QMainWindow):
     @Slot()
     def on_ProjectLoad(self):
         print("Project loaded")
-        # manually select root item for convenience and connection some signals to slots
+        # manually select root item for convenience and connect some signals to slots
         self._ui.levelsView.setModel(self._model.levels_model)
         self._ui.levelsView.expandToDepth(0)
         self._ui.levelsView.selectionModel().currentChanged.connect(self._main_controller.levelItemSelected)
@@ -125,14 +128,43 @@ class MainView(QMainWindow):
         # levelnames = [level.name for level in levels]
         # self._ui.levelsView.addItems(levelnames)
 
+    def buttonManipulateClicked(self):
+        self._ui.buttonManipulate.setChecked(True)
+        self._ui.buttonConnect.setChecked(False)
+        self._ui.buttonDelete.setChecked(False)
+        self.sceneview.manipulate()
+
+    def buttonConnectClicked(self):
+        self._ui.buttonManipulate.setChecked(False)
+        self._ui.buttonConnect.setChecked(True)
+        self._ui.buttonDelete.setChecked(False)
+        self.sceneview.add_edge()
+
+    def buttonDeleteClicked(self):
+        self._ui.buttonManipulate.setChecked(False)
+        self._ui.buttonConnect.setChecked(False)
+        self._ui.buttonDelete.setChecked(True)
+        self.sceneview.rem_edge()
+
+
+
     @Slot()
     def activeSceneChanged(self):
         if self._main_controller.activeScene:
             self._ui.buttonAddObjective.setEnabled(True)
             self._ui.buttonAddAnimation.setEnabled(True)
+            self._ui.buttonManipulate.setEnabled(True)
+            self._ui.buttonConnect.setEnabled(True)
+            self._ui.buttonDelete.setEnabled(True)
+            # handle manipulation mode for sceneView
+            self.sceneview.manipulate()
+            self._ui.buttonManipulate.setChecked(True)
         else:
             self._ui.buttonAddObjective.setEnabled(False)
             self._ui.buttonAddAnimation.setEnabled(False)
+            self._ui.buttonManipulate.setEnabled(False)
+            self._ui.buttonConnect.setEnabled(False)
+            self._ui.buttonDelete.setEnabled(False)
 
     @Slot(str)
     def on_LevelItemChanged(self, index):

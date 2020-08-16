@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file '.\resources\mainwindow_view.ui',
 # licensing of '.\resources\mainwindow_view.ui' applies.
 #
-# Created: Thu Aug 13 11:29:58 2020
+# Created: Sun Aug 16 11:34:17 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -119,6 +119,12 @@ class Ui_MainWindow(object):
 "background-color: rgb(52, 73, 85);\n"
 "padding: 5px;\n"
 "border-radius: 3px\n"
+"}\n"
+"\n"
+"QPushButton:active {\n"
+"background-color: rgb(52, 73, 85);\n"
+"padding: 5px;\n"
+"border-radius: 3px\n"
 "}")
         self.widget_2.setObjectName("widget_2")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.widget_2)
@@ -158,7 +164,7 @@ class Ui_MainWindow(object):
         self.widget_3 = QtWidgets.QWidget(self.centralwidget)
         self.widget_3.setObjectName("widget_3")
         self.widget_4 = QtWidgets.QWidget(self.widget_3)
-        self.widget_4.setGeometry(QtCore.QRect(0, 0, 308, 40))
+        self.widget_4.setGeometry(QtCore.QRect(0, 0, 801, 40))
         self.widget_4.setStyleSheet("QPushButton {\n"
 "background-color: rgb(238, 238, 238);\n"
 "padding: 5px;\n"
@@ -166,6 +172,12 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "QPushButton:hover {\n"
+"background-color: rgb(200, 200, 200);\n"
+"padding: 5px;\n"
+"border-radius: 3px\n"
+"}\n"
+"\n"
+"QPushButton:checked {\n"
 "background-color: rgb(200, 200, 200);\n"
 "padding: 5px;\n"
 "border-radius: 3px\n"
@@ -211,10 +223,41 @@ class Ui_MainWindow(object):
         icon5.addPixmap(QtGui.QPixmap(":/visualModeIcons/img/icons/visualModeIcons/forum_black_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.buttonAddAnimation.setIcon(icon5)
         self.buttonAddAnimation.setIconSize(QtCore.QSize(30, 30))
+        self.buttonAddAnimation.setCheckable(False)
         self.buttonAddAnimation.setObjectName("buttonAddAnimation")
         self.horizontalLayout_2.addWidget(self.buttonAddAnimation)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem)
+        self.buttonManipulate = QtWidgets.QPushButton(self.widget_4)
+        self.buttonManipulate.setText("")
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(":/visualModeIcons/img/icons/visualModeIcons/pan_tool_black_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.buttonManipulate.setIcon(icon6)
+        self.buttonManipulate.setIconSize(QtCore.QSize(30, 30))
+        self.buttonManipulate.setCheckable(True)
+        self.buttonManipulate.setObjectName("buttonManipulate")
+        self.horizontalLayout_2.addWidget(self.buttonManipulate)
+        self.buttonConnect = QtWidgets.QPushButton(self.widget_4)
+        self.buttonConnect.setText("")
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap(":/visualModeIcons/img/icons/visualModeIcons/timeline_black_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.buttonConnect.setIcon(icon7)
+        self.buttonConnect.setIconSize(QtCore.QSize(30, 30))
+        self.buttonConnect.setCheckable(True)
+        self.buttonConnect.setChecked(False)
+        self.buttonConnect.setObjectName("buttonConnect")
+        self.horizontalLayout_2.addWidget(self.buttonConnect)
+        self.buttonDelete = QtWidgets.QPushButton(self.widget_4)
+        self.buttonDelete.setText("")
+        icon8 = QtGui.QIcon()
+        icon8.addPixmap(QtGui.QPixmap(":/visualModeIcons/img/icons/visualModeIcons/remove_circle_black_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.buttonDelete.setIcon(icon8)
+        self.buttonDelete.setIconSize(QtCore.QSize(30, 30))
+        self.buttonDelete.setCheckable(True)
+        self.buttonDelete.setObjectName("buttonDelete")
+        self.horizontalLayout_2.addWidget(self.buttonDelete)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem1)
         self.gridLayout.addWidget(self.widget_3, 3, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -265,6 +308,9 @@ class Ui_MainWindow(object):
         self.sceneToolsLabel.setText(QtWidgets.QApplication.translate("MainWindow", "Scene Tools", None, -1))
         self.buttonAddObjective.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Add Objective", None, -1))
         self.buttonAddAnimation.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Add Animation", None, -1))
+        self.buttonManipulate.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Move Item", None, -1))
+        self.buttonConnect.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Connect Items", None, -1))
+        self.buttonDelete.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Remove Connection", None, -1))
         self.menuFile.setTitle(QtWidgets.QApplication.translate("MainWindow", "File", None, -1))
         self.menuEdit.setTitle(QtWidgets.QApplication.translate("MainWindow", "Edit", None, -1))
         self.actionNew.setText(QtWidgets.QApplication.translate("MainWindow", "New", None, -1))

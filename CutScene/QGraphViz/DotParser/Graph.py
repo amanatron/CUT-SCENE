@@ -39,7 +39,7 @@ class Graph(Node):
         Adds an edge to the graph
         :param edge: An edge to be added to the graph
         """
-        self.nodes.append(edge)
+        self.edges.append(edge)
    
     def getNodeByName(self, name):
         nodenames = [n.name for n in self.nodes]
@@ -117,7 +117,6 @@ class Graph(Node):
                 w=x_+w_-x
             if(y+h<y_+h_):
                 h=y_+h_-y 
-        print("SIZE: ", x, y, w, h)
         return x,y,w,h
 
 

@@ -10,8 +10,6 @@ manipulate them and save them
 from PySide2.QtWidgets import QFileDialog, QDialog, QApplication, QWidget, QMainWindow, QVBoxLayout, QHBoxLayout, QFormLayout, QComboBox, QPushButton, QInputDialog, QLineEdit, QLabel, QSizePolicy
 import sys
 import os
-sys.path.insert(1,os.path.dirname(__file__)+"/..")
-print(sys.path)
 from QGraphViz.QGraphViz import QGraphViz, QGraphVizManipulationMode
 from QGraphViz.DotParser import Graph, GraphType
 from QGraphViz.Engines import Dot
@@ -21,9 +19,13 @@ from PySide2.QtGui import QFontMetrics, QFont, QImage
 
 
 class SceneViewWidget(QWidget):
-    def __init__(self):
+    def __init__(self, main_controller, model):
         # Create QGraphViz widget
         super().__init__()
+        self._main_controller = main_controller
+        self._model = model
+        self._main_controller.activeSceneChanged.connect(self.loadScene)
+        self._model.sceneModified.connect(self.loadScene) # todo maybe dont re-render the entire scene when its modified
 
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -36,6 +38,7 @@ class SceneViewWidget(QWidget):
             parent=self,
             show_subgraphs=show_subgraphs,
             auto_freeze= True, # show autofreeze capability
+            new_edge_beingAdded_callback=self.new_edge_being_added,
             node_selected_callback=self.node_selected,
             edge_selected_callback=self.edge_selected,
             node_invoked_callback=self.node_invoked,
@@ -46,7 +49,7 @@ class SceneViewWidget(QWidget):
             hilight_Nodes=True,
             hilight_Edges=True
             )
-        self.qgv.setStyleSheet("background-color:white;")
+        self.qgv.setStyleSheet("background-color:rgb(255, 255, 255);")
         # Create A new Graph using Dot layout engine
         self.qgv.new(Dot(Graph("Main_Graph"), show_subgraphs=show_subgraphs, font = QFont("Arial", 12),margins=[20,20]))
         # Define sone graph
@@ -60,6 +63,10 @@ class SceneViewWidget(QWidget):
         sub = self.qgv.addSubgraph(self.qgv.engine.graph, "sub graph", self.qgv.engine.graph.graph_type, label="Subgraph", fillcolor="blue:white:red")
         n7 = self.qgv.addNode(sub, "Node7", label="N7")
         n8 = self.qgv.addNode(sub, "Node8", label="N8")
+
+        sub2 = self.qgv.addSubgraph(self.qgv.engine.graph, "sub graph 2", self.qgv.engine.graph.graph_type, label="Subgraph 2", fillcolor="blue:white:red")
+        n9 = self.qgv.addNode(sub, "Node9", label="N9")
+        n10 = self.qgv.addNode(sub, "Node10", label="N10")
 
         # Adding nodes with an image as its shape
         icon_path = os.path.dirname(os.path.abspath(__file__)) + r"\icon\dbicon.png,100,100"
@@ -76,6 +83,7 @@ class SceneViewWidget(QWidget):
         self.qgv.addEdge(n3, n6, {"width":2})
         self.qgv.addEdge(n6, n9, {"width":5,"color":"red"})
         self.qgv.addEdge(n9, n10, {"width":5,"color":"red"})
+        self.qgv.addEdge(sub, sub2, {"width":4})
 
 
         # Build the graph (the layout engine organizes where the nodes and connections are)
@@ -138,6 +146,32 @@ class SceneViewWidget(QWidget):
         # hpanel.addWidget(btnRemSubGraph)
         self.buttons_list.append(btnRemSubGraph)
 
+    def loadScene(self):
+        self.qgv.clear()
+        scene = self._main_controller.activeScene
+        if scene:
+            for scene_element in scene.elements:
+                self.qgv.addWidget(self.qgv.engine.graph, scene_element)
+            event_dict = scene.getEvents()
+            for element_id in event_dict.keys():
+                for to_element_id in event_dict[element_id]:
+                    from_node = self.qgv.getNodeFromID(element_id)
+                    to_node = self.qgv.getNodeFromID(to_element_id)
+                    self.qgv.addEdge(from_node, to_node, {"width":2})
+        self.qgv.build()
+
+    def new_edge_being_added(self, source, dest):
+        source_id = source.widget.scene_element.itemID
+        dest_id = dest.widget.scene_element.itemID
+        if self._main_controller.testNewEventForCycle(source_id, dest_id):
+            self._main_controller.newSceneEvent(source_id, dest_id)
+        else:
+            print(f"Cannot create edge from {source} to {dest} as this creates a cycle which are not properly handled yet.")
+        return False, {}
+
+    def new_scene_item_added(self, item_id):
+        self.qgv.addWidget(self.qgv.engine.graph, scene_element)
+
     # Events
     def node_selected(self, node):
         if(self.qgv.manipulation_mode==QGraphVizManipulationMode.Node_remove_Mode):
@@ -157,6 +191,7 @@ class SceneViewWidget(QWidget):
         print("Edge double clicked")
     def node_removed(self, node):
         print("Node removed")
+        pass
     def edge_removed(self, node):
         print("Edge removed")
         
@@ -185,6 +220,10 @@ class SceneViewWidget(QWidget):
         #fname = QFileDialog.getOpenFileName(self.qgv, "Open", "", "*.gv")
         #if(fname[0]!=""):
         #    self.qgv.load_file(fname[0])
+
+    def add_widget(self, scene_element):
+        self.qgv.addWidget(self.qgv.engine.graph, scene_element)
+        self.qgv.build()
 
     def add_node(self):
         dlg = QDialog()
@@ -250,22 +289,12 @@ class SceneViewWidget(QWidget):
 
     def rem_node(self):
         self.qgv.manipulation_mode=QGraphVizManipulationMode.Node_remove_Mode
-        for btn in self.buttons_list:
-            btn.setChecked(False)
-        btnRemNode.setChecked(True)
-
 
     def rem_edge(self):
         self.qgv.manipulation_mode=QGraphVizManipulationMode.Edge_remove_Mode
-        for btn in self.buttons_list:
-            btn.setChecked(False)
-        btnRemEdge.setChecked(True)
 
     def add_edge(self):
         self.qgv.manipulation_mode=QGraphVizManipulationMode.Edges_Connect_Mode
-        for btn in self.buttons_list:
-            btn.setChecked(False)
-        btnAddEdge.setChecked(True)
 
     def add_subgraph(self):
         dlg = QDialog()

@@ -1,9 +1,9 @@
 from cutscene.sceneElements.event import Event
 from cutscene.sceneElements.animation import Animation
-from cutscene.utils import NameDescription, Instantiable
+from cutscene.utils import NameDescription, Instantiable, OrderedInstanceHolder
 from typing import Optional
 
-class Objective(NameDescription, Instantiable):
+class Objective(NameDescription, Instantiable, OrderedInstanceHolder):
     """Objective class
 
     An Objective describes the instantaneous goal of their gameplay within the scene, for e.g;fetch the ball, fnd the key, kill the boss..etc.

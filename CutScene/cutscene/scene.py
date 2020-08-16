@@ -43,8 +43,8 @@ class Scene(NameDescription, Instantiable, MapImage):
         NameDescription.__init__(self, name, description)
         Instantiable.__init__(self, itemID)
         MapImage.__init__(self, img)
-        self.elements = elements
-        self.sceneMatrix = sceneMatrix
+        self.elements = []
+        self.sceneMatrix = []
 
     def __itemIdxFromId(self, elem_id):
         for idx, element in enumerate(self.elements):
@@ -52,19 +52,42 @@ class Scene(NameDescription, Instantiable, MapImage):
                 return idx
 
     def __eventIdxFromId(self, event_id):
-        for x, row in enumerate(self.sceneMatrix):
-            for y, event in enumerate(row):
+        for fr, row in enumerate(self.sceneMatrix):
+            for to, event in enumerate(row):
                 if event is not None:
-                    if event.id == event_id:
-                        return (x, y)
+                    if event.itemID == event_id:
+                        return (fr, to)
 
     @property
     def __elementCount(self):
         return len(self.elements)
         # returns number of scene elements
 
+    def restoreSceneMatrix(self, sceneMatrix):
+        for fr, row in enumerate(sceneMatrix):
+            for to, event_params in enumerate(row):
+                if event_params:
+                    event_params.pop("type")
+                    event = Event(**event_params)
+                    self.sceneMatrix[fr][to] = event
+
     def get(self):
         return (self.elements, self.sceneMatrix)
+
+    def getEvents(self):
+        """ Returns dict with each entry of itemID giving a list of other itemIDs it links to
+            eg. A: [B, C]
+                B: [D]
+                C: [D]
+                D: []
+        """
+        event_dict = {}
+        for fr, row in enumerate(self.sceneMatrix):
+            item_id = self.elements[fr].itemID
+            event_indices = [i for i, fr in enumerate(row) if fr]
+            to_item_ids = [self.elements[i].itemID for i in event_indices]
+            event_dict[item_id] = to_item_ids
+        return event_dict
 
     def addNew(self, item):
         # add row at bottom of scene matrix
@@ -77,29 +100,33 @@ class Scene(NameDescription, Instantiable, MapImage):
         # make link?
         pass
 
+    def delItem(self, item_id):
+        idx = self.__itemIdxFromId(item_id) # get idx
+        for row in self.sceneMatrix:        # remove from event matrix
+            del row[idx]
+        del self.sceneMatrix[idx]
+        del self.elements[idx]              # remove item 
+
     def addEvent(self, id1, id2, **kwargs):
-        x = self.__itemIdxFromId(id1)
-        y = self.__itemIdxFromId(id2)
+        fr = self.__itemIdxFromId(id1)
+        to = self.__itemIdxFromId(id2)
         event = Event(**kwargs)
-        self.sceneMatrix[x][y] = event
-        self.sceneMatrix[y][x] = event
+        self.sceneMatrix[fr][to] = event
+        return event
 
     def delEvent(self, event_id):
-        x, y = self.__eventIdxFromId(event_id)
-        self.sceneMatrix[x][y] = None
-        self.sceneMatrix[y][x] = None
+        fr, to = self.__eventIdxFromId(event_id)
+        self.sceneMatrix[fr][to] = None
 
     def moveEvent(self, event_id, new_id1, new_id2):
-        x, y = self.__eventIdxFromId(event_id)
-        event = self.sceneMatrix[x][y]
-        self.sceneMatrix[x][y] = None
-        self.sceneMatrix[y][x] = None
+        fr, to = self.__eventIdxFromId(event_id)
+        event = self.sceneMatrix[fr][to]
+        self.sceneMatrix[x][to] = None
         self.sceneMatrix[new_id1][new_id2] = event
-        self.sceneMatrix[new_id2][new_id1] = event
 
     def getEvent(self, event_id):
-        x, y = self.__eventIdxFromId(event_id)
-        return self.sceneMatrix[x][y]
+        fr, to = self.__eventIdxFromId(event_id)
+        return self.sceneMatrix[fr][to]
 
     def new(self, item, **kwargs):
         if item == "ANIMATION":

@@ -9,14 +9,17 @@
     <file>img/icons/levelIcons/videogame_asset_white_96x96.png</file>
   </qresource>
   <qresource prefix="visualModeIcons">
+    <file>img/icons/visualModeIcons/remove_circle_black_96x96.png</file>
     <file>img/icons/visualModeIcons/forum_black_96x96.png</file>
     <file>img/icons/visualModeIcons/comment_black_96x96.png</file>
     <file>img/icons/visualModeIcons/vertical_align_bottom_black_96x96.png</file>
     <file>img/icons/visualModeIcons/code_black_96x96.png</file>
     <file>img/icons/visualModeIcons/keyboard_black_96x96.png</file>
     <file>img/icons/visualModeIcons/explore_black_96x96.png</file>
-    <file>img/icons/visualModeIcons/forum_black_96x96(1).png</file>
     <file>img/icons/elementIcons/delete_black_96x96.png</file>
+    <file>img/icons/visualModeIcons/clear_black_96x96.png</file>
+    <file>img/icons/visualModeIcons/pan_tool_black_96x96.png</file>
+    <file>img/icons/visualModeIcons/timeline_black_96x96.png</file>
     <file>img/icons/elementIcons/edit_black_96x96.png</file>
   </qresource>
   <qresource prefix="paintIcons">

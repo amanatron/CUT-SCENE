@@ -18,6 +18,8 @@ class Model(QObject):
     projectLoaded = Signal()
     projectSaved = Signal()
     levelsChanged = Signal()
+    sceneModified = Signal()
+
 
     def __init__(self):
         super().__init__()
@@ -49,9 +51,19 @@ class Model(QObject):
         self.levelsChanged.emit()
         return level_inst.id
 
-    def addSceneItem(self, parent_item, item_type, params):
-        print(f"model called to add {item_type} to {parent_item.type} with params: {params}")
-        pass
+    def addSceneItem(self, parent_id, item_type, params):
+        parent = self.getInstByID(parent_id)
+        scene_item = parent.new(item_type, **params)
+        print(f"model added {item_type} to parent {parent_id} with params: {params}")
+        self.sceneModified.emit()
+        return scene_item.id
+
+    def addSceneEvent(self, scene_id, fr, to, params):
+        scene = self.getInstByID(scene_id)
+        event = scene.addEvent(fr, to, **params)
+        print(f"model added Event to scene {scene_id}, linking {fr} to {to} with params: {params}")
+        self.sceneModified.emit()
+        return event.id
 
     def getInstByID(self, item_id):
         return cutscene.utils.getByID(item_id)
@@ -100,6 +112,18 @@ class Model(QObject):
         deleteById(self.project, item_id)
         deleteItemById(root_index, item_id)
         self.levelsChanged.emit()
+
+    def deleteSceneItem(self, scene_id, item_id):
+        scene = self.getInstByID(scene_id)
+        scene.delItem(item_id)
+        print(f"model deleted scene item with id {item_id}")
+        self.sceneModified.emit()
+
+    def deleteSceneEvent(self, scene_id, event_id):
+        scene = self.getInstByID(scene_id)
+        scene.delEvent(event_id)
+        print(f"model deleted scene event with id {event_id}")
+        self.sceneModified.emit()
 
     def getProject(self):
         return self.project

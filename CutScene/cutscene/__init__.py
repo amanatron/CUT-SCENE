@@ -93,7 +93,9 @@ def dict_to_project(proj_dict):
             # Get the classname of the item
             item_type = item.pop("type")
             # See if the item has any contents eg an animation class with dialogue, act etc
-            if "ordered_holder" in item.keys():
+            if "elements" in item.keys():
+                itemOrderedHolder = item.pop("elements")
+            elif "ordered_holder" in item.keys():
                 itemOrderedHolder = item.pop("ordered_holder")
             else:
                 itemOrderedHolder = None
@@ -102,6 +104,10 @@ def dict_to_project(proj_dict):
             # Recurse another level in if there's more contents to this item
             if itemOrderedHolder:
                 restoreOrderedHolder(child, itemOrderedHolder)
+            # restore scenematrix if item is a scene
+            if item_type == "SCENE":
+                matrix = item.pop("sceneMatrix")
+                child.restoreSceneMatrix(matrix)
     
     # Create a new project instance
     project = CutSceneProject(name=proj_dict["name"],
@@ -125,5 +131,7 @@ def dict_to_project(proj_dict):
     # Recursively Restore Project Levels
     if "ordered_holder" in proj_dict.keys():
         restoreOrderedHolder(project, proj_dict["ordered_holder"])
+
+
 
     return project

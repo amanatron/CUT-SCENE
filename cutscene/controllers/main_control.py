@@ -95,13 +95,47 @@ class MainController(QObject):
     def newObjective(self):
         self.newSceneItem("OBJECTIVE")
 
+    def newEvent(self, *args):
+        self.newSceneEvent(*args)
+
     def newSceneItem(self, item_type):
         params = ParamDialogue.getParams(self, item_type)
         if not params:
             return
         parent = self.activeScene
+        assert parent is not None
         command = newSceneItemCommand(self._model, parent, item_type, params)
         self.undoStack.push(command)
+
+    def newSceneEvent(self, fr_id, to_id):
+        params = ParamDialogue.getParams(self, "EVENT")
+        if not params:
+            return
+        scene = self.activeScene
+        assert scene is not None
+        command = newSceneEventCommand(self._model, scene, fr_id, to_id, params)
+        self.undoStack.push(command)
+
+    def testNewEventForCycle(self, fr_id, to_id):
+        def check_item(item):
+            if item in visited:
+                return False
+            else:
+                visited.append(item)
+                for child in event_tree[item]:
+                    if not check_item(child): return False
+                else:
+                    return True
+
+        event_tree = self.activeScene.getEvents()
+        # add this event to the tree
+        if fr_id in event_tree.keys():
+            event_tree[fr_id] += [to_id]
+        else:
+            event_tree[fr_id] = [to_id]
+        # test the tree for a loop
+        visited = []
+        return check_item(list(event_tree.keys())[0])
 
     def newLevelItem(self, item_type):
         params = ParamDialogue.getParams(self, item_type)
@@ -152,8 +186,24 @@ class newSceneItemCommand(QUndoCommand):
         
     def redo(self):
         self.params["itemID"] = self.item_id
-        parent = self._model.getLevelItemById(self.parent_id)
-        self.item_id = self._model.addSceneItem(parent, self.item_type, self.params)
+        self.item_id = self._model.addSceneItem(self.parent_id, self.item_type, self.params)
 
     def undo(self):
-        self._model.deleteLevelItem(self.item_id)
+        self._model.deleteSceneItem(self.scene_id, self.item_id)
+
+class newSceneEventCommand(QUndoCommand):
+    def __init__(self, model, scene, fr, to, params):
+        QUndoCommand.__init__(self, f"Add Event")
+        self.scene_id = scene.id
+        self.fr = fr
+        self.to = to
+        self.params = params
+        self._model = model
+        self.event_id = None
+        
+    def redo(self):
+        self.params["itemID"] = self.event_id
+        self.event_id = self._model.addSceneEvent(self.scene_id, self.fr, self.to, self.params)
+
+    def undo(self):
+        self._model.deleteSceneEvent(self.scene_id, self.event_id)

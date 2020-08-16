@@ -6,15 +6,44 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>325</width>
-    <height>176</height>
+    <width>375</width>
+    <height>169</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>1</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">QWidget#visualModeElement {
+border: 1px solid rgb(213, 213, 213);
+border-radius: 5px;
+background-color: rgb(255, 255, 255) }
+
+QWidget#visualModeElement:hover {
+border: 2px solid rgb(213, 213, 213);
+}
+
+QLabel {
+background-color: rgb(255, 255, 255)}
+
+QPushButton {
+background-color: rgb(238, 238, 238);
+padding: 5px;
+border-radius: 3px
+}
+
+QPushButton:hover {
+background-color: rgb(200, 200, 200);
+padding: 5px;
+border-radius: 3px
+}
+</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -38,6 +67,18 @@
    </item>
    <item>
     <widget class="QLabel" name="nameLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+       <horstretch>1</horstretch>
+       <verstretch>1</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="sizeIncrement">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="styleSheet">
       <string notr="true">font: 14pt &quot;Segoe UI&quot;;</string>
      </property>
