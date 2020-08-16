@@ -116,6 +116,18 @@ class MainController(QObject):
         command = newSceneEventCommand(self._model, scene, fr_id, to_id, params)
         self.undoStack.push(command)
 
+    def delSceneItem(self, item_id):
+        scene = self.activeScene
+        assert scene is not None
+        command = deleteSceneItemCommand(self._model, scene, item_id)
+        self.undoStack.push(command)
+
+    def delSceneEvent(self, event_id):
+        scene = self.activeScene
+        assert scene is not None
+        command = deleteSceneEventCommand(self._model, scene, event_id)
+        self.undoStack.push(command)
+
     def testNewEventForCycle(self, fr_id, to_id):
         def check_item(item):
             if item in visited:
@@ -127,7 +139,7 @@ class MainController(QObject):
                 else:
                     return True
 
-        event_tree = self.activeScene.getEvents()
+        event_tree = self.activeScene.getEventMap()
         # add this event to the tree
         if fr_id in event_tree.keys():
             event_tree[fr_id] += [to_id]
@@ -191,6 +203,21 @@ class newSceneItemCommand(QUndoCommand):
     def undo(self):
         self._model.deleteSceneItem(self.scene_id, self.item_id)
 
+class deleteSceneItemCommand(QUndoCommand):
+    def __init__(self, model, scene, item_id):
+        QUndoCommand.__init__(self, f"Add Event")
+        self.scene_id = scene.id
+        self.item_id = item_id
+        self.params = model.getInstByID(item_id).dict()
+        self.item_type = self.params.pop("type")
+        self._model = model
+    
+    def redo(self):
+        self._model.deleteSceneItem(self.scene_id, self.item_id)
+
+    def undo(self):
+        self.event_id = self._model.addSceneItem(self.scene_id, self.item_type, self.params)
+
 class newSceneEventCommand(QUndoCommand):
     def __init__(self, model, scene, fr, to, params):
         QUndoCommand.__init__(self, f"Add Event")
@@ -207,3 +234,20 @@ class newSceneEventCommand(QUndoCommand):
 
     def undo(self):
         self._model.deleteSceneEvent(self.scene_id, self.event_id)
+
+class deleteSceneEventCommand(QUndoCommand):
+    def __init__(self, model, scene, event_id):
+        QUndoCommand.__init__(self, f"Add Event")
+        self.scene_id = scene.id
+        self.event_id = event_id
+        self.fr, self.to = scene.getEventFromTo(event_id)
+        self.params = scene.getEventById(event_id).dict()
+        self.params.pop("type")
+        self._model = model
+    
+    def redo(self):
+        self._model.deleteSceneEvent(self.scene_id, self.event_id)
+
+    def undo(self):
+        self.event_id = self._model.addSceneEvent(self.scene_id, self.fr, self.to, self.params)
+

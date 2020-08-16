@@ -15,9 +15,11 @@ class Widget(Node):
     """
     The dot graphviz engine
     """
-    def __init__(self, parent_widget, scene_element, parent_graph, **kwargs):
+    def __init__(self, parent_widget, scene_element, parent_graph, edit_callback = None, delete_callback = None, **kwargs):
         super().__init__(scene_element.name, parent_graph, **kwargs)
-        self.widget = VisualModeElement(parent_widget, scene_element)
+        self.widget = VisualModeElement(parent_widget, scene_element, 
+                                        edit_callback=edit_callback,
+                                        delete_callback=delete_callback)
         self.widget.setMouseTracking(True)
         geometry = self.widget.geometry()
         width, height = geometry.size().width(), geometry.size().height()

@@ -3,11 +3,13 @@ from views.visualmodeelement_view_ui import Ui_visualModeElement
 from views.paramdialogue_view import ParamDialogue
 
 class VisualModeElement(QFrame):
-    def __init__(self, parent, scene_element=None):
+    def __init__(self, parent, scene_element=None, edit_callback=None, delete_callback=None):
         super().__init__(parent)
         self._ui = Ui_visualModeElement()
         self._ui.setupUi(self)
         self.scene_element = scene_element
+        self.edit_callback = edit_callback
+        self.delete_callback = delete_callback
 
         # connect buttons
         self._ui.editButton.clicked.connect(self.editElement)
@@ -23,7 +25,8 @@ class VisualModeElement(QFrame):
             self._ui.nameLabel.setText(self.scene_element.name)
 
     def delete(self):
-        print("delete")
+        if self.delete_callback:
+            self.delete_callback(self.scene_element.itemID)
 
     def editElement(self):
         params = ParamDialogue.getParams(self, self.scene_element.type, edit=True, defaults=self.scene_element.dict())

@@ -147,7 +147,6 @@ class MainView(QMainWindow):
         self.sceneview.rem_edge()
 
 
-
     @Slot()
     def activeSceneChanged(self):
         if self._main_controller.activeScene:

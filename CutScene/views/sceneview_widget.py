@@ -151,13 +151,13 @@ class SceneViewWidget(QWidget):
         scene = self._main_controller.activeScene
         if scene:
             for scene_element in scene.elements:
-                self.qgv.addWidget(self.qgv.engine.graph, scene_element)
-            event_dict = scene.getEvents()
-            for element_id in event_dict.keys():
-                for to_element_id in event_dict[element_id]:
-                    from_node = self.qgv.getNodeFromID(element_id)
-                    to_node = self.qgv.getNodeFromID(to_element_id)
-                    self.qgv.addEdge(from_node, to_node, {"width":2})
+                self.qgv.addWidget(self.qgv.engine.graph, scene_element, delete_callback=self.delete_element)
+            events_list = scene.getEvents()
+            for event in events_list:
+                event_id, fr_id, to_id = event
+                fr_node = self.qgv.getNodeFromID(fr_id)
+                to_node = self.qgv.getNodeFromID(to_id)
+                self.qgv.addEdge(fr_node, to_node, {"width":2, "event_id": event_id})
         self.qgv.build()
 
     def new_edge_being_added(self, source, dest):
@@ -175,15 +175,20 @@ class SceneViewWidget(QWidget):
     # Events
     def node_selected(self, node):
         if(self.qgv.manipulation_mode==QGraphVizManipulationMode.Node_remove_Mode):
-            print("Node {} removed".format(node))
+            node_id = node.widget.scene_element.itemID
+            self._main_controller.delSceneItem(node_id)
         else:
             print("Node selected {}".format(node))
 
     def edge_selected(self, edge):
         if(self.qgv.manipulation_mode==QGraphVizManipulationMode.Edge_remove_Mode):
-            print("Edge {} removed".format(edge))
+            event_id = edge.kwargs["event_id"]
+            self._main_controller.delSceneEvent(event_id)
         else:
             print("Edge selected {}".format(edge))
+
+    def delete_element(self, item_id):
+        self._main_controller.delSceneItem(item_id)
 
     def node_invoked(self, node):
         print("Node double clicked")
@@ -192,8 +197,8 @@ class SceneViewWidget(QWidget):
     def node_removed(self, node):
         print("Node removed")
         pass
-    def edge_removed(self, node):
-        print("Edge removed")
+    def edge_removed(self, edge):
+        pass
         
     def manipulate(self):
         self.qgv.manipulation_mode=QGraphVizManipulationMode.Nodes_Move_Mode
