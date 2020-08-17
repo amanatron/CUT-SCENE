@@ -217,12 +217,17 @@ class NameDescription(Description, Name):
 
 class Instantiable(object):
     """Base class for all instantiable objects, providing core functionality"""
-    def __init__(self, itemID):
+    def __init__(self, itemID, parentID=None, parent=None):
         if not itemID:
             self.itemID = uuid.uuid4().int
         else:
             assert type(itemID) is int
             self.itemID = itemID
+        if parent:
+            self.parentID = parent.id
+        else:
+            self.parentID = parentID
+
         self.type = objToDict(self)["type"]
 
         global REGISTRY
@@ -261,3 +266,27 @@ def getByID(item_id):
         return REGISTRY[item_id]
     except KeyError:
         raise
+
+
+def restoreOrderedHolder(parent, orderedHolder):
+    if not orderedHolder:
+        return
+    for item in orderedHolder:
+        # Get the classname of the item
+        item_type = item.pop("type")
+        # See if the item has any contents eg an animation class with dialogue, act etc
+        if "elements" in item.keys():
+            itemOrderedHolder = item.pop("elements")
+        elif "ordered_holder" in item.keys():
+            itemOrderedHolder = item.pop("ordered_holder")
+        else:
+            itemOrderedHolder = None
+        # Call its parent to init a new instance
+        child = parent.new(item_type.upper(), **item)
+        # Recurse another level in if there's more contents to this item
+        if itemOrderedHolder:
+            restoreOrderedHolder(child, itemOrderedHolder)
+        # restore scenematrix if item is a scene
+        if item_type == "SCENE":
+            matrix = item.pop("sceneMatrix")
+            child.restoreSceneMatrix(matrix)

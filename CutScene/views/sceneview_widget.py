@@ -167,9 +167,7 @@ class SceneViewWidget(QWidget):
                                           delete_callback=self.delete_element,
                                           new_item_callbacks=self.widget_callbacks)
                 for item in scene_element.get():
-                    sub_node = self.qgv.addWidget(self.qgv.engine.graph, item,
-                                          delete_callback=self.delete_element)
-                    self.qgv.addEdge(node, sub_node, {"width":2})
+                    node.addSubElement(item)
             events_list = scene.getEvents()
             for event in events_list:
                 event_id, fr_id, to_id = event

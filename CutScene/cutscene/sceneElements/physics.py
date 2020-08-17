@@ -5,9 +5,10 @@ class Physics(Description, Instantiable):
     """This is simply a small description on the specifcs of a given scene's or object's gravity, pace and etc."""
     def __init__(self, 
                  description: str,
-                 itemID: Optional[int] = None):
+                 itemID: Optional[int] = None,
+                 parentID: Optional[int] = None):
         Description.__init__(self, description)
-        Instantiable.__init__(self, itemID)
+        Instantiable.__init__(self, itemID, parentID)
 
     @property
     def help(self):

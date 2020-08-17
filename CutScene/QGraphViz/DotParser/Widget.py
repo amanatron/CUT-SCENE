@@ -22,8 +22,16 @@ class Widget(Node):
                                         delete_callback=delete_callback,
                                         new_item_callbacks=new_item_callbacks)
         self.widget.setMouseTracking(True)
+
+        # adjust widget size
+        self.widget._ui.verticalLayout.invalidate()
+        self.widget.adjustSize()
         geometry = self.widget.geometry()
         width, height = geometry.size().width(), geometry.size().height()
         self.pos = [geometry.x()+width/2, geometry.y()+height/2]
         self.size = [width, height]
         self.widget.show()
+
+    def addSubElement(self, scene_element):
+        self.widget.addSubElement(scene_element)
+        self.widget.resize(self.widget.sizeHint())

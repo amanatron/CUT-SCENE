@@ -1,5 +1,7 @@
 from PySide2.QtWidgets import QWidget, QFrame
+from PySide2.QtCore import QSize
 from views.visualmodeelement_view_ui import Ui_visualModeElement
+from views.subvisualmodeelement_view_ui import Ui_subVisualModeElement
 from views.paramdialogue_view import ParamDialogue
 
 class VisualModeElement(QFrame):
@@ -11,6 +13,7 @@ class VisualModeElement(QFrame):
         self.edit_callback = edit_callback
         self.delete_callback = delete_callback
         self.new_item_callbacks = new_item_callbacks
+        self.parent=parent
 
         # connect buttons
         self._ui.editButton.clicked.connect(self.editElement)
@@ -48,6 +51,21 @@ class VisualModeElement(QFrame):
             self._ui.pseudocodeButton.setVisible(False)
             self._ui.physicsButton.setVisible(False)
             self._ui.actionButton.setVisible(False)
+
+        self.defaultSize = (self.geometry().size().width(), self.geometry().size().height())
+
+    def sizeHint(self):
+        width, height = self.defaultSize
+        n = self._ui.subElementsLayout.count()
+        height += 7
+        height += 37*n
+        return QSize(width, height)
+
+    def addSubElement(self, element):
+        widget = SubElement(element, 
+                            delete_callback=self.delete_callback,
+                            edit_callback=self.edit_callback)
+        self._ui.subElementsLayout.addWidget(widget)
 
     def addTransition(self):
         self.new_item_callbacks["TRANSITION"](self.scene_element.itemID)
@@ -91,3 +109,33 @@ class VisualModeElement(QFrame):
             return
         self.scene_element.edit(params)
         self.updateLabels()
+
+class SubElement(QWidget):
+    def __init__(self, scene_element,
+                 edit_callback = None,
+                 delete_callback = None):
+        super().__init__()
+        self._ui = Ui_subVisualModeElement()
+        self._ui.setupUi(self)
+        self.scene_element = scene_element
+        self.edit_callback = edit_callback
+        self.delete_callback = delete_callback
+        self._ui.editButton.clicked.connect(self.editElement)
+        self._ui.deleteButton.clicked.connect(self.delete)
+        self.updateLabel()
+        self.show()
+
+    def delete(self):
+        if self.delete_callback:
+            self.delete_callback(self.scene_element.itemID)
+
+    def updateLabel(self):
+        if self.scene_element:
+            self._ui.elementLabel.setText(self.scene_element.type)
+
+    def editElement(self):
+        params = ParamDialogue.getParams(self, self.scene_element.type, edit=True, defaults=self.scene_element.dict())
+        if not params:
+            return
+        self.scene_element.edit(params)
+        self.updateLabel()

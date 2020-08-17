@@ -14,9 +14,10 @@ class Pseudocode(Name, Instantiable):
                  name: str,
                  purpose: str, 
                  pscode: str,
-                 itemID: Optional[int] = None):
+                 itemID: Optional[int] = None,
+                 parentID: Optional[int] = None):
         Name.__init__(self, name)
-        Instantiable.__init__(self, itemID)
+        Instantiable.__init__(self, itemID, parentID)
         self.purpose = purpose
         self.pscode = pscode
 

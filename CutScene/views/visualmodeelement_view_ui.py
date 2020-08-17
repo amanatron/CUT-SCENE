@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file '.\resources\visualmodeelement_view.ui',
 # licensing of '.\resources\visualmodeelement_view.ui' applies.
 #
-# Created: Sun Aug 16 22:38:24 2020
+# Created: Mon Aug 17 10:54:37 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,8 +13,8 @@ from PySide2 import QtCore, QtGui, QtWidgets
 class Ui_visualModeElement(object):
     def setupUi(self, visualModeElement):
         visualModeElement.setObjectName("visualModeElement")
-        visualModeElement.resize(330, 127)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.MinimumExpanding)
+        visualModeElement.resize(474, 133)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(1)
         sizePolicy.setHeightForWidth(visualModeElement.sizePolicy().hasHeightForWidth())
@@ -45,8 +45,10 @@ class Ui_visualModeElement(object):
 "}\n"
 "")
         self.verticalLayout = QtWidgets.QVBoxLayout(visualModeElement)
+        self.verticalLayout.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
         self.verticalLayout.setObjectName("verticalLayout")
         self.elementLabel = QtWidgets.QLabel(visualModeElement)
+        self.elementLabel.setMinimumSize(QtCore.QSize(0, 17))
         self.elementLabel.setStyleSheet("font: 63 italic 8pt \"Segoe UI Semibold\";")
         self.elementLabel.setText("")
         self.elementLabel.setWordWrap(False)
@@ -60,13 +62,32 @@ class Ui_visualModeElement(object):
         sizePolicy.setVerticalStretch(1)
         sizePolicy.setHeightForWidth(self.nameLabel.sizePolicy().hasHeightForWidth())
         self.nameLabel.setSizePolicy(sizePolicy)
+        self.nameLabel.setMinimumSize(QtCore.QSize(0, 31))
         self.nameLabel.setSizeIncrement(QtCore.QSize(0, 0))
         self.nameLabel.setStyleSheet("font: 14pt \"Segoe UI\";")
         self.nameLabel.setText("")
         self.nameLabel.setWordWrap(True)
         self.nameLabel.setObjectName("nameLabel")
         self.verticalLayout.addWidget(self.nameLabel)
+        self.subElementsWidget = QtWidgets.QWidget(visualModeElement)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(1)
+        sizePolicy.setVerticalStretch(1)
+        sizePolicy.setHeightForWidth(self.subElementsWidget.sizePolicy().hasHeightForWidth())
+        self.subElementsWidget.setSizePolicy(sizePolicy)
+        self.subElementsWidget.setObjectName("subElementsWidget")
+        self.subElementsLayout = QtWidgets.QVBoxLayout(self.subElementsWidget)
+        self.subElementsLayout.setContentsMargins(0, 0, 0, 0)
+        self.subElementsLayout.setObjectName("subElementsLayout")
+        self.verticalLayout.addWidget(self.subElementsWidget)
+        self.line = QtWidgets.QFrame(visualModeElement)
+        self.line.setMinimumSize(QtCore.QSize(0, 3))
+        self.line.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.verticalLayout.addWidget(self.line)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.controlButton = QtWidgets.QPushButton(visualModeElement)
         self.controlButton.setText("")
@@ -127,6 +148,7 @@ class Ui_visualModeElement(object):
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.editButton = QtWidgets.QPushButton(visualModeElement)
+        self.editButton.setMinimumSize(QtCore.QSize(0, 0))
         self.editButton.setText("")
         icon8 = QtGui.QIcon()
         icon8.addPixmap(QtGui.QPixmap(":/visualModeIcons/img/icons/elementIcons/edit_black_96x96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -141,6 +163,8 @@ class Ui_visualModeElement(object):
         self.deleteButton.setObjectName("deleteButton")
         self.horizontalLayout.addWidget(self.deleteButton)
         self.verticalLayout.addLayout(self.horizontalLayout)
+        self.verticalLayout.setStretch(1, 1)
+        self.verticalLayout.setStretch(2, 1)
 
         self.retranslateUi(visualModeElement)
         QtCore.QMetaObject.connectSlotsByName(visualModeElement)

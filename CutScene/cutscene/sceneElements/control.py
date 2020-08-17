@@ -19,8 +19,9 @@ class Control(Instantiable):
             keycode: str
     """
     def __init__(self,
-                 itemID: Optional[int] = None):
-        Instantiable.__init__(self, itemID)
+                 itemID: Optional[int] = None,
+                 parentID: Optional[int] = None):
+        Instantiable.__init__(self, itemID, parentID)
         self.__controls = []
 
     @property

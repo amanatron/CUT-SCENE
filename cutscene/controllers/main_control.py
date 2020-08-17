@@ -141,17 +141,12 @@ class MainController(QObject):
         command = newSceneEventCommand(self._model, scene, fr_id, to_id, params)
         self.undoStack.push(command)
 
-    def delSceneItem(self, item_id, parent_id=None):
-        if not parent_id:
-            parent_id = self.activeScene.id
-        assert parent_id is not None
-        command = deleteSceneItemCommand(self._model, parent_id, item_id)
+    def delSceneItem(self, item_id):
+        command = deleteSceneItemCommand(self._model, item_id)
         self.undoStack.push(command)
 
     def delSceneEvent(self, event_id):
-        scene = self.activeScene
-        assert scene is not None
-        command = deleteSceneEventCommand(self._model, scene, event_id)
+        command = deleteSceneEventCommand(self._model, event_id)
         self.undoStack.push(command)
 
     def testNewEventForCycle(self, fr_id, to_id):
@@ -230,14 +225,14 @@ class newSceneItemCommand(QUndoCommand):
         self._model.deleteSceneItem(self.parent_id, self.item_id)
 
 class deleteSceneItemCommand(QUndoCommand):
-    def __init__(self, model, parent_id, item_id):
-        QUndoCommand.__init__(self, f"Add Event")
-        self.parent_id = parent_id
+    def __init__(self, model, item_id):
         self.item_id = item_id
         self.params = model.getInstByID(item_id).dict()
         self.item_type = self.params.pop("type")
+        self.parent_id = self.params.pop("parentID")
         self._model = model
-    
+        QUndoCommand.__init__(self, f"Delete {self.item_type}")
+
     def redo(self):
         self._model.deleteSceneItem(self.parent_id, self.item_id)
 
@@ -262,13 +257,13 @@ class newSceneEventCommand(QUndoCommand):
         self._model.deleteSceneEvent(self.scene_id, self.event_id)
 
 class deleteSceneEventCommand(QUndoCommand):
-    def __init__(self, model, scene, event_id):
-        QUndoCommand.__init__(self, f"Add Event")
-        self.scene_id = scene.id
+    def __init__(self, model, event_id):
+        QUndoCommand.__init__(self, f"Delete Event")
         self.event_id = event_id
         self.fr, self.to = scene.getEventFromTo(event_id)
         self.params = scene.getEventById(event_id).dict()
         self.params.pop("type")
+        self.scene_id = self.params.pop("parentID")
         self._model = model
     
     def redo(self):

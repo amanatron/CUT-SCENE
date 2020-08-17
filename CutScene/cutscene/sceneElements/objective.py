@@ -2,7 +2,7 @@ from cutscene.sceneElements.event import Event
 from cutscene.sceneElements.action import Action
 from cutscene.sceneElements.physics import Physics
 from cutscene.sceneElements.pseudocode import Pseudocode
-from cutscene.utils import NameDescription, Instantiable, OrderedInstanceHolder
+from cutscene.utils import NameDescription, Instantiable, OrderedInstanceHolder, restoreOrderedHolder
 from typing import Optional
 
 class Objective(NameDescription, Instantiable, OrderedInstanceHolder):
@@ -36,10 +36,14 @@ class Objective(NameDescription, Instantiable, OrderedInstanceHolder):
     def __init__(self, 
                  name: str,
                  description: str,
-                 itemID: Optional[int] = None):
+                 itemID: Optional[int] = None,
+                 parentID: Optional[int] = None,
+                 ordered_holder: Optional[list] = None):
         OrderedInstanceHolder.__init__(self)
         NameDescription.__init__(self, name, description)
-        Instantiable.__init__(self, itemID)
+        Instantiable.__init__(self, itemID, parentID)
+
+        restoreOrderedHolder(self, ordered_holder)
 
     @property
     def help(self):
@@ -48,7 +52,7 @@ class Objective(NameDescription, Instantiable, OrderedInstanceHolder):
                 paramHelp["ACTION"], 
                 paramHelp["PHYSICS"], 
                 paramHelp["PSEUDOCODE"])
-        
+       
     def new(self, item, **kwargs):
         if item == "CONTROL":
             return self.addAnimation(**kwargs)
@@ -60,21 +64,21 @@ class Objective(NameDescription, Instantiable, OrderedInstanceHolder):
             return self.addPseudocode(**kwargs)
 
     def addControl(self, *args, **kwargs):
-        control = Control(*args, **kwargs)
+        control = Control(*args, parentID = self.id, **kwargs)
         self.addNew(control)
         return control
 
     def addAction(self, *args, **kwargs):
-        action = Action(*args, **kwargs)
+        action = Action(*args, parentID = self.id, **kwargs)
         self.addNew(action)
         return action
 
     def addPseudocode(self, *args, **kwargs):
-        pseudocode = Pseudocode(*args, **kwargs)
+        pseudocode = Pseudocode(*args, parentID = self.id, **kwargs)
         self.addNew(pseudocode)
         return pseudocode
 
     def addPhysics(self, *args, **kwargs):
-        physics = Physics(*args, **kwargs)
+        physics = Physics(*args, parentID = self.id, **kwargs)
         self.addNew(physics)
         return physics

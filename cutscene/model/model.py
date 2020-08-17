@@ -122,8 +122,8 @@ class Model(QObject):
         print(f"model deleted scene item with id {item_id}")
         self.sceneModified.emit()
 
-    def deleteSceneEvent(self, scene, event_id):
-        scene = self.getInstByID(scene)
+    def deleteSceneEvent(self, scene_id, event_id):
+        scene = self.getInstByID(scene_id)
         scene.delEvent(event_id)
         print(f"model deleted scene event with id {event_id}")
         self.sceneModified.emit()

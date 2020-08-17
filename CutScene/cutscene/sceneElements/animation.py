@@ -1,5 +1,5 @@
 from cutscene.sceneElements.action import Action
-from cutscene.utils import Description, NameDescription, OrderedInstanceHolder, Instantiable
+from cutscene.utils import Description, NameDescription, OrderedInstanceHolder, Instantiable, restoreOrderedHolder
 from typing import Optional
 
 class Animation(NameDescription, OrderedInstanceHolder, Instantiable):
@@ -36,10 +36,14 @@ class Animation(NameDescription, OrderedInstanceHolder, Instantiable):
     def __init__(self, 
                  name: str,
                  description: str,
-                 itemID: Optional[int] = None):
+                 itemID: Optional[int] = None,
+                 parentID: Optional[int] = None,
+                 ordered_holder: Optional[list] = []):
         NameDescription.__init__(self, name, description)
         OrderedInstanceHolder.__init__(self)
-        Instantiable.__init__(self, itemID)
+        Instantiable.__init__(self, itemID, parentID)
+
+        restoreOrderedHolder(self, ordered_holder)
 
 
     def new(self, item, **kwargs):
@@ -64,27 +68,27 @@ class Animation(NameDescription, OrderedInstanceHolder, Instantiable):
                 paramHelp["ACT"])
 
     def addAction(self, **kwargs):
-        action = Action(**kwargs)
+        action = Action(parentID = self.id, **kwargs)
         self.addNew(action)
         return action
 
     def addTransition(self, **kwargs):
-        transition = Transition(**kwargs)
+        transition = Transition(parentID = self.id, **kwargs)
         self.addNew(transition)
         return transition
 
     def addHeading(self, **kwargs):
-        heading = Heading(**kwargs)
+        heading = Heading(parentID = self.id, **kwargs)
         self.addNew(heading)
         return heading
 
     def addDialogue(self, **kwargs):
-        dialogue = Dialogue(**kwargs)
+        dialogue = Dialogue(parentID = self.id, **kwargs)
         self.addNew(dialogue)
         return dialogue
 
     def addAct(self, **kwargs):
-        act = Act(**kwargs)
+        act = Act(parentID = self.id, **kwargs)
         self.addNew(act)
         return act
 
@@ -92,26 +96,29 @@ class Transition(Description, Instantiable):
     """Describe a transition in an animation"""
     def __init__(self,
                  description: str,
-                 itemID: Optional[int] = None):
+                 itemID: Optional[int] = None,
+                 parentID: Optional[int] = None):
         Description.__init__(self, description)
-        Instantiable.__init__(self, itemID)
+        Instantiable.__init__(self, itemID, parentID)
 
 class Act(Description, Instantiable):
     """Describe a transition in an animation"""
     def __init__(self,
                  description: str,
-                 itemID: Optional[int] = None):
+                 itemID: Optional[int] = None,
+                 parentID: Optional[int] = None):
         Description.__init__(self, description)
-        Instantiable.__init__(self, itemID)
+        Instantiable.__init__(self, itemID, parentID)
 
 
 class Heading(Description, Instantiable):
     """Add a heading in an animation"""
     def __init__(self,
                  description: str,
-                 itemID: Optional[int] = None):
+                 itemID: Optional[int] = None,
+                 parentID: Optional[int] = None):
         Description.__init__(self, description)
-        Instantiable.__init__(self, itemID)
+        Instantiable.__init__(self, itemID, parentID)
 
 class Dialogue(Animation, Instantiable):
     """A single piece of dialogue from a character"""
@@ -119,8 +126,9 @@ class Dialogue(Animation, Instantiable):
                  character_name: str, # character = getCharacter(character_name)
                  dialogue: str,
                  paranthetical: Optional[str] = None,
-                 itemID: Optional[int] = None):
-        Instantiable.__init__(self, itemID)
+                 itemID: Optional[int] = None,
+                 parentID: Optional[int] = None):
+        Instantiable.__init__(self, itemID, parentID)
         self.character_name = character_name
         self.dialogue = dialogue
         self.paranthetical = paranthetical

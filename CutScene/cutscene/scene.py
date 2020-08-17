@@ -39,9 +39,10 @@ class Scene(NameDescription, Instantiable, MapImage):
                  img: Optional[str] = None,
                  elements: Optional[list] = None,
                  sceneMatrix: Optional[list] = None,
-                 itemID: Optional[int] = None):
+                 itemID: Optional[int] = None,
+                 parentID: Optional[int] = None):
         NameDescription.__init__(self, name, description)
-        Instantiable.__init__(self, itemID)
+        Instantiable.__init__(self, itemID, parentID)
         MapImage.__init__(self, img)
         self.elements = []
         self.sceneMatrix = []
@@ -158,11 +159,11 @@ class Scene(NameDescription, Instantiable, MapImage):
                 paramHelp["OBJECTIVE"])
 
     def addAnimation(self, *args, **kwargs):
-        animation = Animation(*args, **kwargs)
+        animation = Animation(*args, parentID = self.id, **kwargs)
         self.addNew(animation)
         return animation
 
     def addObjective(self, *args, **kwargs):
-        objective = Objective(*args, **kwargs)
+        objective = Objective(*args, parentID = self.id, **kwargs)
         self.addNew(objective)
         return objective

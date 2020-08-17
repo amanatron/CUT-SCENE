@@ -1,4 +1,4 @@
-from cutscene.utils import OrderedInstanceHolder, NameDescription, Instantiable, paramHelp, objToDict
+from cutscene.utils import OrderedInstanceHolder, NameDescription, Instantiable, paramHelp, objToDict, restoreOrderedHolder
 from cutscene.level import Level, SubLevel
 from cutscene.scene import Scene
 from cutscene.entities import Characters, Objects
@@ -37,11 +37,12 @@ class CutSceneProject(OrderedInstanceHolder, NameDescription, Instantiable):
                  description: str,
                  genre: str,
                  author: str,
-                 itemID: Optional[int] = None):
+                 itemID: Optional[int] = None,
+                 parentID: Optional[int] = None):
 
         OrderedInstanceHolder.__init__(self)
         NameDescription.__init__(self, name, description)
-        Instantiable.__init__(self, itemID)
+        Instantiable.__init__(self, itemID, parentID)
 
         assert type(genre) is str
         assert type(author) is str
@@ -63,13 +64,13 @@ class CutSceneProject(OrderedInstanceHolder, NameDescription, Instantiable):
 
     def addLevel(self, **kwargs):
         """ Add a new level to the project """
-        level = Level(**kwargs)
+        level = Level(parentID = self.id, **kwargs)
         self.addNew(level)
         return level
 
     def addScene(self, **kwargs):
         """ Add a new scene to the project """
-        scene = Scene(**kwargs)
+        scene = Scene(parentID = self.id, **kwargs)
         self.addNew(scene)
         return scene
 
@@ -86,29 +87,8 @@ def saveProject(project, filePath):
     with open(filePath, "w") as projectFile:
         json.dump(objToDict(project), projectFile, default=objToDict)
 
-def dict_to_project(proj_dict):
 
-    def restoreOrderedHolder(parent, orderedHolder):
-        for item in orderedHolder:
-            # Get the classname of the item
-            item_type = item.pop("type")
-            # See if the item has any contents eg an animation class with dialogue, act etc
-            if "elements" in item.keys():
-                itemOrderedHolder = item.pop("elements")
-            elif "ordered_holder" in item.keys():
-                itemOrderedHolder = item.pop("ordered_holder")
-            else:
-                itemOrderedHolder = None
-            # Call its parent to init a new instance
-            child = parent.new(item_type.upper(), **item)
-            # Recurse another level in if there's more contents to this item
-            if itemOrderedHolder:
-                restoreOrderedHolder(child, itemOrderedHolder)
-            # restore scenematrix if item is a scene
-            if item_type == "SCENE":
-                matrix = item.pop("sceneMatrix")
-                child.restoreSceneMatrix(matrix)
-    
+def dict_to_project(proj_dict):   
     # Create a new project instance
     project = CutSceneProject(name=proj_dict["name"],
                               description=proj_dict["description"],

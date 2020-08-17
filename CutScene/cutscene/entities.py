@@ -52,7 +52,7 @@ class Characters(EntitiesWrapper):
             return self.addCharacter(**kwargs)
 
     def addCharacter(self, *args, **kwargs):
-        character = Character(**kwargs)
+        character = Character(parentID = self.id, **kwargs)
         self.addNew(character)
         return character
 
@@ -84,7 +84,7 @@ class Objects(EntitiesWrapper):
             return self.addObject(**kwargs)
 
     def addObject(self, *args, **kwargs):
-        misc = Misc(**kwargs)
+        misc = Misc(parentID = self.id, **kwargs)
         self.addNew(misc)
         return misc
 
@@ -96,9 +96,10 @@ class Character(NameDescription, Instantiable, CharacterImage):
                  description: str,
                  entityType: str,
                  img: Optional[str] = None,
-                 itemID: Optional[int] = None):
+                 itemID: Optional[int] = None,
+                 parentID: Optional[int] = None):
         NameDescription.__init__(self, name, description)
-        Instantiable.__init__(self, itemID)
+        Instantiable.__init__(self, itemID, parentID)
         CharacterImage.__init__(self, img)
         self.entityType = entityType
         ## TODO add image of character, character.face
@@ -120,9 +121,10 @@ class Misc(NameDescription, Instantiable, Image):
                  description: str,
                  entityType: str,
                  img: Optional[str] = None,
-                 itemID: Optional[int] = None):
+                 itemID: Optional[int] = None,
+                 parentID: Optional[int] = None):
         NameDescription.__init__(self, name, description)
-        Instantiable.__init__(self, itemID)
+        Instantiable.__init__(self, itemID, parentID)
         Image.__init__(self, img)
         self.entityType = entityType
         ## TODO add image of character, character.face

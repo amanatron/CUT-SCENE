@@ -4,8 +4,9 @@ from typing import Optional
 class Signal(Instantiable):
     """docstring for Signal"""
     def __init__(self,
-                 itemID: Optional[int] = None):
-        Instantiable.__init__(self, itemID)
+                 itemID: Optional[int] = None,
+                 parentID: Optional[int] = None):
+        Instantiable.__init__(self, itemID, parentID)
 
     @property
     def help(self):

@@ -16,7 +16,7 @@ class LevelWrapper(OrderedInstanceHolder, NameDescription, MapImage):
         MapImage.__init__(self, img)
 
     def addScene(self, *args, **kwargs):
-        scene = Scene(*args, **kwargs)
+        scene = Scene(*args, parentID = self.id, **kwargs)
         self.addNew(scene)
         return scene
 
@@ -54,9 +54,10 @@ class Level(LevelWrapper, Instantiable):
                  name: str,
                  description: str,
                  img: Optional[str] = None,
-                 itemID: Optional[int] = None):
+                 itemID: Optional[int] = None,
+                 parentID: Optional[int] = None):
         LevelWrapper.__init__(self, name, description, img)
-        Instantiable.__init__(self, itemID)
+        Instantiable.__init__(self, itemID, parentID)
 
     @property
     def help(self):
@@ -71,7 +72,7 @@ class Level(LevelWrapper, Instantiable):
             return self.addScene(**kwargs)
 
     def addSubLevel(self, *args, **kwargs):
-        subLevel = SubLevel(*args, **kwargs)
+        subLevel = SubLevel(*args, parentID = self.id, **kwargs)
         self.addNew(subLevel)
         return subLevel
 
@@ -90,9 +91,10 @@ class SubLevel(LevelWrapper, Instantiable):
                  name: str,
                  description: str,
                  img: Optional[str] = None,
-                 itemID: Optional[int] = None):
+                 itemID: Optional[int] = None,
+                 parentID: Optional[int] = None):
         LevelWrapper.__init__(self, name, description, img)
-        Instantiable.__init__(self, itemID)
+        Instantiable.__init__(self, itemID, parentID)
 
     @property
     def help(self):

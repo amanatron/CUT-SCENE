@@ -6,9 +6,10 @@ class Event(NameDescription, Instantiable):
     def __init__(self, 
                  name: str,
                  description: str,
-                 itemID: Optional[int] = None):
+                 itemID: Optional[int] = None,
+                 parentID: Optional[int] = None):
         NameDescription.__init__(self, name, description)
-        Instantiable.__init__(self, itemID)
+        Instantiable.__init__(self, itemID, parentID)
 
     @property
     def help(self):
