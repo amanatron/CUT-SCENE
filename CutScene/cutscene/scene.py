@@ -15,23 +15,26 @@ class Scene(NameDescription, Instantiable, MapImage):
         addAnimation: Add an Animation to the scene
             name: str
             description: str
-        addEvent: Add an Event to the scene
-            name: str
-            description: str
         addObjective: Add an Objective to the scene
             name: str
             description: str
+        addEvent: Add an Event to the scene
+            id1: id of the element the event leads from
+            id2: id of the element the event leads from
+            name: str
+            description: str
 
-        get: Get a list of all the elements of the scene
-        remove: Delete a scene element
-            index: int; index of element in scene elements list
-        moveUp: move element at index one place up in the list
-            index: int
-        moveDown: move element at index one place down the list
-            index: int
-        move: move element from one index to another
-            index: int, which element you want
-            newIndex: int, where you want the element to go
+        get: get the elements of the scene, and the matrix of events linking the elements
+        getEventMap: Returns dict with each entry of itemID giving a list of other itemIDs it links to
+                     eg. A: [B, C]
+                         B: [D]
+                         C: [D]
+                         D: []
+        getEvents: returns a list of tuples, for each event: (event_id, from_id, to_id) 
+        delItem: Delete a scene element and its events
+            id: int; id of element in scene elements list
+        delEvent: Delete a scene event
+            id: int; id of event
     """
     def __init__(self, 
                  name: str,
